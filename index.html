@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Drozioo - Modern eCommerce</title>
-    <!-- Font Awesome 6 (Free) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Drozioo - Modern eCommerce Platform</title>
+    <!-- Font Awesome 6 Free -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -17,28 +17,29 @@
         }
 
         body {
-            background: #f8fafc;
-            color: #0f172a;
+            background: #f5f7fb;
+            color: #0a0a2a;
         }
 
-        /* Sticky top bar */
+        /* Sticky Top Bar */
         .top-bar {
             position: sticky;
             top: 0;
-            background: white;
-            padding: 12px 16px;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(8px);
+            padding: 12px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            z-index: 100;
-            flex-wrap: wrap;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         .logo {
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            background: linear-gradient(135deg, #3b82f6, #0ea5e9, #06b6d4);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -46,30 +47,29 @@
         }
         .search-container {
             flex: 1;
-            max-width: 400px;
-            min-width: 180px;
+            max-width: 420px;
         }
         .search-container input {
             width: 100%;
-            padding: 10px 16px;
-            border-radius: 40px;
-            border: 1px solid #e2e8f0;
-            background: #f1f5f9;
+            padding: 10px 18px;
+            border-radius: 44px;
+            border: 1.5px solid #e2e8f0;
+            background: #ffffff;
             font-size: 0.9rem;
             outline: none;
-            transition: all 0.2s;
+            transition: all 0.25s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
         .search-container input:focus {
             border-color: #3b82f6;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
         }
         .menu-icon {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             cursor: pointer;
             background: #f1f5f9;
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -78,54 +78,88 @@
         }
         .menu-icon:hover {
             background: #e2e8f0;
+            transform: scale(0.96);
         }
 
         /* Banner */
         .banner {
-            margin: 16px;
-            border-radius: 24px;
+            margin: 18px 16px;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
         .banner img {
             width: 100%;
             height: auto;
             display: block;
             object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .banner img:hover {
+            transform: scale(1.02);
         }
 
-        /* Product Grid (2 per row, Meesho style) */
+        /* Categories Chips */
+        .categories-scroll {
+            padding: 0 16px 12px;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+            display: flex;
+            gap: 10px;
+        }
+        .category-chip {
+            background: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .category-chip.active, .category-chip:hover {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        /* Product Grid (2 per row) */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
-            padding: 8px 16px 32px;
+            padding: 8px 16px 24px;
         }
         .product-card {
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.25s ease;
             cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.03);
         }
         .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
         }
         .product-img {
             width: 100%;
             aspect-ratio: 1 / 1;
             object-fit: cover;
-            background: #f1f5f9;
+            background: #f8fafc;
         }
         .product-info {
-            padding: 12px;
+            padding: 12px 12px 14px;
         }
         .product-name {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.95rem;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -138,12 +172,12 @@
             margin-top: 6px;
         }
         .current-price {
-            font-weight: 700;
+            font-weight: 800;
             color: #0f172a;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
         }
         .old-price {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #64748b;
             text-decoration: line-through;
         }
@@ -151,21 +185,21 @@
             background: #fee2e2;
             color: #dc2626;
             font-size: 0.7rem;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 20px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 30px;
         }
 
-        /* Modals & panels */
+        /* Modals & Panels */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            z-index: 200;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -179,43 +213,60 @@
         }
         .modal-content {
             background: white;
-            width: 90%;
-            max-width: 500px;
-            max-height: 85vh;
+            width: 92%;
+            max-width: 520px;
+            max-height: 88vh;
             overflow-y: auto;
-            border-radius: 32px;
-            padding: 24px;
+            border-radius: 36px;
+            padding: 26px 22px;
             position: relative;
+            box-shadow: 0 25px 50px -12px black;
         }
         .close-modal {
             position: absolute;
-            top: 16px;
-            right: 20px;
+            top: 18px;
+            right: 22px;
             font-size: 1.8rem;
             cursor: pointer;
+            font-weight: 300;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f1f5f9;
         }
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         label {
-            font-weight: 500;
+            font-weight: 600;
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
         }
         input, textarea, select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 16px;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 20px;
             font-size: 0.9rem;
+            transition: 0.2s;
+            background: #fff;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
         }
         button {
             background: #3b82f6;
             color: white;
             border: none;
             padding: 12px 20px;
-            border-radius: 40px;
-            font-weight: 600;
+            border-radius: 44px;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
             width: 100%;
@@ -223,63 +274,100 @@
         }
         button:hover {
             background: #2563eb;
+            transform: scale(0.98);
         }
-        .seller-btn, .admin-btn {
-            margin-top: 8px;
+        .btn-secondary {
+            background: #94a3b8;
         }
         .product-list-item {
             background: #f8fafc;
-            border-radius: 20px;
-            padding: 12px;
-            margin-bottom: 12px;
+            border-radius: 24px;
+            padding: 14px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #eef2ff;
         }
         .review-item {
-            background: #f1f5f9;
-            padding: 12px;
-            border-radius: 20px;
-            margin-top: 8px;
-        }
-        .rating-star {
-            color: #facc15;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 24px;
+            margin-top: 12px;
+            border-left: 4px solid #3b82f6;
         }
         .back-link {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             margin: 12px 16px;
             color: #3b82f6;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-        }
-        .category-chip {
-            background: #e2e8f0;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            margin: 4px;
-            display: inline-block;
-            cursor: pointer;
+            background: white;
+            padding: 8px 18px;
+            border-radius: 40px;
+            width: fit-content;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         .load-more-trigger {
-            height: 20px;
             text-align: center;
-            margin: 8px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.85rem;
         }
         .spinner {
             text-align: center;
             padding: 20px;
         }
+        .image-gallery {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 8px 0;
+        }
+        .gallery-thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .main-image {
+            width: 100%;
+            border-radius: 28px;
+            margin-bottom: 12px;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            right: 20px;
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 60px;
+            z-index: 3000;
+            font-size: 0.9rem;
+        }
+        hr {
+            margin: 16px 0;
+        }
+        @media (max-width: 480px) {
+            .top-bar { padding: 10px 12px; }
+            .logo { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
-
 <div id="app"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script>
-    // Firebase Config
+    // ======================= FIREBASE CONFIG =======================
     const firebaseConfig = {
         apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
         authDomain: "drozioostore.firebaseapp.com",
@@ -292,97 +380,112 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // App State
-    let allProducts = [];
-    let lastVisible = null;
+    // ======================= GLOBAL STATE =======================
+    let allProducts = [];           // full product list for current category/search
+    let lastVisibleDoc = null;
     let loadingMore = false;
     let hasMore = true;
-    let currentView = "home"; // home, productDetail, sellerPanel, adminPanel, becomeSeller, categoriesView
+    let currentView = "home";      // home, productDetail, sellerPanel, adminPanel, becomeSeller
     let selectedProduct = null;
-    let currentCategoryFilter = null;
+    let activeCategory = null;      // null = all
+    let currentSearchTerm = "";
+    let productsListener = null;
+    let currentFilteredProducts = [];
 
-    // Helper: Render
-    const appDiv = document.getElementById("app");
-
-    function render() {
-        if (currentView === "home") renderHomePage();
-        else if (currentView === "productDetail") renderProductDetail();
-        else if (currentView === "sellerPanel") renderSellerPanel();
-        else if (currentView === "adminPanel") renderAdminPanel();
-        else if (currentView === "becomeSeller") renderBecomeSeller();
-        else if (currentView === "categoriesView") renderCategoriesView();
+    // Helper: show toast
+    function showToast(msg, duration = 2500) {
+        const toast = document.createElement("div");
+        toast.className = "toast-msg";
+        toast.innerText = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), duration);
     }
 
-    // Fetch products with infinite scroll (latest first)
-    async function fetchProducts(reset = true, category = null) {
+    // ======================= RENDER ENGINE =======================
+    function render() {
+        if (currentView === "home") renderHomePage();
+        else if (currentView === "productDetail") renderProductDetailPage();
+        else if (currentView === "sellerPanel") renderSellerPanel();
+        else if (currentView === "adminPanel") renderAdminPanel();
+        else if (currentView === "becomeSeller") renderBecomeSellerPage();
+    }
+
+    // ---------- FETCH PRODUCTS with infinite scroll ----------
+    async function fetchProducts(reset = true, category = null, search = "") {
         if (reset) {
             allProducts = [];
-            lastVisible = null;
+            lastVisibleDoc = null;
             hasMore = true;
-            currentCategoryFilter = category;
+            activeCategory = category;
+            currentSearchTerm = search;
         }
         if (loadingMore || !hasMore) return;
         loadingMore = true;
 
-        let query = db.collection("products").orderBy("createdAt", "desc").limit(12);
-        if (lastVisible) query = query.startAfter(lastVisible);
-        if (category && category !== "all") {
-            query = db.collection("products").where("category", "==", category).orderBy("createdAt", "desc").limit(12);
-            if (lastVisible && category === currentCategoryFilter) query = query.startAfter(lastVisible);
-            else if (category !== currentCategoryFilter) {
-                // reset handled
-                if (!reset) {
-                    loadingMore = false;
-                    return;
-                }
-            }
-        }
-
         try {
+            let query = db.collection("products").orderBy("createdAt", "desc").limit(10);
+            if (lastVisibleDoc && !reset) query = query.startAfter(lastVisibleDoc);
+            if (category && category !== "all") {
+                query = db.collection("products").where("category", "==", category).orderBy("createdAt", "desc").limit(10);
+                if (lastVisibleDoc && !reset && activeCategory === category) query = query.startAfter(lastVisibleDoc);
+                else if (reset) { /* fresh start */ }
+            }
             const snapshot = await query.get();
             const newProducts = [];
-            snapshot.forEach(doc => {
-                newProducts.push({ id: doc.id, ...doc.data() });
-            });
-            if (newProducts.length < 12) hasMore = false;
-            if (snapshot.docs.length > 0) lastVisible = snapshot.docs[snapshot.docs.length-1];
+            snapshot.forEach(doc => newProducts.push({ id: doc.id, ...doc.data() }));
+            if (newProducts.length < 10) hasMore = false;
+            if (snapshot.docs.length > 0) lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
             if (reset) allProducts = newProducts;
             else allProducts = [...allProducts, ...newProducts];
-            renderHomePage();
-        } catch(e) { console.error(e); }
+            // apply search filter if any
+            applySearchFilter();
+        } catch (err) {
+            console.error(err);
+            showToast("Error loading products");
+        }
         loadingMore = false;
+        if (currentView === "home") renderHomePage();
     }
 
-    // infinite scroll listener
-    function observeScroll() {
+    function applySearchFilter() {
+        if (!currentSearchTerm.trim()) {
+            currentFilteredProducts = [...allProducts];
+        } else {
+            currentFilteredProducts = allProducts.filter(p => p.name && p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()));
+        }
+    }
+
+    // infinite scroll observer
+    let scrollObserver = null;
+    function observeScrollSentinel() {
         const sentinel = document.getElementById("scroll-sentinel");
         if (!sentinel) return;
-        const observer = new IntersectionObserver(entries => {
+        if (scrollObserver) scrollObserver.disconnect();
+        scrollObserver = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore && !loadingMore && currentView === "home") {
-                fetchProducts(false, currentCategoryFilter);
+                fetchProducts(false, activeCategory, currentSearchTerm);
             }
-        }, { threshold: 0.1 });
-        observer.observe(sentinel);
+        }, { threshold: 0.2, rootMargin: "50px" });
+        scrollObserver.observe(sentinel);
     }
 
-    // HOME PAGE with categories auto
+    // ======================= HOME PAGE =======================
     function renderHomePage() {
         let categoriesSet = new Set();
-        allProducts.forEach(p => { if(p.category) categoriesSet.add(p.category); });
-        let categoriesHtml = `<div style="padding: 0 16px; overflow-x: auto; white-space: nowrap; margin-top: 8px;">
-            <span class="category-chip ${!currentCategoryFilter ? 'active-cat' : ''}" data-cat="all">All</span>`;
-        categoriesSet.forEach(cat => {
-            categoriesHtml += `<span class="category-chip ${currentCategoryFilter === cat ? 'active-cat' : ''}" data-cat="${cat}">${cat}</span>`;
+        allProducts.forEach(p => { if (p.category) categoriesSet.add(p.category); });
+        let categoriesHtml = `<div class="categories-scroll"><span class="category-chip ${!activeCategory ? 'active' : ''}" data-cat="all">✨ All</span>`;
+        Array.from(categoriesSet).forEach(cat => {
+            categoriesHtml += `<span class="category-chip ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}">${escapeHtml(cat)}</span>`;
         });
-        categoriesHtml += `</div><style>.active-cat { background: #3b82f6; color: white; }</style>`;
+        categoriesHtml += `</div>`;
 
         let productsHtml = `<div class="products-grid" id="productsGrid">`;
-        if (allProducts.length === 0 && !loadingMore) productsHtml += `<div style="grid-column:1/-1; text-align:center;">No products found</div>`;
-        allProducts.forEach(prod => {
-            const discountPercent = prod.originalPrice && prod.price ? Math.round(((prod.originalPrice - prod.price)/prod.originalPrice)*100) : 0;
+        if (currentFilteredProducts.length === 0) productsHtml += `<div style="grid-column:1/-1; text-align:center; padding:40px;">🛍️ No products found</div>`;
+        currentFilteredProducts.forEach(prod => {
+            const discountPercent = (prod.originalPrice && prod.originalPrice > prod.price) ? Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100) : 0;
             productsHtml += `
                 <div class="product-card" data-id="${prod.id}">
-                    <img class="product-img" src="${prod.images?.[0] || 'https://via.placeholder.com/300'}" alt="${prod.name}" onerror="this.src='https://via.placeholder.com/300'">
+                    <img class="product-img" src="${prod.images?.[0] || 'https://picsum.photos/id/1/300/300'}" alt="${escapeHtml(prod.name)}" onerror="this.src='https://picsum.photos/id/20/300/300'">
                     <div class="product-info">
                         <div class="product-name">${escapeHtml(prod.name)}</div>
                         <div class="price-row">
@@ -394,13 +497,27 @@
                 </div>
             `;
         });
-        productsHtml += `</div><div id="scroll-sentinel" class="load-more-trigger">${hasMore ? 'Loading more...' : '✨ You reached the end'}</div>`;
+        productsHtml += `</div><div id="scroll-sentinel" class="load-more-trigger">${hasMore ? '⬇️ Scroll for more' : '🎉 You reached the end'}</div>`;
 
-        const bannerHtml = `<div class="banner"><img src="https://picsum.photos/id/20/800/300" alt="banner"></div>`;
+        const bannerHtml = `<div class="banner"><img src="https://picsum.photos/id/26/800/300" alt="Drozioo Banner"></div>`;
         const topBar = getTopBarHtml();
 
         const fullHtml = `${topBar}${bannerHtml}${categoriesHtml}${productsHtml}`;
         appDiv.innerHTML = fullHtml;
+        attachProductCardEvents();
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                const cat = chip.getAttribute('data-cat');
+                activeCategory = cat === 'all' ? null : cat;
+                fetchProducts(true, activeCategory, currentSearchTerm);
+            });
+        });
+        observeScrollSentinel();
+        attachMenuEvents();
+        attachSearchEvent();
+    }
+
+    function attachProductCardEvents() {
         document.querySelectorAll('.product-card').forEach(card => {
             card.addEventListener('click', (e) => {
                 const id = card.getAttribute('data-id');
@@ -412,89 +529,90 @@
                 }
             });
         });
-        document.querySelectorAll('.category-chip').forEach(chip => {
-            chip.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const cat = chip.getAttribute('data-cat');
-                currentCategoryFilter = cat === 'all' ? null : cat;
-                fetchProducts(true, currentCategoryFilter);
-            });
-        });
-        observeScroll();
-        attachMenuEvents();
     }
 
-    // PRODUCT DETAIL PAGE
-    function renderProductDetail() {
+    // ======================= PRODUCT DETAIL =======================
+    function renderProductDetailPage() {
         if (!selectedProduct) { currentView = "home"; render(); return; }
         const p = selectedProduct;
-        const images = p.images && p.images.length ? p.images : ['https://via.placeholder.com/400'];
-        let imagesHtml = `<div style="display:flex; gap:8px; overflow-x:auto; padding:8px 0;">`;
-        images.forEach(img => { imagesHtml += `<img src="${img}" style="width:100px; height:100px; object-fit:cover; border-radius:16px;" onerror="this.src='https://via.placeholder.com/100'">`; });
-        imagesHtml += `</div>`;
-        const discountPercent = p.originalPrice && p.price ? Math.round(((p.originalPrice - p.price)/p.originalPrice)*100) : 0;
-        const reviewsHtml = `<div id="reviewsSection"><h3>Reviews</h3><div id="reviewsList"></div><textarea id="reviewText" placeholder="Write your review..." rows="2" style="width:100%; margin:8px 0;"></textarea><button id="submitReviewBtn">Post Review</button></div>`;
-
+        const mainImg = p.images?.[0] || 'https://picsum.photos/id/101/400/400';
+        const galleryHtml = `<div class="image-gallery">${p.images?.map(img => `<img src="${img}" class="gallery-thumb" onerror="this.src='https://picsum.photos/id/20/100/100'">`).join('') || ''}</div>`;
+        const discountPercent = (p.originalPrice && p.originalPrice > p.price) ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
+        
         const detailHtml = `
             ${getTopBarHtml()}
-            <div style="padding:16px;">
-                <div class="back-link" id="backHomeBtn"><i class="fas fa-arrow-left"></i> Back</div>
-                ${imagesHtml}
-                <h2 style="margin:12px 0 4px;">${escapeHtml(p.name)}</h2>
-                <div class="price-row"><span class="current-price" style="font-size:1.8rem;">₹${p.price}</span> ${p.originalPrice ? `<span class="old-price">₹${p.originalPrice}</span>` : ''} ${discountPercent>0 ? `<span class="discount-badge">${discountPercent}% OFF</span>` : ''}</div>
-                <p style="margin:12px 0;">${escapeHtml(p.description || 'No description')}</p>
-                <p><i class="fab fa-whatsapp"></i> Seller WhatsApp: ${p.whatsapp || 'Not provided'}</p>
-                <button id="orderNowBtn" style="margin: 16px 0;">Order Now on WhatsApp</button>
-                ${reviewsHtml}
+            <div style="padding: 16px;">
+                <div class="back-link" id="backHomeBtn"><i class="fas fa-arrow-left"></i> Back to Home</div>
+                <img src="${mainImg}" class="main-image" id="mainProductImg" onerror="this.src='https://picsum.photos/id/20/400/400'">
+                ${galleryHtml}
+                <h2 style="margin: 12px 0 6px;">${escapeHtml(p.name)}</h2>
+                <div class="price-row"><span class="current-price" style="font-size:1.8rem;">₹${p.price}</span> ${p.originalPrice ? `<span class="old-price">₹${p.originalPrice}</span>` : ''} ${discountPercent>0?`<span class="discount-badge">${discountPercent}% OFF</span>`:''}</div>
+                <p style="margin: 14px 0; line-height:1.4;">${escapeHtml(p.description || 'No description provided.')}</p>
+                <p><i class="fab fa-whatsapp" style="color:#25D366;"></i> <strong>Seller WhatsApp:</strong> ${p.whatsapp || 'Not shared'}</p>
+                <button id="orderNowBtn" style="margin: 16px 0; background:#25D366;">📲 Order Now on WhatsApp</button>
+                <hr>
+                <h3>⭐ Customer Reviews</h3>
+                <div id="reviewsList" style="margin: 12px 0;"></div>
+                <textarea id="newReviewText" rows="2" placeholder="Write your review..." style="width:100%; border-radius:24px; margin:8px 0;"></textarea>
+                <button id="submitReviewBtn">Post Review</button>
             </div>
         `;
         appDiv.innerHTML = detailHtml;
         document.getElementById("backHomeBtn").addEventListener("click", () => { currentView = "home"; render(); });
         document.getElementById("orderNowBtn").addEventListener("click", () => {
             const msg = `Hello, I want to order this product:%0A%0AProduct Name: ${encodeURIComponent(p.name)}%0APrice: ₹${p.price}%0A%0AMy Details:%0AName:%0AAddress:%0APhone:`;
-            window.open(`https://wa.me/${p.whatsapp?.replace(/\D/g,'') || '91'}?text=${msg}`, '_blank');
+            const whatsappNum = p.whatsapp ? p.whatsapp.replace(/\D/g, '') : '91';
+            window.open(`https://wa.me/${whatsappNum}?text=${msg}`, '_blank');
         });
         loadReviews(p.id);
         document.getElementById("submitReviewBtn").addEventListener("click", async () => {
-            const text = document.getElementById("reviewText").value.trim();
-            if(!text) return alert("Write a review");
-            await db.collection("reviews").add({ productId: p.id, text: text, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-            document.getElementById("reviewText").value = '';
+            const reviewText = document.getElementById("newReviewText").value.trim();
+            if (!reviewText) return showToast("Please write a review");
+            await db.collection("reviews").add({ productId: p.id, text: reviewText, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            document.getElementById("newReviewText").value = "";
             loadReviews(p.id);
+            showToast("Review added ✅");
         });
         attachMenuEvents();
+        attachSearchEvent();
+        // gallery thumb click change main
+        document.querySelectorAll('.gallery-thumb').forEach((thumb, idx) => {
+            thumb.addEventListener('click', () => {
+                document.getElementById("mainProductImg").src = thumb.src;
+            });
+        });
     }
 
     async function loadReviews(productId) {
         const snap = await db.collection("reviews").where("productId", "==", productId).orderBy("createdAt", "desc").get();
-        let reviewsList = document.getElementById("reviewsList");
-        if(!reviewsList) return;
+        const container = document.getElementById("reviewsList");
+        if (!container) return;
+        if (snap.empty) { container.innerHTML = '<p>✨ No reviews yet. Be first!</p>'; return; }
         let html = '';
         snap.forEach(doc => {
             const rev = doc.data();
-            html += `<div class="review-item"><i class="fas fa-user-circle"></i> ${escapeHtml(rev.text)}<div style="font-size:12px; color:#64748b;">${rev.createdAt ? new Date(rev.createdAt.toDate()).toLocaleString() : 'recent'}</div></div>`;
+            html += `<div class="review-item"><i class="fas fa-user-circle"></i> ${escapeHtml(rev.text)}<div style="font-size:11px; color:#475569; margin-top:6px;">${rev.createdAt ? new Date(rev.createdAt.toDate()).toLocaleString() : 'just now'}</div></div>`;
         });
-        if(html === '') html = '<p>No reviews yet. Be the first!</p>';
-        reviewsList.innerHTML = html;
+        container.innerHTML = html;
     }
 
-    // Seller Panel
+    // ======================= SELLER PANEL =======================
     async function renderSellerPanel() {
-        let passwordCheck = await checkSellerPasswordExists();
-        if(!passwordCheck.exists) { alert("Please set seller password first via Become a Seller > Set Seller Password"); currentView="home"; render(); return; }
+        const passCheck = await checkPasswordExists("sellerPassword");
+        if (!passCheck) { showToast("Seller password not set. Go to Become a Seller → setup first."); currentView = "home"; render(); return; }
         const formHtml = `
             ${getTopBarHtml()}
             <div style="padding:20px;">
-                <h2>Seller Panel - Add Product</h2>
-                <div class="form-group"><label>Product Name</label><input id="prodName" placeholder="Name"></div>
-                <div class="form-group"><label>Price (₹)</label><input id="prodPrice" type="number" placeholder="Selling price"></div>
-                <div class="form-group"><label>Original Price</label><input id="prodOrigPrice" type="number" placeholder="MRP"></div>
-                <div class="form-group"><label>Description</label><textarea id="prodDesc" rows="3"></textarea></div>
-                <div class="form-group"><label>Category</label><input id="prodCategory" placeholder="e.g., Electronics, Fashion"></div>
-                <div class="form-group"><label>WhatsApp Number (with country code)</label><input id="prodWhatsapp" placeholder="+911234567890"></div>
-                <div class="form-group"><label>Image URLs (comma separated, 2-3)</label><input id="prodImages" placeholder="https://url1.jpg, https://url2.jpg"></div>
-                <button id="submitProductBtn">Submit Product</button>
-                <button id="backHomeSeller" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
+                <h2>🛍️ Seller Dashboard - Add New Product</h2>
+                <div class="form-group"><label>Product Name *</label><input id="prodName" placeholder="e.g., Premium Cotton T-shirt"></div>
+                <div class="form-group"><label>Selling Price (₹) *</label><input id="prodPrice" type="number" placeholder="399"></div>
+                <div class="form-group"><label>Original Price (MRP)</label><input id="prodOrigPrice" type="number" placeholder="999"></div>
+                <div class="form-group"><label>Description</label><textarea id="prodDesc" rows="3" placeholder="High quality fabric..."></textarea></div>
+                <div class="form-group"><label>Category *</label><input id="prodCategory" placeholder="Fashion, Electronics, etc"></div>
+                <div class="form-group"><label>WhatsApp Number (with country code) *</label><input id="prodWhatsapp" placeholder="+919876543210"></div>
+                <div class="form-group"><label>Image URLs (comma separated, min 2-3)</label><input id="prodImages" placeholder="https://example.com/1.jpg, https://example.com/2.jpg"></div>
+                <button id="submitProductBtn">✨ Publish Product</button>
+                <button id="backHomeSellerBtn" class="btn-secondary" style="margin-top:12px;">🏠 Back to Home</button>
             </div>
         `;
         appDiv.innerHTML = formHtml;
@@ -506,83 +624,82 @@
             const category = document.getElementById("prodCategory").value.trim();
             const whatsapp = document.getElementById("prodWhatsapp").value.trim();
             let images = document.getElementById("prodImages").value.split(",").map(s=>s.trim()).filter(s=>s);
-            if(!name || !price || !category || !whatsapp) { alert("Please fill required fields"); return; }
-            if(images.length===0) images = ["https://via.placeholder.com/300"];
+            if (!name || isNaN(price) || !category || !whatsapp) { showToast("Please fill required fields: Name, Price, Category, WhatsApp"); return; }
+            if (images.length === 0) images = ["https://picsum.photos/id/1/300/300"];
             await db.collection("products").add({
-                name, price, originalPrice, description: desc, category, whatsapp, images, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                name, price, originalPrice, description: desc, category, whatsapp, images,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
-            alert("Product added!");
+            showToast("Product added successfully 🚀");
             document.getElementById("prodName").value = "";
             document.getElementById("prodPrice").value = "";
-            document.getElementById("prodOrigPrice").value = "";
-            document.getElementById("prodDesc").value = "";
-            document.getElementById("prodCategory").value = "";
-            document.getElementById("prodWhatsapp").value = "";
             document.getElementById("prodImages").value = "";
             fetchProducts(true);
         });
-        document.getElementById("backHomeSeller").addEventListener("click", ()=>{ currentView="home"; render(); });
-        attachMenuEvents();
+        document.getElementById("backHomeSellerBtn").addEventListener("click", () => { currentView = "home"; render(); });
+        attachMenuEvents(); attachSearchEvent();
     }
 
-    // Admin Panel: list, edit, delete
+    // ======================= ADMIN PANEL =======================
     async function renderAdminPanel() {
-        let pwdCheck = await checkAdminPasswordExists();
-        if(!pwdCheck.exists) { alert("Admin password required. Set via Become a Seller > Set Admin Password"); currentView="home"; render(); return; }
+        const passCheck = await checkPasswordExists("adminPassword");
+        if (!passCheck) { showToast("Admin password missing! Set via Become a Seller section"); currentView = "home"; render(); return; }
         const snapshot = await db.collection("products").orderBy("createdAt", "desc").get();
-        let productsList = [];
-        snapshot.forEach(doc => productsList.push({id: doc.id, ...doc.data()}));
-        let listHtml = `<h2>Admin Panel - Manage Products</h2>`;
-        productsList.forEach(prod => {
+        let productsArr = [];
+        snapshot.forEach(doc => productsArr.push({ id: doc.id, ...doc.data() }));
+        let listHtml = `<h2>⚙️ Admin Panel - Manage Products</h2><div style="margin-top:16px;">`;
+        productsArr.forEach(prod => {
             listHtml += `
                 <div class="product-list-item">
-                    <div><strong>${escapeHtml(prod.name)}</strong> ₹${prod.price}</div>
-                    <div><button class="editBtn" data-id="${prod.id}" style="width:auto; padding:6px 12px; margin-right:8px;">Edit</button><button class="delBtn" data-id="${prod.id}" style="background:#ef4444; width:auto;">Delete</button></div>
+                    <div><strong>${escapeHtml(prod.name)}</strong><br>₹${prod.price} | ${prod.category || 'Uncategorized'}</div>
+                    <div><button class="editAdminBtn" data-id="${prod.id}" style="width:auto; padding:6px 14px; margin-right:6px;">✏️ Edit</button><button class="delAdminBtn" data-id="${prod.id}" style="background:#ef4444; width:auto;">🗑️ Delete</button></div>
                 </div>
             `;
         });
-        const full = `${getTopBarHtml()}<div style="padding:20px;">${listHtml}<button id="adminBackHome" style="margin-top:20px;">Back to Home</button></div>`;
+        listHtml += `<button id="adminBackHome" style="margin-top:20px;">Back to Home</button></div>`;
+        const full = `${getTopBarHtml()}<div style="padding:20px;">${listHtml}</div>`;
         appDiv.innerHTML = full;
-        document.querySelectorAll(".editBtn").forEach(btn => {
-            btn.addEventListener("click", async (e) => {
-                const id = btn.getAttribute("data-id");
-                const prodDoc = await db.collection("products").doc(id).get();
-                if(prodDoc.exists) openEditModal(id, prodDoc.data());
-            });
-        });
-        document.querySelectorAll(".delBtn").forEach(btn => {
+        document.querySelectorAll(".delAdminBtn").forEach(btn => {
             btn.addEventListener("click", async () => {
-                if(confirm("Delete product?")) {
+                if(confirm("Delete product permanently?")) {
                     await db.collection("products").doc(btn.getAttribute("data-id")).delete();
+                    showToast("Deleted");
                     renderAdminPanel();
                 }
             });
         });
-        document.getElementById("adminBackHome").addEventListener("click", ()=>{ currentView="home"; render(); });
-        attachMenuEvents();
+        document.querySelectorAll(".editAdminBtn").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const id = btn.getAttribute("data-id");
+                const docSnap = await db.collection("products").doc(id).get();
+                if(docSnap.exists) openEditProductModal(id, docSnap.data());
+            });
+        });
+        document.getElementById("adminBackHome").addEventListener("click", () => { currentView = "home"; render(); });
+        attachMenuEvents(); attachSearchEvent();
     }
 
-    function openEditModal(id, data) {
+    async function openEditProductModal(id, data) {
         const modalDiv = document.createElement("div");
         modalDiv.className = "modal-overlay active";
         modalDiv.innerHTML = `
             <div class="modal-content">
                 <span class="close-modal">&times;</span>
-                <h3>Edit Product</h3>
+                <h3>✏️ Edit Product</h3>
                 <div class="form-group"><label>Name</label><input id="editName" value="${escapeHtml(data.name)}"></div>
                 <div class="form-group"><label>Price</label><input id="editPrice" value="${data.price}"></div>
                 <div class="form-group"><label>Original Price</label><input id="editOrigPrice" value="${data.originalPrice || ''}"></div>
-                <div class="form-group"><label>Description</label><textarea id="editDesc">${escapeHtml(data.description||'')}</textarea></div>
-                <div class="form-group"><label>Category</label><input id="editCat" value="${data.category||''}"></div>
-                <div class="form-group"><label>WhatsApp</label><input id="editWhatsapp" value="${data.whatsapp||''}"></div>
-                <div class="form-group"><label>Images (comma)</label><input id="editImages" value="${(data.images||[]).join(', ')}"></div>
-                <button id="saveEditBtn">Save</button>
+                <div class="form-group"><label>Description</label><textarea id="editDesc">${escapeHtml(data.description || '')}</textarea></div>
+                <div class="form-group"><label>Category</label><input id="editCat" value="${data.category || ''}"></div>
+                <div class="form-group"><label>WhatsApp</label><input id="editWhatsapp" value="${data.whatsapp || ''}"></div>
+                <div class="form-group"><label>Images (comma)</label><input id="editImages" value="${(data.images || []).join(', ')}"></div>
+                <button id="saveEditFinalBtn">💾 Save Changes</button>
             </div>
         `;
         document.body.appendChild(modalDiv);
-        const close = () => modalDiv.remove();
-        modalDiv.querySelector(".close-modal").addEventListener("click", close);
-        modalDiv.querySelector("#saveEditBtn").addEventListener("click", async () => {
+        const closeModal = () => modalDiv.remove();
+        modalDiv.querySelector(".close-modal").addEventListener("click", closeModal);
+        modalDiv.querySelector("#saveEditFinalBtn").addEventListener("click", async () => {
             const updated = {
                 name: document.getElementById("editName").value,
                 price: parseFloat(document.getElementById("editPrice").value),
@@ -593,133 +710,112 @@
                 images: document.getElementById("editImages").value.split(",").map(s=>s.trim())
             };
             await db.collection("products").doc(id).update(updated);
-            modalDiv.remove();
+            closeModal();
             renderAdminPanel();
+            showToast("Product updated");
         });
     }
 
-    // Become Seller & Password setup
-    function renderBecomeSeller() {
+    // ======================= BECOME SELLER + PASSWORD SETUP =======================
+    async function renderBecomeSellerPage() {
         const html = `
             ${getTopBarHtml()}
-            <div style="padding:24px; text-align:center;">
-                <h2>Become a Seller on Drozioo</h2>
-                <p style="margin:16px 0;">Connect to our manager to start selling on Drozioo</p>
-                <button id="contactManagerBtn">Contact Manager</button>
-                <div style="margin:24px 0;"><hr /></div>
-                <h3>Seller / Admin Access</h3>
-                <div class="form-group"><label>Enter Seller Password</label><input id="sellerPasswordInput" type="password"></div>
-                <button id="sellerLoginBtn">Continue to Seller Panel</button>
-                <div class="form-group" style="margin-top:16px;"><label>Enter Admin Password</label><input id="adminPasswordInput" type="password"></div>
-                <button id="adminLoginBtn">Admin Login</button>
-                <div style="margin-top:20px;"><button id="setupPasswordsBtn">🔐 First Time? Set Seller & Admin Passwords</button></div>
-                <button id="backHomeBtnBecome" style="margin-top:24px; background:#94a3b8;">Back Home</button>
+            <div style="padding:24px;">
+                <h2>🚀 Become a Seller on Drozioo</h2>
+                <p style="margin:12px 0;">Connect with our manager to start selling instantly</p>
+                <button id="contactManagerBtn" style="background:#0f172a;">📧 Contact Manager</button>
+                <hr>
+                <h3>🔐 Seller / Admin Access</h3>
+                <div class="form-group"><label>Seller Password</label><input id="sellerPassLogin" type="password" placeholder="Enter seller password"></div>
+                <button id="sellerLoginActionBtn">👨‍💼 Go to Seller Panel</button>
+                <div class="form-group" style="margin-top:16px;"><label>Admin Password</label><input id="adminPassLogin" type="password" placeholder="Enter admin password"></div>
+                <button id="adminLoginActionBtn">👑 Admin Panel</button>
+                <hr>
+                <button id="firstTimeSetupBtn" style="background:#f97316;">🔑 First Time? Set Seller & Admin Passwords</button>
+                <button id="backHomeFromBecome" class="btn-secondary" style="margin-top:18px;">🏠 Back to Home</button>
             </div>
         `;
         appDiv.innerHTML = html;
-        document.getElementById("contactManagerBtn").addEventListener("click", ()=>{
-            window.location.href = "mailto:gotmprajapat00@gmail.com?subject=Interested to sell on Drozioo";
+        document.getElementById("contactManagerBtn").addEventListener("click", () => { window.location.href = "mailto:gotmprajapat00@gmail.com?subject=Interested to sell on Drozioo"; });
+        document.getElementById("sellerLoginActionBtn").addEventListener("click", async () => {
+            const pwd = document.getElementById("sellerPassLogin").value;
+            const doc = await db.collection("passwords").doc("master").get();
+            if(doc.exists && doc.data().sellerPassword === pwd) { currentView = "sellerPanel"; render(); }
+            else showToast("❌ Wrong seller password");
         });
-        document.getElementById("sellerLoginBtn").addEventListener("click", async ()=>{
-            const pwd = document.getElementById("sellerPasswordInput").value;
-            const passDoc = await db.collection("passwords").doc("master").get();
-            if(passDoc.exists && passDoc.data().sellerPassword === pwd) {
-                currentView = "sellerPanel";
-                render();
-            } else alert("Wrong seller password");
+        document.getElementById("adminLoginActionBtn").addEventListener("click", async () => {
+            const pwd = document.getElementById("adminPassLogin").value;
+            const doc = await db.collection("passwords").doc("master").get();
+            if(doc.exists && doc.data().adminPassword === pwd) { currentView = "adminPanel"; render(); }
+            else showToast("❌ Wrong admin password");
         });
-        document.getElementById("adminLoginBtn").addEventListener("click", async ()=>{
-            const pwd = document.getElementById("adminPasswordInput").value;
-            const passDoc = await db.collection("passwords").doc("master").get();
-            if(passDoc.exists && passDoc.data().adminPassword === pwd) {
-                currentView = "adminPanel";
-                render();
-            } else alert("Wrong admin password");
+        document.getElementById("firstTimeSetupBtn").addEventListener("click", async () => {
+            const sellerPwd = prompt("Set SELLER password:");
+            const adminPwd = prompt("Set ADMIN password:");
+            if(sellerPwd && adminPwd) {
+                await db.collection("passwords").doc("master").set({ sellerPassword: sellerPwd, adminPassword: adminPwd, setup_done: true });
+                showToast("✅ Passwords saved! Now you can login.");
+            } else alert("Both passwords required");
         });
-        document.getElementById("setupPasswordsBtn").addEventListener("click", async ()=>{
-            const seller = prompt("Set Seller Password:");
-            const admin = prompt("Set Admin Password:");
-            if(seller && admin) {
-                await db.collection("passwords").doc("master").set({ sellerPassword: seller, adminPassword: admin, setup_done: true });
-                alert("Passwords saved!");
-            }
-        });
-        document.getElementById("backHomeBtnBecome").addEventListener("click", ()=>{ currentView="home"; render(); });
-        attachMenuEvents();
+        document.getElementById("backHomeFromBecome").addEventListener("click", () => { currentView = "home"; render(); });
+        attachMenuEvents(); attachSearchEvent();
     }
 
-    function renderCategoriesView() {
-        fetchProducts(true, null);
-        currentView = "home";
-        render();
-    }
-
-    async function checkSellerPasswordExists() {
+    async function checkPasswordExists(type) {
         const doc = await db.collection("passwords").doc("master").get();
-        if(doc.exists && doc.data().sellerPassword) return { exists: true };
-        return { exists: false };
-    }
-    async function checkAdminPasswordExists() {
-        const doc = await db.collection("passwords").doc("master").get();
-        if(doc.exists && doc.data().adminPassword) return { exists: true };
-        return { exists: false };
+        if(doc.exists && doc.data()[type]) return true;
+        return false;
     }
 
+    // ======================= UTILITIES =======================
     function getTopBarHtml() {
         return `
             <div class="top-bar">
                 <div class="logo">Drozioo</div>
-                <div class="search-container"><input type="text" id="searchInput" placeholder="Search products..."></div>
+                <div class="search-container"><input type="text" id="globalSearchInput" placeholder="🔍 Search products..."></div>
                 <div class="menu-icon" id="menuToggleBtn"><i class="fas fa-ellipsis-v"></i></div>
             </div>
         `;
     }
-    function attachMenuEvents() {
-        const menuBtn = document.getElementById("menuToggleBtn");
-        if(menuBtn) menuBtn.addEventListener("click", showMenuModal);
-        const searchInput = document.getElementById("searchInput");
-        if(searchInput) {
-            searchInput.addEventListener("input", (e) => {
-                const term = e.target.value.toLowerCase();
-                const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
-                const grid = document.getElementById("productsGrid");
-                if(grid && currentView === "home") {
-                    let html = '';
-                    filtered.forEach(prod => {
-                        const disc = prod.originalPrice ? Math.round(((prod.originalPrice - prod.price)/prod.originalPrice)*100) : 0;
-                        html += `<div class="product-card" data-id="${prod.id}"><img class="product-img" src="${prod.images?.[0]||'https://via.placeholder.com/300'}"><div class="product-info"><div class="product-name">${escapeHtml(prod.name)}</div><div class="price-row"><span class="current-price">₹${prod.price}</span>${disc>0?`<span class="discount-badge">${disc}%</span>`:''}</div></div></div>`;
-                    });
-                    if(filtered.length===0) html='<div style="grid-column:1/-1; text-align:center;">No products</div>';
-                    grid.innerHTML = html;
-                    document.querySelectorAll('.product-card').forEach(card=>{
-                        const id = card.getAttribute('data-id');
-                        card.addEventListener('click',()=>{
-                            selectedProduct = allProducts.find(p=>p.id===id);
-                            if(selectedProduct){ currentView="productDetail"; render();}
-                        });
-                    });
+
+    function attachSearchEvent() {
+        const searchField = document.getElementById("globalSearchInput");
+        if (searchField) {
+            searchField.value = currentSearchTerm;
+            searchField.addEventListener("input", (e) => {
+                currentSearchTerm = e.target.value;
+                if (currentView === "home") {
+                    applySearchFilter();
+                    renderHomePage();
                 }
             });
         }
     }
-    function showMenuModal() {
-        const menuDiv = document.createElement("div");
-        menuDiv.className = "modal-overlay active";
-        menuDiv.innerHTML = `<div class="modal-content" style="max-width:300px;"><span class="close-modal">&times;</span><div style="display:flex; flex-direction:column; gap:12px;"><button id="menuCategories">Categories</button><button id="menuAbout">About Us</button><button id="menuBecomeSeller">Become a Seller</button><button id="menuSellerLogin">Seller Login</button><button id="menuAdminLogin">Admin Login</button></div></div>`;
-        document.body.appendChild(menuDiv);
-        const close = () => menuDiv.remove();
-        menuDiv.querySelector(".close-modal").addEventListener("click", close);
-        menuDiv.querySelector("#menuCategories").addEventListener("click", () => { close(); fetchProducts(true, null); currentView="home"; render(); });
-        menuDiv.querySelector("#menuAbout").addEventListener("click", () => { alert("Drozioo - Best online shopping experience."); close(); });
-        menuDiv.querySelector("#menuBecomeSeller").addEventListener("click", () => { close(); currentView="becomeSeller"; render(); });
-        menuDiv.querySelector("#menuSellerLogin").addEventListener("click", async () => { close(); currentView="becomeSeller"; render(); });
-        menuDiv.querySelector("#menuAdminLogin").addEventListener("click", async () => { close(); currentView="becomeSeller"; render(); });
+
+    function attachMenuEvents() {
+        const menuBtn = document.getElementById("menuToggleBtn");
+        if (menuBtn) menuBtn.addEventListener("click", showGlobalMenu);
     }
 
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
+    function showGlobalMenu() {
+        const modal = document.createElement("div");
+        modal.className = "modal-overlay active";
+        modal.innerHTML = `<div class="modal-content" style="max-width:300px;"><span class="close-modal">&times;</span><div style="display:flex; flex-direction:column; gap:12px;"><button id="menuCategoriesBtn">📂 Categories</button><button id="menuAboutBtn">ℹ️ About Us</button><button id="menuBecomeSellerBtn">🤝 Become a Seller</button><button id="menuSellerLoginBtn">🔐 Seller Login</button><button id="menuAdminLoginBtn">👑 Admin Login</button></div></div>`;
+        document.body.appendChild(modal);
+        const close = () => modal.remove();
+        modal.querySelector(".close-modal").addEventListener("click", close);
+        modal.querySelector("#menuCategoriesBtn").addEventListener("click", () => { close(); fetchProducts(true, null, ""); currentView = "home"; render(); });
+        modal.querySelector("#menuAboutBtn").addEventListener("click", () => { close(); alert("Drozioo — Trusted online shopping destination. Quality products, best prices!"); });
+        modal.querySelector("#menuBecomeSellerBtn").addEventListener("click", () => { close(); currentView = "becomeSeller"; render(); });
+        modal.querySelector("#menuSellerLoginBtn").addEventListener("click", () => { close(); currentView = "becomeSeller"; render(); });
+        modal.querySelector("#menuAdminLoginBtn").addEventListener("click", () => { close(); currentView = "becomeSeller"; render(); });
+    }
 
-    // init
-    fetchProducts(true, null);
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    const appDiv = document.getElementById("app");
+    // initial load
+    fetchProducts(true, null, "");
 </script>
 </body>
 </html>
