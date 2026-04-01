@@ -56,7 +56,6 @@
             background: #f8fafc;
             font-size: 0.9rem;
             outline: none;
-            transition: all 0.2s;
         }
         .search-container input:focus {
             border-color: #4ecdc4;
@@ -120,9 +119,8 @@
             text-align: center;
         }
         .side-menu-item:hover {
-            background: #4ecdc4;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
             color: white;
-            transform: translateX(-5px);
         }
         .close-side-menu {
             position: absolute;
@@ -173,7 +171,6 @@
             cursor: pointer;
             transition: all 0.2s;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         .category-chip.active, .category-chip:hover {
             background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
@@ -359,6 +356,22 @@
             justify-content: space-between;
             align-items: center;
         }
+        .login-container {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
         @media (max-width: 480px) {
             .logo { font-size: 1.4rem; }
         }
@@ -391,6 +404,7 @@
     let selectedProduct = null;
     let activeCategory = null;
     let searchTerm = "";
+    let currentUserType = null; // 'seller' or 'admin'
 
     // Render Function
     const appDiv = document.getElementById("app");
@@ -400,7 +414,8 @@
         else if (currentView === "productDetail") renderProductDetail();
         else if (currentView === "sellerPanel") renderSellerPanel();
         else if (currentView === "adminPanel") renderAdminPanel();
-        else if (currentView === "becomeSeller") renderBecomeSeller();
+        else if (currentView === "sellerLogin") renderSellerLogin();
+        else if (currentView === "adminLogin") renderAdminLogin();
     }
 
     // Fetch Products
@@ -525,7 +540,7 @@
             ${getTopBar()}
             <div style="padding: 16px;">
                 <div class="back-link" id="backHome"><i class="fas fa-arrow-left"></i> Back</div>
-                <img src="${p.images?.[0] || 'https://picsum.photos/id/1/400/400'}" style="width:100%; border-radius:24px; margin:12px 0;">
+                <img id="mainImg" src="${p.images?.[0] || 'https://picsum.photos/id/1/400/400'}" style="width:100%; border-radius:24px; margin:12px 0;">
                 <div style="display:flex; gap:8px; overflow-x:auto;">
                     ${p.images?.map(img => `<img src="${img}" style="width:70px; height:70px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="document.getElementById('mainImg').src='${img}'">`).join('') || ''}
                 </div>
@@ -589,22 +604,149 @@
         container.innerHTML = html;
     }
     
-    // Seller Panel with Image Upload (Choose files)
+    // Seller Login Page
+    function renderSellerLogin() {
+        const html = `
+            ${getTopBar()}
+            <div class="login-container">
+                <h2>🔐 Seller Login</h2>
+                <div class="form-group">
+                    <label>Enter Seller Password</label>
+                    <input type="password" id="sellerPassword" placeholder="Enter your password">
+                </div>
+                <button id="loginSellerBtn">Login</button>
+                <button id="backHomeLogin" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
+            </div>
+        `;
+        appDiv.innerHTML = html;
+        
+        document.getElementById("loginSellerBtn").addEventListener("click", async () => {
+            const pwd = document.getElementById("sellerPassword").value;
+            const doc = await db.collection("passwords").doc("master").get();
+            
+            if (!doc.exists) {
+                // First time - set seller password
+                const newPwd = prompt("No password found! Set your Seller Password (first time):");
+                if (newPwd) {
+                    await db.collection("passwords").doc("master").set({
+                        sellerPassword: newPwd,
+                        adminPassword: null,
+                        setup_done: true
+                    });
+                    alert("Seller Password saved! Now login with your password.");
+                    document.getElementById("sellerPassword").value = "";
+                }
+            } else {
+                // Check password
+                if (doc.data().sellerPassword === pwd) {
+                    currentUserType = "seller";
+                    currentView = "sellerPanel";
+                    render();
+                } else {
+                    alert("❌ Wrong password! Please try again.");
+                }
+            }
+        });
+        
+        document.getElementById("backHomeLogin").addEventListener("click", () => {
+            currentView = "home";
+            render();
+        });
+        
+        attachMenuEvents();
+        attachSearch();
+    }
+    
+    // Admin Login Page
+    function renderAdminLogin() {
+        const html = `
+            ${getTopBar()}
+            <div class="login-container">
+                <h2>👑 Admin Login</h2>
+                <div class="form-group">
+                    <label>Enter Admin Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter your password">
+                </div>
+                <button id="loginAdminBtn">Login</button>
+                <button id="backHomeAdmin" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
+            </div>
+        `;
+        appDiv.innerHTML = html;
+        
+        document.getElementById("loginAdminBtn").addEventListener("click", async () => {
+            const pwd = document.getElementById("adminPassword").value;
+            const doc = await db.collection("passwords").doc("master").get();
+            
+            if (!doc.exists) {
+                // First time - set admin password
+                const newPwd = prompt("No password found! Set your Admin Password (first time):");
+                if (newPwd) {
+                    await db.collection("passwords").doc("master").set({
+                        sellerPassword: null,
+                        adminPassword: newPwd,
+                        setup_done: true
+                    });
+                    alert("Admin Password saved! Now login with your password.");
+                    document.getElementById("adminPassword").value = "";
+                }
+            } else {
+                // Check password
+                if (doc.data().adminPassword === pwd) {
+                    currentUserType = "admin";
+                    currentView = "adminPanel";
+                    render();
+                } else {
+                    alert("❌ Wrong password! Please try again.");
+                }
+            }
+        });
+        
+        document.getElementById("backHomeAdmin").addEventListener("click", () => {
+            currentView = "home";
+            render();
+        });
+        
+        attachMenuEvents();
+        attachSearch();
+    }
+    
+    // Seller Panel with Image Upload from Gallery
     function renderSellerPanel() {
         const html = `
             ${getTopBar()}
             <div style="padding:20px;">
-                <h2>Seller Panel - Add Product</h2>
-                <div class="form-group"><label>Product Name *</label><input id="prodName" placeholder="Product name"></div>
-                <div class="form-group"><label>Price (₹) *</label><input id="prodPrice" type="number" placeholder="Selling price"></div>
-                <div class="form-group"><label>Original Price</label><input id="prodOrigPrice" type="number" placeholder="MRP"></div>
-                <div class="form-group"><label>Description</label><textarea id="prodDesc" rows="3"></textarea></div>
-                <div class="form-group"><label>Category *</label><input id="prodCategory" placeholder="e.g., Electronics, Fashion"></div>
-                <div class="form-group"><label>WhatsApp Number *</label><input id="prodWhatsapp" placeholder="+919876543210"></div>
-                <div class="form-group"><label>Upload Images (2-3 photos)</label><input type="file" id="imageFiles" accept="image/*" multiple></div>
+                <h2>🛍️ Seller Panel - Add New Product</h2>
+                <div class="form-group">
+                    <label>Product Name *</label>
+                    <input id="prodName" placeholder="Enter product name">
+                </div>
+                <div class="form-group">
+                    <label>Selling Price (₹) *</label>
+                    <input id="prodPrice" type="number" placeholder="Enter selling price">
+                </div>
+                <div class="form-group">
+                    <label>Original Price (MRP)</label>
+                    <input id="prodOrigPrice" type="number" placeholder="Enter MRP">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="prodDesc" rows="3" placeholder="Product description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category *</label>
+                    <input id="prodCategory" placeholder="e.g., Electronics, Fashion, Home">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp Number *</label>
+                    <input id="prodWhatsapp" placeholder="+919876543210">
+                </div>
+                <div class="form-group">
+                    <label>Upload Product Images (2-3 photos from gallery)</label>
+                    <input type="file" id="imageFiles" accept="image/*" multiple>
+                </div>
                 <div id="imagePreview" class="image-preview"></div>
-                <button id="submitProductBtn">Publish Product</button>
-                <button id="backHomeBtn" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
+                <button id="submitProductBtn">📤 Publish Product</button>
+                <button id="logoutSellerBtn" style="margin-top:12px; background:#dc2626;">🚪 Logout</button>
             </div>
         `;
         appDiv.innerHTML = html;
@@ -615,6 +757,10 @@
             selectedImages = [];
             const preview = document.getElementById("imagePreview");
             preview.innerHTML = "";
+            if (files.length > 3) {
+                alert("You can upload maximum 3 images");
+                return;
+            }
             files.forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(ev) {
@@ -637,24 +783,40 @@
             const whatsapp = document.getElementById("prodWhatsapp").value.trim();
             
             if (!name || !price || !category || !whatsapp) {
-                alert("Please fill all required fields");
+                alert("Please fill all required fields!");
                 return;
             }
             
-            let images = selectedImages.length ? selectedImages : ["https://picsum.photos/id/1/300/300"];
+            if (selectedImages.length === 0) {
+                alert("Please upload at least 1 product image");
+                return;
+            }
+            
+            let images = selectedImages;
             
             await db.collection("products").add({
                 name, price, originalPrice, description: desc, category, whatsapp, images,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             
-            alert("Product added successfully!");
-            currentView = "home";
+            alert("✅ Product added successfully!");
+            
+            // Clear form
+            document.getElementById("prodName").value = "";
+            document.getElementById("prodPrice").value = "";
+            document.getElementById("prodOrigPrice").value = "";
+            document.getElementById("prodDesc").value = "";
+            document.getElementById("prodCategory").value = "";
+            document.getElementById("prodWhatsapp").value = "";
+            document.getElementById("imageFiles").value = "";
+            document.getElementById("imagePreview").innerHTML = "";
+            selectedImages = [];
+            
             fetchProducts(true);
-            render();
         });
         
-        document.getElementById("backHomeBtn").addEventListener("click", () => {
+        document.getElementById("logoutSellerBtn").addEventListener("click", () => {
+            currentUserType = null;
             currentView = "home";
             render();
         });
@@ -669,28 +831,35 @@
         let products = [];
         snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
         
-        let listHtml = `<h2>Admin Panel - Manage Products</h2>`;
+        let listHtml = `<h2>⚙️ Admin Panel - Manage Products</h2>`;
+        if (products.length === 0) {
+            listHtml += `<p style="text-align:center; padding:40px;">No products found</p>`;
+        }
         products.forEach(prod => {
             listHtml += `
                 <div class="product-list-item">
-                    <div><strong>${escapeHtml(prod.name)}</strong><br>₹${prod.price}</div>
                     <div>
-                        <button class="editBtn" data-id="${prod.id}" style="width:auto; padding:6px 12px; margin-right:6px;">Edit</button>
-                        <button class="deleteBtn" data-id="${prod.id}" style="background:#dc2626; width:auto;">Delete</button>
+                        <strong>${escapeHtml(prod.name)}</strong><br>
+                        <small>₹${prod.price} | ${prod.category || 'Uncategorized'}</small>
+                    </div>
+                    <div>
+                        <button class="editBtn" data-id="${prod.id}" style="width:auto; padding:6px 12px; margin-right:6px;">✏️ Edit</button>
+                        <button class="deleteBtn" data-id="${prod.id}" style="background:#dc2626; width:auto;">🗑️ Delete</button>
                     </div>
                 </div>
             `;
         });
-        listHtml += `<button id="adminBackHome" style="margin-top:20px;">Back to Home</button>`;
+        listHtml += `<button id="logoutAdminBtn" style="margin-top:20px; background:#dc2626;">🚪 Logout</button>`;
         
         const html = `${getTopBar()}<div style="padding:20px;">${listHtml}</div>`;
         appDiv.innerHTML = html;
         
         document.querySelectorAll(".deleteBtn").forEach(btn => {
             btn.addEventListener("click", async () => {
-                if (confirm("Delete this product?")) {
+                if (confirm("Delete this product permanently?")) {
                     await db.collection("products").doc(btn.getAttribute("data-id")).delete();
                     renderAdminPanel();
+                    fetchProducts(true);
                 }
             });
         });
@@ -703,7 +872,8 @@
             });
         });
         
-        document.getElementById("adminBackHome").addEventListener("click", () => {
+        document.getElementById("logoutAdminBtn").addEventListener("click", () => {
+            currentUserType = null;
             currentView = "home";
             render();
         });
@@ -718,14 +888,32 @@
         modal.innerHTML = `
             <div class="modal-content">
                 <span class="close-modal">&times;</span>
-                <h3>Edit Product</h3>
-                <div class="form-group"><label>Name</label><input id="editName" value="${escapeHtml(data.name)}"></div>
-                <div class="form-group"><label>Price</label><input id="editPrice" value="${data.price}"></div>
-                <div class="form-group"><label>Original Price</label><input id="editOrigPrice" value="${data.originalPrice || ''}"></div>
-                <div class="form-group"><label>Description</label><textarea id="editDesc">${escapeHtml(data.description || '')}</textarea></div>
-                <div class="form-group"><label>Category</label><input id="editCat" value="${data.category || ''}"></div>
-                <div class="form-group"><label>WhatsApp</label><input id="editWhatsapp" value="${data.whatsapp || ''}"></div>
-                <button id="saveEdit">Save Changes</button>
+                <h3>✏️ Edit Product</h3>
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input id="editName" value="${escapeHtml(data.name)}">
+                </div>
+                <div class="form-group">
+                    <label>Selling Price</label>
+                    <input id="editPrice" value="${data.price}">
+                </div>
+                <div class="form-group">
+                    <label>Original Price</label>
+                    <input id="editOrigPrice" value="${data.originalPrice || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="editDesc">${escapeHtml(data.description || '')}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input id="editCat" value="${data.category || ''}">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp Number</label>
+                    <input id="editWhatsapp" value="${data.whatsapp || ''}">
+                </div>
+                <button id="saveEdit">💾 Save Changes</button>
             </div>
         `;
         document.body.appendChild(modal);
@@ -743,70 +931,12 @@
             await db.collection("products").doc(id).update(updated);
             modal.remove();
             renderAdminPanel();
+            fetchProducts(true);
+            alert("Product updated!");
         });
     }
     
-    // Become Seller with simple password
-    async function renderBecomeSeller() {
-        const html = `
-            ${getTopBar()}
-            <div style="padding:24px;">
-                <h2>Become a Seller</h2>
-                <p style="margin:12px 0;">Connect with our manager to start selling</p>
-                <button id="contactManager">Contact Manager</button>
-                <hr>
-                <h3>Seller / Admin Login</h3>
-                <div class="form-group"><label>Enter Password</label><input id="loginPassword" type="password" placeholder="Enter password"></div>
-                <button id="continueLogin">Continue</button>
-                <button id="backHomeFromSeller" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
-            </div>
-        `;
-        appDiv.innerHTML = html;
-        
-        document.getElementById("contactManager").addEventListener("click", () => {
-            window.location.href = "mailto:gotmprajapat00@gmail.com";
-        });
-        
-        document.getElementById("continueLogin").addEventListener("click", async () => {
-            const pwd = document.getElementById("loginPassword").value;
-            const doc = await db.collection("passwords").doc("master").get();
-            
-            if (!doc.exists) {
-                // First time - set password
-                const sellerPwd = prompt("Set Seller Password (first time):");
-                const adminPwd = prompt("Set Admin Password (first time):");
-                if (sellerPwd && adminPwd) {
-                    await db.collection("passwords").doc("master").set({
-                        sellerPassword: sellerPwd,
-                        adminPassword: adminPwd,
-                        setup_done: true
-                    });
-                    alert("Passwords saved! Now login with your password.");
-                }
-            } else {
-                // Check if seller or admin
-                if (pwd === doc.data().sellerPassword) {
-                    currentView = "sellerPanel";
-                    render();
-                } else if (pwd === doc.data().adminPassword) {
-                    currentView = "adminPanel";
-                    render();
-                } else {
-                    alert("Wrong password!");
-                }
-            }
-        });
-        
-        document.getElementById("backHomeFromSeller").addEventListener("click", () => {
-            currentView = "home";
-            render();
-        });
-        
-        attachMenuEvents();
-        attachSearch();
-    }
-    
-    // Side Menu (3 lines)
+    // Side Menu
     function showSideMenu() {
         let overlay = document.getElementById("sideOverlay");
         let menu = document.getElementById("sideMenu");
@@ -823,7 +953,6 @@
                 <span class="close-side-menu">&times;</span>
                 <div class="side-menu-item" data-action="categories">📂 Categories</div>
                 <div class="side-menu-item" data-action="about">ℹ️ About Us</div>
-                <div class="side-menu-item" data-action="seller">🤝 Become a Seller</div>
                 <div class="side-menu-item" data-action="sellerLogin">🔐 Seller Login</div>
                 <div class="side-menu-item" data-action="adminLogin">👑 Admin Login</div>
             `;
@@ -840,7 +969,7 @@
             });
             
             document.querySelectorAll(".side-menu-item").forEach(item => {
-                item.addEventListener("click", async () => {
+                item.addEventListener("click", () => {
                     const action = item.getAttribute("data-action");
                     menu.classList.remove("open");
                     overlay.classList.remove("active");
@@ -850,15 +979,12 @@
                         currentView = "home";
                         render();
                     } else if (action === "about") {
-                        alert("Drozioo - Your trusted online shopping destination. Quality products at best prices!");
-                    } else if (action === "seller") {
-                        currentView = "becomeSeller";
-                        render();
+                        alert("✨ Drozioo - Your trusted online shopping destination! Quality products at best prices with fast delivery. ✨");
                     } else if (action === "sellerLogin") {
-                        currentView = "becomeSeller";
+                        currentView = "sellerLogin";
                         render();
                     } else if (action === "adminLogin") {
-                        currentView = "becomeSeller";
+                        currentView = "adminLogin";
                         render();
                     }
                 });
@@ -873,7 +999,7 @@
         return `
             <div class="top-bar">
                 <div class="logo">Drozioo</div>
-                <div class="search-container"><input type="text" id="searchInput" placeholder="Search products..."></div>
+                <div class="search-container"><input type="text" id="searchInput" placeholder="🔍 Search products..."></div>
                 <div class="menu-icon" id="menuBtn"><i class="fas fa-bars"></i></div>
             </div>
         `;
