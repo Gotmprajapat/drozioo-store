@@ -1,995 +1,199 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Drozioo - Modern eCommerce</title>
-    <!-- Font Awesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+  <title>Drozioo Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background: #f8fafc;
-            color: #0f172a;
-        }
-
-        .top-bar {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            z-index: 1000;
-        }
-        .logo {
-            font-size: 1.7rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .search-container {
-            flex: 1;
-            max-width: 400px;
-        }
-        .search-container input {
-            width: 100%;
-            padding: 10px 16px;
-            border-radius: 40px;
-            border: 1.5px solid #e2e8f0;
-            background: #f8fafc;
-            font-size: 0.9rem;
-            outline: none;
-        }
-        .search-container input:focus {
-            border-color: #4ecdc4;
-        }
-        .menu-icon {
-            font-size: 1.5rem;
-            cursor: pointer;
-            background: #f1f5f9;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-        }
-
-        /* Side Menu */
-        .side-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 280px;
-            height: 100%;
-            background: white;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
-            z-index: 2000;
-            transition: right 0.3s ease;
-            padding: 70px 20px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .side-menu.open {
-            right: 0;
-        }
-        .side-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1999;
-            display: none;
-        }
-        .side-menu-overlay.active {
-            display: block;
-        }
-        .side-menu-item {
-            padding: 14px 16px;
-            background: #f8fafc;
-            border-radius: 16px;
-            cursor: pointer;
-            font-weight: 500;
-            text-align: center;
-            transition: 0.2s;
-        }
-        .side-menu-item:hover {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-        }
-        .close-side-menu {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 1.8rem;
-            cursor: pointer;
-        }
-
-        .banner {
-            margin: 16px;
-            border-radius: 24px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-        }
-        .banner-content {
-            padding: 40px 20px;
-            text-align: center;
-            color: white;
-        }
-        .banner-content h1 {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-
-        .categories-scroll {
-            padding: 0 16px 12px;
-            overflow-x: auto;
-            white-space: nowrap;
-            display: flex;
-            gap: 10px;
-        }
-        .category-chip {
-            background: white;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid #e2e8f0;
-        }
-        .category-chip.active, .category-chip:hover {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            padding: 8px 16px 24px;
-        }
-        .product-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-        }
-        .product-img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-        }
-        .product-info {
-            padding: 12px;
-        }
-        .product-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-        }
-        .price-row {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-        }
-        .current-price {
-            font-weight: 700;
-            color: #ff6b6b;
-            font-size: 1.1rem;
-        }
-        .old-price {
-            font-size: 0.7rem;
-            color: #94a3b8;
-            text-decoration: line-through;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 3000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.2s;
-        }
-        .modal-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 500px;
-            max-height: 85vh;
-            overflow-y: auto;
-            border-radius: 28px;
-            padding: 24px;
-            position: relative;
-        }
-        .close-modal {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 16px;
-            font-size: 0.9rem;
-        }
-        button {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1rem;
-        }
-        .image-preview {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        .preview-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 2px solid #4ecdc4;
-        }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 12px 16px;
-            color: #4ecdc4;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .review-item {
-            background: #f8fafc;
-            padding: 12px;
-            border-radius: 16px;
-            margin-top: 10px;
-            border-left: 3px solid #4ecdc4;
-        }
-        .product-list-item {
-            background: #f8fafc;
-            padding: 12px;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .login-box {
-            max-width: 400px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 28px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .login-box h2 {
-            text-align: center;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .load-more {
-            text-align: center;
-            padding: 20px;
-            color: #94a3b8;
-        }
-    </style>
+  <style>
+    body { margin:0; font-family: Arial; background:#f1f1f1; }
+    header { background:#000; color:#fff; padding:12px; text-align:center; }
+    input, button { padding:10px; margin:5px; border-radius:6px; border:none; }
+    .container { padding:10px; }
+    .product { background:#fff; padding:10px; margin:10px 0; border-radius:10px; }
+    img { width:100%; border-radius:10px; }
+    .hidden { display:none; }
+  </style>
 </head>
+
 <body>
-<div id="app"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script>
-    // Firebase Config
-    const firebaseConfig = {
-        apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
-        authDomain: "drozioostore.firebaseapp.com",
-        projectId: "drozioostore",
-        storageBucket: "drozioostore.firebasestorage.app",
-        messagingSenderId: "930907642567",
-        appId: "1:930907642567:web:460334236bea24d3b1bce2"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+<header>
+  <h2>Drozioo</h2>
+  <input type="text" id="search" placeholder="Search..." onkeyup="searchProduct()">
+</header>
 
-    // App State
-    let allProducts = [];
-    let lastVisible = null;
-    let loading = false;
-    let hasMore = true;
-    let currentView = "home";
-    let selectedProduct = null;
-    let activeCategory = null;
-    let searchTerm = "";
+<div class="container">
 
-    const appDiv = document.getElementById("app");
+  <div id="products"></div>
 
-    function render() {
-        if (currentView === "home") renderHome();
-        else if (currentView === "productDetail") renderProductDetail();
-        else if (currentView === "sellerPanel") renderSellerPanel();
-        else if (currentView === "adminPanel") renderAdminPanel();
-        else if (currentView === "sellerLogin") renderSellerLogin();
-        else if (currentView === "adminLogin") renderAdminLogin();
-    }
+  <!-- SELLER -->
+  <h3>Seller Panel</h3>
+  <input id="sellerPassSet" placeholder="Set Seller Password">
+  <button onclick="setPassword('seller')">Set Seller</button>
 
-    // Fetch Products
-    async function fetchProducts(reset = true, category = null) {
-        if (reset) {
-            allProducts = [];
-            lastVisible = null;
-            hasMore = true;
-            activeCategory = category;
-        }
-        if (loading || !hasMore) return;
-        loading = true;
+  <input id="sellerLogin" placeholder="Seller Login">
+  <button onclick="login('seller')">Login</button>
 
-        try {
-            let query = db.collection("products").orderBy("createdAt", "desc").limit(10);
-            if (lastVisible) query = query.startAfter(lastVisible);
-            if (category && category !== "all") {
-                query = db.collection("products").where("category", "==", category).orderBy("createdAt", "desc").limit(10);
-                if (lastVisible) query = query.startAfter(lastVisible);
-            }
-            const snapshot = await query.get();
-            const newProducts = [];
-            snapshot.forEach(doc => newProducts.push({ id: doc.id, ...doc.data() }));
-            if (newProducts.length < 10) hasMore = false;
-            if (snapshot.docs.length > 0) lastVisible = snapshot.docs[snapshot.docs.length - 1];
-            if (reset) allProducts = newProducts;
-            else allProducts = [...allProducts, ...newProducts];
-            if (currentView === "home") renderHome();
-        } catch (err) {
-            console.error(err);
-        }
-        loading = false;
-    }
+  <div id="sellerPanel" class="hidden">
+    <h4>Add Product</h4>
+    <input id="pname" placeholder="Name">
+    <input id="pprice" placeholder="Price">
+    <input id="pimg" placeholder="Image URL">
+    <textarea id="pdesc" placeholder="Description"></textarea>
+    <button onclick="addProduct()">Add</button>
+  </div>
 
-    // Home Page
-    function renderHome() {
-        let categories = new Set();
-        allProducts.forEach(p => { if (p.category) categories.add(p.category); });
-        
-        let filtered = allProducts.filter(p => 
-            !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+  <!-- ADMIN -->
+  <h3>Admin Panel</h3>
+  <input id="adminPassSet" placeholder="Set Admin Password">
+  <button onclick="setPassword('admin')">Set Admin</button>
 
-        let catsHtml = `<div class="categories-scroll">
-            <span class="category-chip ${!activeCategory ? 'active' : ''}" data-cat="all">All</span>`;
-        categories.forEach(cat => {
-            catsHtml += `<span class="category-chip ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}">${cat}</span>`;
-        });
-        catsHtml += `</div>`;
+  <input id="adminLogin" placeholder="Admin Login">
+  <button onclick="login('admin')">Login</button>
 
-        let productsHtml = `<div class="products-grid">`;
-        if (filtered.length === 0) {
-            productsHtml += `<div style="grid-column:1/-1; text-align:center; padding:40px;">No products found</div>`;
-        }
-        filtered.forEach(prod => {
-            let discount = prod.originalPrice && prod.originalPrice > prod.price ? 
-                Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100) : 0;
-            productsHtml += `
-                <div class="product-card" data-id="${prod.id}">
-                    <img class="product-img" src="${prod.images?.[0] || 'https://picsum.photos/id/1/300/300'}" onerror="this.src='https://picsum.photos/id/1/300/300'">
-                    <div class="product-info">
-                        <div class="product-name">${escapeHtml(prod.name)}</div>
-                        <div class="price-row">
-                            <span class="current-price">₹${prod.price}</span>
-                            ${prod.originalPrice ? `<span class="old-price">₹${prod.originalPrice}</span>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-        productsHtml += `</div>`;
-        if (hasMore) productsHtml += `<div id="load-more-trigger" class="load-more">⬇️ Scroll for more</div>`;
+</div>
 
-        const topBar = getTopBar();
-        const banner = `<div class="banner"><div class="banner-content"><h1>✨ Drozioo ✨</h1><p>Shop the best deals online</p></div></div>`;
+<script type="module">
 
-        appDiv.innerHTML = topBar + banner + catsHtml + productsHtml;
-        
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const id = card.getAttribute('data-id');
-                selectedProduct = allProducts.find(p => p.id === id);
-                if (selectedProduct) {
-                    currentView = "productDetail";
-                    render();
-                }
-            });
-        });
-        
-        document.querySelectorAll('.category-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-                const cat = chip.getAttribute('data-cat');
-                activeCategory = cat === 'all' ? null : cat;
-                fetchProducts(true, activeCategory);
-            });
-        });
-        
-        const trigger = document.getElementById("load-more-trigger");
-        if (trigger) {
-            const observer = new IntersectionObserver(entries => {
-                if (entries[0].isIntersecting && hasMore && !loading) {
-                    fetchProducts(false, activeCategory);
-                }
-            });
-            observer.observe(trigger);
-        }
-        
-        attachMenuEvents();
-        attachSearch();
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, set, get, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
+  authDomain: "drozioostore.firebaseapp.com",
+  databaseURL: "https://drozioostore-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "drozioostore"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+let isAdmin = false;
+
+// PASSWORD SET
+window.setPassword = async function(type){
+  let input = document.getElementById(type+"PassSet").value;
+  if(!input) return alert("Enter password");
+
+  let r = ref(db,"passwords/"+type);
+  let snap = await get(r);
+
+  if(snap.exists()){
+    alert("Already set!");
+  }else{
+    await set(r,input);
+    alert(type+" saved");
+  }
+}
+
+// LOGIN
+window.login = async function(type){
+  let input = document.getElementById(type+"Login").value;
+  let r = ref(db,"passwords/"+type);
+  let snap = await get(r);
+
+  if(!snap.exists()){
+    alert("Set password first");
+    return;
+  }
+
+  if(input === snap.val()){
+    alert("Login success");
+
+    if(type=="seller"){
+      document.getElementById("sellerPanel").classList.remove("hidden");
     }
 
-    // Product Detail
-    function renderProductDetail() {
-        if (!selectedProduct) { currentView = "home"; render(); return; }
-        const p = selectedProduct;
-        
-        const html = `
-            ${getTopBar()}
-            <div style="padding: 16px;">
-                <div class="back-link" id="backHome"><i class="fas fa-arrow-left"></i> Back</div>
-                <img id="mainImg" src="${p.images?.[0] || 'https://picsum.photos/id/1/400/400'}" style="width:100%; border-radius:24px; margin:12px 0;">
-                <div style="display:flex; gap:8px; overflow-x:auto;">
-                    ${p.images?.map(img => `<img src="${img}" style="width:70px; height:70px; object-fit:cover; border-radius:12px; cursor:pointer;" onclick="document.getElementById('mainImg').src='${img}'">`).join('') || ''}
-                </div>
-                <h2 style="margin:16px 0 8px;">${escapeHtml(p.name)}</h2>
-                <div class="price-row">
-                    <span class="current-price" style="font-size:1.5rem;">₹${p.price}</span>
-                    ${p.originalPrice ? `<span class="old-price">₹${p.originalPrice}</span>` : ''}
-                </div>
-                <p style="margin:12px 0;">${escapeHtml(p.description || 'No description')}</p>
-                <p><i class="fab fa-whatsapp"></i> Seller: ${p.whatsapp || 'Not provided'}</p>
-                <button id="orderBtn" style="margin:16px 0; background:#25D366;">📲 Order on WhatsApp</button>
-                <h3>⭐ Customer Reviews</h3>
-                <div id="reviewsContainer"></div>
-                <textarea id="reviewText" rows="2" placeholder="Write a review..." style="width:100%; margin:8px 0; border-radius:16px;"></textarea>
-                <button id="submitReview">Post Review</button>
-            </div>
-        `;
-        appDiv.innerHTML = html;
-        
-        document.getElementById("backHome").addEventListener("click", () => {
-            currentView = "home";
-            render();
-        });
-        
-        document.getElementById("orderBtn").addEventListener("click", () => {
-            const msg = `Hello, I want to order this product:%0AProduct: ${encodeURIComponent(p.name)}%0APrice: ₹${p.price}%0A%0AMy Details:%0AName:%0AAddress:%0APhone:`;
-            const num = p.whatsapp?.replace(/\D/g, '') || '91';
-            window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
-        });
-        
-        document.getElementById("submitReview").addEventListener("click", async () => {
-            const text = document.getElementById("reviewText").value.trim();
-            if (!text) return alert("Please write a review");
-            await db.collection("reviews").add({
-                productId: p.id,
-                text: text,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            document.getElementById("reviewText").value = "";
-            loadReviews(p.id);
-            alert("Review added!");
-        });
-        
-        loadReviews(p.id);
-        attachMenuEvents();
-        attachSearch();
+    if(type=="admin"){
+      isAdmin = true;
+      loadProducts();
     }
-    
-    async function loadReviews(productId) {
-        const snap = await db.collection("reviews").where("productId", "==", productId).orderBy("createdAt", "desc").get();
-        const container = document.getElementById("reviewsContainer");
-        if (!container) return;
-        if (snap.empty) {
-            container.innerHTML = "<p>No reviews yet. Be the first!</p>";
-            return;
-        }
-        let html = "";
-        snap.forEach(doc => {
-            const rev = doc.data();
-            html += `<div class="review-item"><i class="fas fa-user"></i> ${escapeHtml(rev.text)}<div style="font-size:11px; margin-top:5px;">${rev.createdAt ? new Date(rev.createdAt.toDate()).toLocaleString() : 'Now'}</div></div>`;
-        });
-        container.innerHTML = html;
-    }
-    
-    // Seller Login
-    function renderSellerLogin() {
-        const html = `
-            ${getTopBar()}
-            <div class="login-box">
-                <h2>🔐 Seller Login</h2>
-                <div class="form-group">
-                    <label>Seller Password</label>
-                    <input type="password" id="sellerPassInput" placeholder="Enter your password">
-                </div>
-                <button id="loginSellerBtn">Login</button>
-                <button id="backHomeBtn" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
-            </div>
-        `;
-        appDiv.innerHTML = html;
-        
-        document.getElementById("loginSellerBtn").addEventListener("click", async () => {
-            const enteredPwd = document.getElementById("sellerPassInput").value;
-            const doc = await db.collection("passwords").doc("master").get();
-            
-            if (!doc.exists) {
-                // First time - save password
-                if (enteredPwd) {
-                    await db.collection("passwords").doc("master").set({
-                        sellerPassword: enteredPwd,
-                        adminPassword: null
-                    });
-                    alert("✅ Password saved! You are now logged in as Seller.");
-                    currentView = "sellerPanel";
-                    render();
-                } else {
-                    alert("Please enter a password to set as Seller Password");
-                }
-            } else {
-                // Check password
-                if (doc.data().sellerPassword === enteredPwd) {
-                    currentView = "sellerPanel";
-                    render();
-                } else {
-                    alert("❌ Wrong password! Access denied.");
-                }
-            }
-        });
-        
-        document.getElementById("backHomeBtn").addEventListener("click", () => {
-            currentView = "home";
-            render();
-        });
-        
-        attachMenuEvents();
-        attachSearch();
-    }
-    
-    // Admin Login
-    function renderAdminLogin() {
-        const html = `
-            ${getTopBar()}
-            <div class="login-box">
-                <h2>👑 Admin Login</h2>
-                <div class="form-group">
-                    <label>Admin Password</label>
-                    <input type="password" id="adminPassInput" placeholder="Enter your password">
-                </div>
-                <button id="loginAdminBtn">Login</button>
-                <button id="backHomeBtn" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
-            </div>
-        `;
-        appDiv.innerHTML = html;
-        
-        document.getElementById("loginAdminBtn").addEventListener("click", async () => {
-            const enteredPwd = document.getElementById("adminPassInput").value;
-            const doc = await db.collection("passwords").doc("master").get();
-            
-            if (!doc.exists || !doc.data().adminPassword) {
-                // First time - save admin password
-                if (enteredPwd) {
-                    if (doc.exists) {
-                        await db.collection("passwords").doc("master").update({
-                            adminPassword: enteredPwd
-                        });
-                    } else {
-                        await db.collection("passwords").doc("master").set({
-                            sellerPassword: null,
-                            adminPassword: enteredPwd
-                        });
-                    }
-                    alert("✅ Admin Password saved! You are now logged in as Admin.");
-                    currentView = "adminPanel";
-                    render();
-                } else {
-                    alert("Please enter a password to set as Admin Password");
-                }
-            } else {
-                // Check password
-                if (doc.data().adminPassword === enteredPwd) {
-                    currentView = "adminPanel";
-                    render();
-                } else {
-                    alert("❌ Wrong password! Access denied.");
-                }
-            }
-        });
-        
-        document.getElementById("backHomeBtn").addEventListener("click", () => {
-            currentView = "home";
-            render();
-        });
-        
-        attachMenuEvents();
-        attachSearch();
-    }
-    
-    // Seller Panel with Image Upload
-    function renderSellerPanel() {
-        const html = `
-            ${getTopBar()}
-            <div style="padding:20px;">
-                <h2>🛍️ Seller Dashboard - Add Product</h2>
-                <div class="form-group">
-                    <label>Product Name *</label>
-                    <input id="prodName" placeholder="Enter product name">
-                </div>
-                <div class="form-group">
-                    <label>Selling Price (₹) *</label>
-                    <input id="prodPrice" type="number" placeholder="Enter price">
-                </div>
-                <div class="form-group">
-                    <label>Original Price (MRP)</label>
-                    <input id="prodOrigPrice" type="number" placeholder="MRP">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="prodDesc" rows="3" placeholder="Product description"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Category *</label>
-                    <input id="prodCategory" placeholder="e.g., Electronics, Fashion">
-                </div>
-                <div class="form-group">
-                    <label>WhatsApp Number *</label>
-                    <input id="prodWhatsapp" placeholder="+919876543210">
-                </div>
-                <div class="form-group">
-                    <label>Upload Images (2-3 photos from gallery)</label>
-                    <input type="file" id="imageFiles" accept="image/*" multiple>
-                </div>
-                <div id="imagePreview" class="image-preview"></div>
-                <button id="submitProductBtn">📤 Add Product</button>
-                <button id="logoutBtn" style="margin-top:12px; background:#dc2626;">🚪 Logout</button>
-            </div>
-        `;
-        appDiv.innerHTML = html;
-        
-        let selectedImages = [];
-        document.getElementById("imageFiles").addEventListener("change", (e) => {
-            const files = Array.from(e.target.files);
-            selectedImages = [];
-            const preview = document.getElementById("imagePreview");
-            preview.innerHTML = "";
-            
-            if (files.length > 3) {
-                alert("Maximum 3 images allowed!");
-                return;
-            }
-            
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    selectedImages.push(ev.target.result);
-                    const img = document.createElement("img");
-                    img.src = ev.target.result;
-                    img.className = "preview-img";
-                    preview.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            });
-        });
-        
-        document.getElementById("submitProductBtn").addEventListener("click", async () => {
-            const name = document.getElementById("prodName").value.trim();
-            const price = parseFloat(document.getElementById("prodPrice").value);
-            const originalPrice = parseFloat(document.getElementById("prodOrigPrice").value) || null;
-            const desc = document.getElementById("prodDesc").value;
-            const category = document.getElementById("prodCategory").value.trim();
-            const whatsapp = document.getElementById("prodWhatsapp").value.trim();
-            
-            if (!name || !price || !category || !whatsapp) {
-                alert("Please fill all required fields!");
-                return;
-            }
-            
-            if (selectedImages.length === 0) {
-                alert("Please upload at least 1 product image!");
-                return;
-            }
-            
-            await db.collection("products").add({
-                name: name,
-                price: price,
-                originalPrice: originalPrice,
-                description: desc,
-                category: category,
-                whatsapp: whatsapp,
-                images: selectedImages,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
-            alert("✅ Product added successfully!");
-            
-            // Clear form
-            document.getElementById("prodName").value = "";
-            document.getElementById("prodPrice").value = "";
-            document.getElementById("prodOrigPrice").value = "";
-            document.getElementById("prodDesc").value = "";
-            document.getElementById("prodCategory").value = "";
-            document.getElementById("prodWhatsapp").value = "";
-            document.getElementById("imageFiles").value = "";
-            document.getElementById("imagePreview").innerHTML = "";
-            selectedImages = [];
-            
-            fetchProducts(true);
-        });
-        
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            currentView = "home";
-            render();
-        });
-        
-        attachMenuEvents();
-        attachSearch();
-    }
-    
-    // Admin Panel
-    async function renderAdminPanel() {
-        const snapshot = await db.collection("products").orderBy("createdAt", "desc").get();
-        let products = [];
-        snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
-        
-        let listHtml = `<h2>⚙️ Admin Panel - Manage Products</h2>`;
-        if (products.length === 0) {
-            listHtml += `<p style="text-align:center; padding:40px;">No products found</p>`;
-        }
-        products.forEach(prod => {
-            listHtml += `
-                <div class="product-list-item">
-                    <div>
-                        <strong>${escapeHtml(prod.name)}</strong><br>
-                        <small>₹${prod.price} | ${prod.category || 'Uncategorized'}</small>
-                    </div>
-                    <div>
-                        <button class="editBtn" data-id="${prod.id}" style="width:auto; padding:6px 12px; margin-right:6px;">✏️ Edit</button>
-                        <button class="deleteBtn" data-id="${prod.id}" style="background:#dc2626; width:auto;">🗑️ Delete</button>
-                    </div>
-                </div>
-            `;
-        });
-        listHtml += `<button id="logoutAdminBtn" style="margin-top:20px; background:#dc2626;">🚪 Logout</button>`;
-        
-        const html = `${getTopBar()}<div style="padding:20px;">${listHtml}</div>`;
-        appDiv.innerHTML = html;
-        
-        document.querySelectorAll(".deleteBtn").forEach(btn => {
-            btn.addEventListener("click", async () => {
-                if (confirm("Delete this product?")) {
-                    await db.collection("products").doc(btn.getAttribute("data-id")).delete();
-                    renderAdminPanel();
-                    fetchProducts(true);
-                    alert("Product deleted!");
-                }
-            });
-        });
-        
-        document.querySelectorAll(".editBtn").forEach(btn => {
-            btn.addEventListener("click", async () => {
-                const id = btn.getAttribute("data-id");
-                const doc = await db.collection("products").doc(id).get();
-                if (doc.exists) openEditModal(id, doc.data());
-            });
-        });
-        
-        document.getElementById("logoutAdminBtn").addEventListener("click", () => {
-            currentView = "home";
-            render();
-        });
-        
-        attachMenuEvents();
-        attachSearch();
-    }
-    
-    function openEditModal(id, data) {
-        const modal = document.createElement("div");
-        modal.className = "modal-overlay active";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h3>✏️ Edit Product</h3>
-                <div class="form-group">
-                    <label>Product Name</label>
-                    <input id="editName" value="${escapeHtml(data.name)}">
-                </div>
-                <div class="form-group">
-                    <label>Price</label>
-                    <input id="editPrice" value="${data.price}">
-                </div>
-                <div class="form-group">
-                    <label>Original Price</label>
-                    <input id="editOrigPrice" value="${data.originalPrice || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="editDesc">${escapeHtml(data.description || '')}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <input id="editCat" value="${data.category || ''}">
-                </div>
-                <div class="form-group">
-                    <label>WhatsApp</label>
-                    <input id="editWhatsapp" value="${data.whatsapp || ''}">
-                </div>
-                <button id="saveEdit">💾 Save Changes</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        
-        modal.querySelector(".close-modal").addEventListener("click", () => modal.remove());
-        modal.querySelector("#saveEdit").addEventListener("click", async () => {
-            const updated = {
-                name: document.getElementById("editName").value,
-                price: parseFloat(document.getElementById("editPrice").value),
-                originalPrice: parseFloat(document.getElementById("editOrigPrice").value) || null,
-                description: document.getElementById("editDesc").value,
-                category: document.getElementById("editCat").value,
-                whatsapp: document.getElementById("editWhatsapp").value
-            };
-            await db.collection("products").doc(id).update(updated);
-            modal.remove();
-            renderAdminPanel();
-            fetchProducts(true);
-            alert("Product updated!");
-        });
-    }
-    
-    // Side Menu
-    function showSideMenu() {
-        let overlay = document.getElementById("sideOverlay");
-        let menu = document.getElementById("sideMenu");
-        if (!overlay) {
-            overlay = document.createElement("div");
-            overlay.id = "sideOverlay";
-            overlay.className = "side-menu-overlay";
-            document.body.appendChild(overlay);
-            
-            menu = document.createElement("div");
-            menu.id = "sideMenu";
-            menu.className = "side-menu";
-            menu.innerHTML = `
-                <span class="close-side-menu">&times;</span>
-                <div class="side-menu-item" data-action="categories">📂 Categories</div>
-                <div class="side-menu-item" data-action="about">ℹ️ About Us</div>
-                <div class="side-menu-item" data-action="sellerLogin">🔐 Seller Login</div>
-                <div class="side-menu-item" data-action="adminLogin">👑 Admin Login</div>
-            `;
-            document.body.appendChild(menu);
-            
-            document.querySelector(".close-side-menu").addEventListener("click", () => {
-                menu.classList.remove("open");
-                overlay.classList.remove("active");
-            });
-            
-            overlay.addEventListener("click", () => {
-                menu.classList.remove("open");
-                overlay.classList.remove("active");
-            });
-            
-            document.querySelectorAll(".side-menu-item").forEach(item => {
-                item.addEventListener("click", () => {
-                    const action = item.getAttribute("data-action");
-                    menu.classList.remove("open");
-                    overlay.classList.remove("active");
-                    
-                    if (action === "categories") {
-                        fetchProducts(true, null);
-                        currentView = "home";
-                        render();
-                    } else if (action === "about") {
-                        alert("✨ Drozioo - Your trusted online shopping destination! Quality products at best prices with fast delivery. ✨");
-                    } else if (action === "sellerLogin") {
-                        currentView = "sellerLogin";
-                        render();
-                    } else if (action === "adminLogin") {
-                        currentView = "adminLogin";
-                        render();
-                    }
-                });
-            });
-        }
-        menu.classList.add("open");
-        overlay.classList.add("active");
-    }
-    
-    function getTopBar() {
-        return `
-            <div class="top-bar">
-                <div class="logo">Drozioo</div>
-                <div class="search-container"><input type="text" id="searchInput" placeholder="🔍 Search products..."></div>
-                <div class="menu-icon" id="menuBtn"><i class="fas fa-bars"></i></div>
-            </div>
-        `;
-    }
-    
-    function attachMenuEvents() {
-        const menuBtn = document.getElementById("menuBtn");
-        if (menuBtn) menuBtn.onclick = showSideMenu;
-    }
-    
-    function attachSearch() {
-        const searchInput = document.getElementById("searchInput");
-        if (searchInput) {
-            searchInput.addEventListener("input", (e) => {
-                searchTerm = e.target.value;
-                if (currentView === "home") renderHome();
-            });
-        }
-    }
-    
-    function escapeHtml(str) {
-        if (!str) return "";
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === "&") return "&amp;";
-            if (m === "<") return "&lt;";
-            if (m === ">") return "&gt;";
-            return m;
-        });
-    }
-    
-    // Start App
-    fetchProducts(true, null);
+
+  }else{
+    alert("Wrong password");
+  }
+}
+
+// ADD PRODUCT
+window.addProduct = function(){
+  let name = document.getElementById("pname").value;
+  let price = document.getElementById("pprice").value;
+  let img = document.getElementById("pimg").value;
+  let desc = document.getElementById("pdesc").value;
+
+  push(ref(db,"products"),{
+    name,price,img,desc,time:Date.now()
+  });
+
+  alert("Added");
+}
+
+// LOAD PRODUCTS
+const box = document.getElementById("products");
+
+function loadProducts(){
+  onValue(ref(db,"products"), snap=>{
+    box.innerHTML="";
+    let arr=[];
+
+    snap.forEach(c=>{
+      arr.push({id:c.key,...c.val()});
+    });
+
+    arr.reverse();
+
+    arr.forEach(d=>{
+      box.innerHTML += `
+        <div class="product">
+          <img src="${d.img}">
+          <h3>${d.name}</h3>
+          <p>₹${d.price}</p>
+          <button onclick="order('${d.name}','${d.price}')">Order</button>
+          ${isAdmin ? `
+          <button onclick="del('${d.id}')">Delete</button>
+          <button onclick="edit('${d.id}')">Edit</button>` : ""}
+        </div>
+      `;
+    });
+  });
+}
+
+loadProducts();
+
+// DELETE
+window.del = function(id){
+  remove(ref(db,"products/"+id));
+}
+
+// EDIT
+window.edit = function(id){
+  let newName = prompt("New name");
+  let newPrice = prompt("New price");
+
+  update(ref(db,"products/"+id),{
+    name:newName,
+    price:newPrice
+  });
+}
+
+// SEARCH
+window.searchProduct = function(){
+  let v = document.getElementById("search").value.toLowerCase();
+  let items = document.getElementsByClassName("product");
+
+  for(let i=0;i<items.length;i++){
+    let txt = items[i].innerText.toLowerCase();
+    items[i].style.display = txt.includes(v) ? "" : "none";
+  }
+}
+
+// ORDER
+window.order = function(name,price){
+  let msg = `Order:\n${name}\n₹${price}`;
+  window.open("https://wa.me/?text="+encodeURIComponent(msg));
+}
+
 </script>
+
 </body>
 </html>
