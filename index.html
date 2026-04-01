@@ -19,10 +19,8 @@
         body {
             background: #f8fafc;
             color: #0f172a;
-            overflow-x: hidden;
         }
 
-        /* Sticky Top Bar */
         .top-bar {
             position: sticky;
             top: 0;
@@ -42,7 +40,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
         }
         .search-container {
             flex: 1;
@@ -59,7 +56,6 @@
         }
         .search-container input:focus {
             border-color: #4ecdc4;
-            background: white;
         }
         .menu-icon {
             font-size: 1.5rem;
@@ -71,13 +67,9 @@
             align-items: center;
             justify-content: center;
             border-radius: 12px;
-            transition: 0.2s;
-        }
-        .menu-icon:hover {
-            background: #e2e8f0;
         }
 
-        /* Side Menu (Drawer) */
+        /* Side Menu */
         .side-menu {
             position: fixed;
             top: 0;
@@ -115,8 +107,8 @@
             border-radius: 16px;
             cursor: pointer;
             font-weight: 500;
-            transition: 0.2s;
             text-align: center;
+            transition: 0.2s;
         }
         .side-menu-item:hover {
             background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
@@ -128,17 +120,13 @@
             right: 20px;
             font-size: 1.8rem;
             cursor: pointer;
-            color: #64748b;
         }
 
-        /* Banner */
         .banner {
             margin: 16px;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            position: relative;
         }
         .banner-content {
             padding: 40px 20px;
@@ -149,12 +137,7 @@
             font-size: 2rem;
             margin-bottom: 8px;
         }
-        .banner-content p {
-            font-size: 1rem;
-            opacity: 0.95;
-        }
 
-        /* Categories */
         .categories-scroll {
             padding: 0 16px 12px;
             overflow-x: auto;
@@ -169,16 +152,13 @@
             font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
             border: 1px solid #e2e8f0;
         }
         .category-chip.active, .category-chip:hover {
             background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
             color: white;
-            border-color: transparent;
         }
 
-        /* Product Grid */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -190,8 +170,8 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: all 0.3s;
             cursor: pointer;
+            transition: 0.3s;
         }
         .product-card:hover {
             transform: translateY(-4px);
@@ -201,7 +181,6 @@
             width: 100%;
             aspect-ratio: 1 / 1;
             object-fit: cover;
-            background: #f1f5f9;
         }
         .product-info {
             padding: 12px;
@@ -210,15 +189,11 @@
             font-weight: 600;
             font-size: 0.9rem;
             margin-bottom: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         .price-row {
             display: flex;
             align-items: baseline;
             gap: 8px;
-            flex-wrap: wrap;
         }
         .current-price {
             font-weight: 700;
@@ -230,15 +205,7 @@
             color: #94a3b8;
             text-decoration: line-through;
         }
-        .discount-badge {
-            background: #fee2e2;
-            color: #dc2626;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 20px;
-        }
 
-        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -274,13 +241,6 @@
             right: 20px;
             font-size: 1.5rem;
             cursor: pointer;
-            background: #f1f5f9;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
         }
         .form-group {
             margin-bottom: 16px;
@@ -291,7 +251,7 @@
             margin-bottom: 6px;
             font-size: 0.85rem;
         }
-        input, textarea, select {
+        input, textarea {
             width: 100%;
             padding: 12px;
             border: 1.5px solid #e2e8f0;
@@ -308,10 +268,6 @@
             cursor: pointer;
             width: 100%;
             font-size: 1rem;
-            transition: 0.2s;
-        }
-        button:hover {
-            transform: scale(0.98);
         }
         .image-preview {
             display: flex;
@@ -335,11 +291,6 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .load-more {
-            text-align: center;
-            padding: 20px;
-            color: #94a3b8;
-        }
         .review-item {
             background: #f8fafc;
             padding: 12px;
@@ -356,7 +307,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .login-container {
+        .login-box {
             max-width: 400px;
             margin: 40px auto;
             padding: 30px;
@@ -364,7 +315,7 @@
             border-radius: 28px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .login-container h2 {
+        .login-box h2 {
             text-align: center;
             margin-bottom: 24px;
             background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
@@ -372,8 +323,10 @@
             background-clip: text;
             color: transparent;
         }
-        @media (max-width: 480px) {
-            .logo { font-size: 1.4rem; }
+        .load-more {
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
         }
     </style>
 </head>
@@ -404,9 +357,7 @@
     let selectedProduct = null;
     let activeCategory = null;
     let searchTerm = "";
-    let currentUserType = null; // 'seller' or 'admin'
 
-    // Render Function
     const appDiv = document.getElementById("app");
 
     function render() {
@@ -430,16 +381,16 @@
         loading = true;
 
         try {
-            let query = db.collection("products").orderBy("createdAt", "desc").limit(12);
+            let query = db.collection("products").orderBy("createdAt", "desc").limit(10);
             if (lastVisible) query = query.startAfter(lastVisible);
             if (category && category !== "all") {
-                query = db.collection("products").where("category", "==", category).orderBy("createdAt", "desc").limit(12);
+                query = db.collection("products").where("category", "==", category).orderBy("createdAt", "desc").limit(10);
                 if (lastVisible) query = query.startAfter(lastVisible);
             }
             const snapshot = await query.get();
             const newProducts = [];
             snapshot.forEach(doc => newProducts.push({ id: doc.id, ...doc.data() }));
-            if (newProducts.length < 12) hasMore = false;
+            if (newProducts.length < 10) hasMore = false;
             if (snapshot.docs.length > 0) lastVisible = snapshot.docs[snapshot.docs.length - 1];
             if (reset) allProducts = newProducts;
             else allProducts = [...allProducts, ...newProducts];
@@ -481,21 +432,19 @@
                         <div class="price-row">
                             <span class="current-price">₹${prod.price}</span>
                             ${prod.originalPrice ? `<span class="old-price">₹${prod.originalPrice}</span>` : ''}
-                            ${discount > 0 ? `<span class="discount-badge">${discount}% off</span>` : ''}
                         </div>
                     </div>
                 </div>
             `;
         });
         productsHtml += `</div>`;
-        if (hasMore) productsHtml += `<div id="load-more-trigger" class="load-more">Scroll for more ⬇️</div>`;
+        if (hasMore) productsHtml += `<div id="load-more-trigger" class="load-more">⬇️ Scroll for more</div>`;
 
         const topBar = getTopBar();
         const banner = `<div class="banner"><div class="banner-content"><h1>✨ Drozioo ✨</h1><p>Shop the best deals online</p></div></div>`;
 
         appDiv.innerHTML = topBar + banner + catsHtml + productsHtml;
         
-        // Product click
         document.querySelectorAll('.product-card').forEach(card => {
             card.addEventListener('click', () => {
                 const id = card.getAttribute('data-id');
@@ -507,7 +456,6 @@
             });
         });
         
-        // Category click
         document.querySelectorAll('.category-chip').forEach(chip => {
             chip.addEventListener('click', () => {
                 const cat = chip.getAttribute('data-cat');
@@ -516,7 +464,6 @@
             });
         });
         
-        // Infinite scroll
         const trigger = document.getElementById("load-more-trigger");
         if (trigger) {
             const observer = new IntersectionObserver(entries => {
@@ -551,8 +498,8 @@
                 </div>
                 <p style="margin:12px 0;">${escapeHtml(p.description || 'No description')}</p>
                 <p><i class="fab fa-whatsapp"></i> Seller: ${p.whatsapp || 'Not provided'}</p>
-                <button id="orderBtn" style="margin:16px 0; background:#25D366;">Order on WhatsApp</button>
-                <h3>Reviews</h3>
+                <button id="orderBtn" style="margin:16px 0; background:#25D366;">📲 Order on WhatsApp</button>
+                <h3>⭐ Customer Reviews</h3>
                 <div id="reviewsContainer"></div>
                 <textarea id="reviewText" rows="2" placeholder="Write a review..." style="width:100%; margin:8px 0; border-radius:16px;"></textarea>
                 <button id="submitReview">Post Review</button>
@@ -573,7 +520,7 @@
         
         document.getElementById("submitReview").addEventListener("click", async () => {
             const text = document.getElementById("reviewText").value.trim();
-            if (!text) return alert("Write a review");
+            if (!text) return alert("Please write a review");
             await db.collection("reviews").add({
                 productId: p.id,
                 text: text,
@@ -581,6 +528,7 @@
             });
             document.getElementById("reviewText").value = "";
             loadReviews(p.id);
+            alert("Review added!");
         });
         
         loadReviews(p.id);
@@ -593,62 +541,62 @@
         const container = document.getElementById("reviewsContainer");
         if (!container) return;
         if (snap.empty) {
-            container.innerHTML = "<p>No reviews yet</p>";
+            container.innerHTML = "<p>No reviews yet. Be the first!</p>";
             return;
         }
         let html = "";
         snap.forEach(doc => {
             const rev = doc.data();
-            html += `<div class="review-item"><i class="fas fa-user"></i> ${escapeHtml(rev.text)}<div style="font-size:11px; color:#64748b;">${rev.createdAt ? new Date(rev.createdAt.toDate()).toLocaleString() : 'Now'}</div></div>`;
+            html += `<div class="review-item"><i class="fas fa-user"></i> ${escapeHtml(rev.text)}<div style="font-size:11px; margin-top:5px;">${rev.createdAt ? new Date(rev.createdAt.toDate()).toLocaleString() : 'Now'}</div></div>`;
         });
         container.innerHTML = html;
     }
     
-    // Seller Login Page
+    // Seller Login
     function renderSellerLogin() {
         const html = `
             ${getTopBar()}
-            <div class="login-container">
+            <div class="login-box">
                 <h2>🔐 Seller Login</h2>
                 <div class="form-group">
-                    <label>Enter Seller Password</label>
-                    <input type="password" id="sellerPassword" placeholder="Enter your password">
+                    <label>Seller Password</label>
+                    <input type="password" id="sellerPassInput" placeholder="Enter your password">
                 </div>
                 <button id="loginSellerBtn">Login</button>
-                <button id="backHomeLogin" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
+                <button id="backHomeBtn" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
             </div>
         `;
         appDiv.innerHTML = html;
         
         document.getElementById("loginSellerBtn").addEventListener("click", async () => {
-            const pwd = document.getElementById("sellerPassword").value;
+            const enteredPwd = document.getElementById("sellerPassInput").value;
             const doc = await db.collection("passwords").doc("master").get();
             
             if (!doc.exists) {
-                // First time - set seller password
-                const newPwd = prompt("No password found! Set your Seller Password (first time):");
-                if (newPwd) {
+                // First time - save password
+                if (enteredPwd) {
                     await db.collection("passwords").doc("master").set({
-                        sellerPassword: newPwd,
-                        adminPassword: null,
-                        setup_done: true
+                        sellerPassword: enteredPwd,
+                        adminPassword: null
                     });
-                    alert("Seller Password saved! Now login with your password.");
-                    document.getElementById("sellerPassword").value = "";
-                }
-            } else {
-                // Check password
-                if (doc.data().sellerPassword === pwd) {
-                    currentUserType = "seller";
+                    alert("✅ Password saved! You are now logged in as Seller.");
                     currentView = "sellerPanel";
                     render();
                 } else {
-                    alert("❌ Wrong password! Please try again.");
+                    alert("Please enter a password to set as Seller Password");
+                }
+            } else {
+                // Check password
+                if (doc.data().sellerPassword === enteredPwd) {
+                    currentView = "sellerPanel";
+                    render();
+                } else {
+                    alert("❌ Wrong password! Access denied.");
                 }
             }
         });
         
-        document.getElementById("backHomeLogin").addEventListener("click", () => {
+        document.getElementById("backHomeBtn").addEventListener("click", () => {
             currentView = "home";
             render();
         });
@@ -657,51 +605,57 @@
         attachSearch();
     }
     
-    // Admin Login Page
+    // Admin Login
     function renderAdminLogin() {
         const html = `
             ${getTopBar()}
-            <div class="login-container">
+            <div class="login-box">
                 <h2>👑 Admin Login</h2>
                 <div class="form-group">
-                    <label>Enter Admin Password</label>
-                    <input type="password" id="adminPassword" placeholder="Enter your password">
+                    <label>Admin Password</label>
+                    <input type="password" id="adminPassInput" placeholder="Enter your password">
                 </div>
                 <button id="loginAdminBtn">Login</button>
-                <button id="backHomeAdmin" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
+                <button id="backHomeBtn" style="margin-top:12px; background:#94a3b8;">Back to Home</button>
             </div>
         `;
         appDiv.innerHTML = html;
         
         document.getElementById("loginAdminBtn").addEventListener("click", async () => {
-            const pwd = document.getElementById("adminPassword").value;
+            const enteredPwd = document.getElementById("adminPassInput").value;
             const doc = await db.collection("passwords").doc("master").get();
             
-            if (!doc.exists) {
-                // First time - set admin password
-                const newPwd = prompt("No password found! Set your Admin Password (first time):");
-                if (newPwd) {
-                    await db.collection("passwords").doc("master").set({
-                        sellerPassword: null,
-                        adminPassword: newPwd,
-                        setup_done: true
-                    });
-                    alert("Admin Password saved! Now login with your password.");
-                    document.getElementById("adminPassword").value = "";
-                }
-            } else {
-                // Check password
-                if (doc.data().adminPassword === pwd) {
-                    currentUserType = "admin";
+            if (!doc.exists || !doc.data().adminPassword) {
+                // First time - save admin password
+                if (enteredPwd) {
+                    if (doc.exists) {
+                        await db.collection("passwords").doc("master").update({
+                            adminPassword: enteredPwd
+                        });
+                    } else {
+                        await db.collection("passwords").doc("master").set({
+                            sellerPassword: null,
+                            adminPassword: enteredPwd
+                        });
+                    }
+                    alert("✅ Admin Password saved! You are now logged in as Admin.");
                     currentView = "adminPanel";
                     render();
                 } else {
-                    alert("❌ Wrong password! Please try again.");
+                    alert("Please enter a password to set as Admin Password");
+                }
+            } else {
+                // Check password
+                if (doc.data().adminPassword === enteredPwd) {
+                    currentView = "adminPanel";
+                    render();
+                } else {
+                    alert("❌ Wrong password! Access denied.");
                 }
             }
         });
         
-        document.getElementById("backHomeAdmin").addEventListener("click", () => {
+        document.getElementById("backHomeBtn").addEventListener("click", () => {
             currentView = "home";
             render();
         });
@@ -710,23 +664,23 @@
         attachSearch();
     }
     
-    // Seller Panel with Image Upload from Gallery
+    // Seller Panel with Image Upload
     function renderSellerPanel() {
         const html = `
             ${getTopBar()}
             <div style="padding:20px;">
-                <h2>🛍️ Seller Panel - Add New Product</h2>
+                <h2>🛍️ Seller Dashboard - Add Product</h2>
                 <div class="form-group">
                     <label>Product Name *</label>
                     <input id="prodName" placeholder="Enter product name">
                 </div>
                 <div class="form-group">
                     <label>Selling Price (₹) *</label>
-                    <input id="prodPrice" type="number" placeholder="Enter selling price">
+                    <input id="prodPrice" type="number" placeholder="Enter price">
                 </div>
                 <div class="form-group">
                     <label>Original Price (MRP)</label>
-                    <input id="prodOrigPrice" type="number" placeholder="Enter MRP">
+                    <input id="prodOrigPrice" type="number" placeholder="MRP">
                 </div>
                 <div class="form-group">
                     <label>Description</label>
@@ -734,19 +688,19 @@
                 </div>
                 <div class="form-group">
                     <label>Category *</label>
-                    <input id="prodCategory" placeholder="e.g., Electronics, Fashion, Home">
+                    <input id="prodCategory" placeholder="e.g., Electronics, Fashion">
                 </div>
                 <div class="form-group">
                     <label>WhatsApp Number *</label>
                     <input id="prodWhatsapp" placeholder="+919876543210">
                 </div>
                 <div class="form-group">
-                    <label>Upload Product Images (2-3 photos from gallery)</label>
+                    <label>Upload Images (2-3 photos from gallery)</label>
                     <input type="file" id="imageFiles" accept="image/*" multiple>
                 </div>
                 <div id="imagePreview" class="image-preview"></div>
-                <button id="submitProductBtn">📤 Publish Product</button>
-                <button id="logoutSellerBtn" style="margin-top:12px; background:#dc2626;">🚪 Logout</button>
+                <button id="submitProductBtn">📤 Add Product</button>
+                <button id="logoutBtn" style="margin-top:12px; background:#dc2626;">🚪 Logout</button>
             </div>
         `;
         appDiv.innerHTML = html;
@@ -757,10 +711,12 @@
             selectedImages = [];
             const preview = document.getElementById("imagePreview");
             preview.innerHTML = "";
+            
             if (files.length > 3) {
-                alert("You can upload maximum 3 images");
+                alert("Maximum 3 images allowed!");
                 return;
             }
+            
             files.forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(ev) {
@@ -788,14 +744,18 @@
             }
             
             if (selectedImages.length === 0) {
-                alert("Please upload at least 1 product image");
+                alert("Please upload at least 1 product image!");
                 return;
             }
             
-            let images = selectedImages;
-            
             await db.collection("products").add({
-                name, price, originalPrice, description: desc, category, whatsapp, images,
+                name: name,
+                price: price,
+                originalPrice: originalPrice,
+                description: desc,
+                category: category,
+                whatsapp: whatsapp,
+                images: selectedImages,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             
@@ -815,8 +775,7 @@
             fetchProducts(true);
         });
         
-        document.getElementById("logoutSellerBtn").addEventListener("click", () => {
-            currentUserType = null;
+        document.getElementById("logoutBtn").addEventListener("click", () => {
             currentView = "home";
             render();
         });
@@ -856,10 +815,11 @@
         
         document.querySelectorAll(".deleteBtn").forEach(btn => {
             btn.addEventListener("click", async () => {
-                if (confirm("Delete this product permanently?")) {
+                if (confirm("Delete this product?")) {
                     await db.collection("products").doc(btn.getAttribute("data-id")).delete();
                     renderAdminPanel();
                     fetchProducts(true);
+                    alert("Product deleted!");
                 }
             });
         });
@@ -873,7 +833,6 @@
         });
         
         document.getElementById("logoutAdminBtn").addEventListener("click", () => {
-            currentUserType = null;
             currentView = "home";
             render();
         });
@@ -894,7 +853,7 @@
                     <input id="editName" value="${escapeHtml(data.name)}">
                 </div>
                 <div class="form-group">
-                    <label>Selling Price</label>
+                    <label>Price</label>
                     <input id="editPrice" value="${data.price}">
                 </div>
                 <div class="form-group">
@@ -910,7 +869,7 @@
                     <input id="editCat" value="${data.category || ''}">
                 </div>
                 <div class="form-group">
-                    <label>WhatsApp Number</label>
+                    <label>WhatsApp</label>
                     <input id="editWhatsapp" value="${data.whatsapp || ''}">
                 </div>
                 <button id="saveEdit">💾 Save Changes</button>
@@ -994,7 +953,6 @@
         overlay.classList.add("active");
     }
     
-    // Top Bar
     function getTopBar() {
         return `
             <div class="top-bar">
@@ -1007,9 +965,7 @@
     
     function attachMenuEvents() {
         const menuBtn = document.getElementById("menuBtn");
-        if (menuBtn) {
-            menuBtn.onclick = showSideMenu;
-        }
+        if (menuBtn) menuBtn.onclick = showSideMenu;
     }
     
     function attachSearch() {
@@ -1017,9 +973,7 @@
         if (searchInput) {
             searchInput.addEventListener("input", (e) => {
                 searchTerm = e.target.value;
-                if (currentView === "home") {
-                    renderHome();
-                }
+                if (currentView === "home") renderHome();
             });
         }
     }
