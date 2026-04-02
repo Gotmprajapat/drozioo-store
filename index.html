@@ -4,29 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Drozioo</title>
-<!-- Fonts & Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ====== CSS ====== */
-body { font-family:'Poppins',sans-serif; margin:0; background:#f9f9f9;}
-header { display:flex; justify-content:space-between; align-items:center; padding:10px 15px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+body { font-family:'Poppins',sans-serif; margin:0; background:#f9f9f9; }
+header { position:sticky; top:0; display:flex; justify-content:space-between; align-items:center; padding:10px 15px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); z-index:1000; }
 .logo { font-weight:bold; font-size:22px; background: linear-gradient(45deg,#f00,#00f,#ff0); -webkit-background-clip:text; color:transparent;}
 .search-bar { flex:1; margin:0 10px; }
 .search-bar input { width:100%; padding:7px; border-radius:5px; border:1px solid #ccc;}
-.menu-btn { font-size:24px; cursor:pointer;}
-.product-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:10px;}
-.product-card { background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-.product-card img { width:100%; border-radius:5px;}
-.product-card h3 { font-size:16px; margin:5px 0;}
-.product-card .price { font-weight:bold; color:#2a9d8f;}
-.product-card .originalPrice { text-decoration:line-through; color:#888; font-size:13px;}
-.btn { background:#2a9d8f; color:#fff; padding:6px 12px; border:none; border-radius:5px; cursor:pointer;}
-.section { display:none; padding:10px;}
-.active { display:block;}
-input, textarea, select { width:100%; padding:6px; margin:5px 0; border-radius:5px; border:1px solid #ccc;}
+.product-grid { display:flex; flex-direction:column; padding:10px; gap:10px;}
+.product-card { background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); cursor:pointer; display:flex; align-items:center; justify-content:space-between;}
+.product-card img { width:80px; height:80px; object-fit:cover; border-radius:5px; }
+.product-info { flex:1; margin-left:10px; }
+.product-info h3 { font-size:16px; margin:0; }
+.product-info .price { font-weight:bold; color:#2a9d8f; }
+.product-info .originalPrice { text-decoration:line-through; color:#888; font-size:13px; }
+.btn { background:#2a9d8f; color:#fff; padding:6px 12px; border:none; border-radius:5px; cursor:pointer; }
+.expanded-product { background:#fff; padding:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); margin-bottom:10px;}
+.expanded-product img { width:100%; border-radius:5px; margin-bottom:5px; }
+.gallery { display:flex; overflow-x:auto; gap:5px; margin-bottom:5px;}
+.gallery img { width:80px; height:80px; object-fit:cover; border-radius:5px; cursor:pointer;}
+textarea,input,select { width:100%; padding:6px; margin:5px 0; border-radius:5px; border:1px solid #ccc;}
 table { width:100%; border-collapse: collapse;}
 table th, table td { border:1px solid #ccc; padding:6px; text-align:left;}
-img.thumb { width:60px; height:60px; object-fit:cover; margin:2px;}
 </style>
 </head>
 <body>
@@ -36,32 +35,16 @@ img.thumb { width:60px; height:60px; object-fit:cover; margin:2px;}
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Search products...">
   </div>
-  <div class="menu-btn" onclick="showSection('about')">&#9776;</div>
+  <div class="btn" onclick="showSection('about')">About</div>
 </header>
 
-<!-- HOME SECTION -->
-<div id="home" class="section active">
+<!-- HOME -->
+<div id="home">
   <div class="product-grid" id="productGrid"></div>
 </div>
 
-<!-- PRODUCT DETAIL -->
-<div id="productDetail" class="section">
-  <button class="btn" onclick="showSection('home')">Back</button>
-  <h2 id="pdName"></h2>
-  <div id="pdImages"></div>
-  <p id="pdDesc"></p>
-  <div>Price: ₹<span id="pdPrice"></span> <span id="pdOriginalPrice" style="text-decoration:line-through;color:#888;"></span></div>
-  <div>Seller WhatsApp: <span id="pdWhatsapp"></span></div>
-  <button class="btn" id="orderBtn">Order on WhatsApp</button>
-  <h3>Reviews</h3>
-  <div id="reviewsList"></div>
-  <textarea id="reviewText" placeholder="Write a review"></textarea>
-  <button class="btn" onclick="postReview()">Post Review</button>
-</div>
-
 <!-- SELLER PANEL -->
-<div id="sellerPanel" class="section">
-  <button class="btn" onclick="showSection('home')">Back</button>
+<div id="sellerPanel" style="display:none; padding:10px;">
   <h2>Seller Panel</h2>
   <input type="password" id="sellerPass" placeholder="Enter Seller Password">
   <button class="btn" onclick="sellerLogin()">Login</button>
@@ -78,8 +61,7 @@ img.thumb { width:60px; height:60px; object-fit:cover; margin:2px;}
 </div>
 
 <!-- ADMIN PANEL -->
-<div id="adminPanel" class="section">
-  <button class="btn" onclick="showSection('home')">Back</button>
+<div id="adminPanel" style="display:none; padding:10px;">
   <h2>Admin Panel</h2>
   <input type="password" id="adminPass" placeholder="Enter Admin Password">
   <button class="btn" onclick="adminLogin()">Login</button>
@@ -91,8 +73,7 @@ img.thumb { width:60px; height:60px; object-fit:cover; margin:2px;}
 </div>
 
 <!-- ABOUT US -->
-<div id="about" class="section">
-  <button class="btn" onclick="showSection('home')">Back</button>
+<div id="about" style="display:none; padding:10px;">
   <h2>About Drozioo</h2>
   <p>Modern eCommerce Platform by GOTM. Quality Products | Best Prices | Fast Delivery.</p>
   <button class="btn" onclick="window.open('mailto:gotmprajapat00@gmail.com?subject=Contact Drozioo&body=Hello GOTM')">Connect via Gmail</button>
@@ -115,14 +96,15 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// ===== Global Variables =====
 let currentProductId = "";
 
-// ===== Section Switch =====
+// ===== Section Display =====
 function showSection(sec){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  if(sec==='home') loadProducts();
-  document.getElementById(sec).classList.add('active');
+  document.getElementById('home').style.display=(sec==='home')?'block':'none';
+  document.getElementById('sellerPanel').style.display=(sec==='seller')?'block':'none';
+  document.getElementById('adminPanel').style.display=(sec==='admin')?'block':'none';
+  document.getElementById('about').style.display=(sec==='about')?'block':'none';
+  loadProducts();
 }
 
 // ===== Load Products =====
@@ -130,72 +112,77 @@ const productGrid = document.getElementById('productGrid');
 const searchInput = document.getElementById('searchInput');
 
 async function loadProducts(){
-  productGrid.innerHTML = '';
+  productGrid.innerHTML='';
   const snapshot = await db.collection('products').orderBy('createdAt','desc').get();
   snapshot.forEach(doc=>{
     const p = doc.data();
     if(searchInput.value && !p.name.toLowerCase().includes(searchInput.value.toLowerCase())) return;
     const card = document.createElement('div');
     card.className='product-card';
-    card.innerHTML=`<img src="${p.images[0]}" alt="${p.name}"><h3>${p.name}</h3>
-    <div class="price">₹${p.price}</div>
-    ${p.originalPrice? `<div class="originalPrice">₹${p.originalPrice}</div>` : ''}
-    <button class="btn" onclick="viewProduct('${doc.id}')">View</button>`;
+    card.innerHTML=`<img src="${p.images[0]}" alt="${p.name}">
+    <div class="product-info">
+      <h3>${p.name}</h3>
+      <div class="price">₹${p.price}</div>
+    </div>
+    <button class="btn" onclick="expandProduct('${doc.id}')">View</button>`;
     productGrid.appendChild(card);
   });
 }
 searchInput.addEventListener('input', loadProducts);
 
-// ===== View Product Detail =====
-async function viewProduct(id){
-  currentProductId = id;
+// ===== Expand Product Inline =====
+async function expandProduct(id){
   const doc = await db.collection('products').doc(id).get();
   const p = doc.data();
-  document.getElementById('pdName').innerText = p.name;
-  document.getElementById('pdDesc').innerText = p.description;
-  document.getElementById('pdPrice').innerText = p.price;
-  document.getElementById('pdOriginalPrice').innerText = p.originalPrice || '';
-  document.getElementById('pdWhatsapp').innerText = p.whatsapp;
-  const imgDiv = document.getElementById('pdImages');
-  imgDiv.innerHTML='';
-  p.images.forEach(url=>{
-    const im = document.createElement('img'); im.src=url; im.className='thumb';
-    imgDiv.appendChild(im);
-  });
-  document.getElementById('orderBtn').onclick=()=>window.open(`https://wa.me/${p.whatsapp.replace(/\D/g,'')}?text=Hello,%20I%20want%20to%20order%20this%20product:%0A${p.name}%0APrice:%20₹${p.price}%0AName:%0AAddress:%0APhone:`,'_blank');
-  loadReviews();
-  showSection('productDetail');
+  const div = document.createElement('div');
+  div.className='expanded-product';
+  let galleryHTML='<div class="gallery">';
+  p.images.forEach(url=>galleryHTML+=`<img src="${url}" onclick="this.parentElement.parentElement.querySelector('.main-img').src='${url}'">`);
+  galleryHTML+='</div>';
+  div.innerHTML=`
+    <img src="${p.images[0]}" class="main-img">
+    ${galleryHTML}
+    <h3>${p.name}</h3>
+    <p>${p.description}</p>
+    <div>Price: ₹${p.price} ${p.originalPrice? '<span style="text-decoration:line-through;color:#888;">₹'+p.originalPrice+'</span>':''}</div>
+    <button class="btn" onclick="window.open('https://wa.me/${p.whatsapp.replace(/\D/g,'')}?text=Hello,%20I%20want%20to%20order%20this%20product:%0A${p.name}%0APrice:%20₹${p.price}%0AName:%0AAddress:%0APhone:','_blank')">Order Now</button>
+    <h4>Reviews</h4>
+    <div id="rev-${id}"></div>
+    <textarea id="reviewText-${id}" placeholder="Write a review"></textarea>
+    <button class="btn" onclick="postReview('${id}')">Post Review</button>
+  `;
+  productGrid.appendChild(div);
+  currentProductId=id;
+  loadReviews(id);
 }
 
 // ===== Reviews =====
-async function loadReviews(){
-  const revDiv = document.getElementById('reviewsList');
+async function loadReviews(id){
+  const revDiv = document.getElementById(`rev-${id}`);
   revDiv.innerHTML='';
-  const snapshot = await db.collection('reviews').where('productId','==',currentProductId).orderBy('createdAt','desc').get();
+  const snapshot = await db.collection('reviews').where('productId','==',id).orderBy('createdAt','desc').get();
   snapshot.forEach(doc=>{
     const r = doc.data();
     const p = document.createElement('p'); p.innerText=r.text; revDiv.appendChild(p);
   });
 }
-async function postReview(){
-  const text = document.getElementById('reviewText').value;
+async function postReview(id){
+  const text=document.getElementById(`reviewText-${id}`).value;
   if(!text) return alert('Write a review!');
-  await db.collection('reviews').add({productId:currentProductId,text,createdAt:firebase.firestore.Timestamp.now()});
-  document.getElementById('reviewText').value='';
-  loadReviews();
+  await db.collection('reviews').add({productId:id,text,createdAt:firebase.firestore.Timestamp.now()});
+  document.getElementById(`reviewText-${id}`).value='';
+  loadReviews(id);
 }
 
-// ===== Seller Login =====
+// ===== Seller Login & Upload =====
 async function sellerLogin(){
-  const pass = document.getElementById('sellerPass').value;
-  const docRef = db.collection('passwords').doc('master');
-  const doc = await docRef.get();
+  const pass=document.getElementById('sellerPass').value;
+  const docRef=db.collection('passwords').doc('master');
+  const doc=await docRef.get();
   if(!doc.exists){ await docRef.set({sellerPassword:pass},{merge:true}); alert('Password saved!'); }
-  else if(doc.data().sellerPassword !== pass){ return alert('Wrong password!'); }
+  else if(doc.data().sellerPassword!==pass){ return alert('Wrong password!'); }
   document.getElementById('sellerForm').style.display='block';
 }
-
-// ===== Upload Product =====
 async function uploadProduct(){
   const name=document.getElementById('sName').value;
   const price=document.getElementById('sPrice').value;
@@ -214,38 +201,32 @@ async function uploadProduct(){
   }
   await db.collection('products').add({name,price:Number(price),originalPrice:oPrice?Number(oPrice):null,description:desc,category:cat,whatsapp,images:imgs,createdAt:firebase.firestore.Timestamp.now()});
   alert('Product Uploaded!');
-  showSection('home');
+  loadProducts();
 }
 
-// ===== Admin Login =====
+// ===== Admin Login & Table =====
 async function adminLogin(){
-  const pass = document.getElementById('adminPass').value;
-  const docRef = db.collection('passwords').doc('master');
-  const doc = await docRef.get();
+  const pass=document.getElementById('adminPass').value;
+  const docRef=db.collection('passwords').doc('master');
+  const doc=await docRef.get();
   if(!doc.exists){ await docRef.set({adminPassword:pass},{merge:true}); alert('Admin password saved!'); }
-  else if(doc.data().adminPassword !== pass){ return alert('Wrong password!'); }
+  else if(doc.data().adminPassword!==pass){ return alert('Wrong password!'); }
   loadAdminTable();
   document.getElementById('adminTableDiv').style.display='block';
 }
-
-// ===== Admin Table =====
 async function loadAdminTable(){
   const table=document.getElementById('adminTable');
-  // Clear old rows except header
   table.innerHTML='<tr><th>Name</th><th>Price</th><th>Category</th><th>Actions</th></tr>';
-  const snapshot = await db.collection('products').orderBy('createdAt','desc').get();
+  const snapshot=await db.collection('products').orderBy('createdAt','desc').get();
   snapshot.forEach(doc=>{
     const p=doc.data();
     const row=table.insertRow();
     row.insertCell(0).innerText=p.name;
     row.insertCell(1).innerText=p.price;
     row.insertCell(2).innerText=p.category;
-    const act=row.insertCell(3);
-    act.innerHTML=`<button onclick="editProduct('${doc.id}')">Edit</button> <button onclick="deleteProduct('${doc.id}')">Delete</button>`;
+    row.insertCell(3).innerHTML=`<button onclick="editProduct('${doc.id}')">Edit</button> <button onclick="deleteProduct('${doc.id}')">Delete</button>`;
   });
 }
-
-// ===== Edit/Delete Product =====
 async function deleteProduct(id){ if(confirm('Delete product?')){ await db.collection('products').doc(id).delete(); loadAdminTable(); loadProducts(); }}
 async function editProduct(id){
   const doc=await db.collection('products').doc(id).get();
@@ -255,6 +236,9 @@ async function editProduct(id){
   await db.collection('products').doc(id).update({name:newName});
   loadAdminTable(); loadProducts();
 }
+
+// Initial Load
+loadProducts();
 </script>
 </body>
 </html>
