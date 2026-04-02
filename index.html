@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Drozioo - Sell & Shop</title>
-    <!-- Google Fonts + Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -43,7 +39,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
         }
         .search-box {
             flex: 1;
@@ -55,14 +50,13 @@
             gap: 8px;
             border: 1px solid #e2e8f0;
         }
-        .search-box i { color: #64748b; font-size: 1rem; }
+        .search-box i { color: #64748b; }
         .search-box input {
             background: transparent;
             border: none;
             outline: none;
             width: 100%;
             font-size: 0.95rem;
-            font-weight: 500;
         }
         .menu-icon {
             font-size: 1.8rem;
@@ -73,15 +67,11 @@
             width: 44px;
             height: 44px;
             border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        .menu-icon:active { background: #eef2ff; }
         /* ===== HERO ===== */
         .hero {
             background: linear-gradient(125deg, #fef7e0, #e0f2fe);
-            margin: 16px 16px 20px;
+            margin: 16px;
             border-radius: 32px;
             padding: 24px 20px;
             text-align: center;
@@ -92,9 +82,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            font-weight: 800;
         }
-        .hero p { color: #1e293b; font-weight: 500; margin-top: 6px; font-size: 0.9rem; }
         .hero .tag {
             font-size: 0.75rem;
             background: rgba(0,0,0,0.05);
@@ -103,32 +91,28 @@
             border-radius: 40px;
             margin-top: 10px;
         }
-        /* ===== CATEGORIES SCROLL ===== */
+        /* ===== CATEGORIES ===== */
         .categories-scroll {
             display: flex;
             gap: 12px;
             overflow-x: auto;
             padding: 12px 16px;
             white-space: nowrap;
-            scrollbar-width: thin;
         }
         .category-chip {
-            background: #ffffff;
+            background: white;
             padding: 8px 20px;
             border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 600;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             border: 1px solid #e2e8f0;
             cursor: pointer;
-            transition: 0.2s;
         }
         .category-chip.active {
             background: #0f172a;
             color: white;
-            border-color: #0f172a;
         }
-        /* ===== PRODUCT GRID 2 COL ===== */
+        /* ===== PRODUCT GRID ===== */
         .products-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -139,26 +123,19 @@
             background: white;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
             cursor: pointer;
-            transition: 0.2s;
             border: 1px solid #edf2f7;
         }
-        .product-card:active { transform: scale(0.98); }
         .product-img {
             width: 100%;
             aspect-ratio: 1 / 1;
             object-fit: cover;
             background: #f1f5f9;
         }
-        .product-info { padding: 12px 12px 14px; }
+        .product-info { padding: 12px; }
         .product-name {
             font-weight: 700;
             font-size: 0.9rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
         .price-row {
             display: flex;
@@ -168,7 +145,7 @@
             flex-wrap: wrap;
             align-items: center;
         }
-        /* Selling price BADA dikhega */
+        /* Selling price BADA */
         .selling-price {
             font-weight: 800;
             font-size: 1.4rem;
@@ -186,15 +163,14 @@
             font-size: 0.7rem;
             padding: 2px 8px;
             border-radius: 30px;
-            font-weight: 600;
         }
         .load-more {
             text-align: center;
             padding: 20px;
             color: #3b82f6;
-            font-weight: 500;
+            cursor: pointer;
         }
-        /* ===== DRAWER ===== */
+        /* ===== DRAWER MENU ===== */
         .drawer-overlay {
             position: fixed;
             top: 0;
@@ -214,10 +190,9 @@
             width: 280px;
             height: 100%;
             background: white;
-            box-shadow: -6px 0 20px rgba(0,0,0,0.08);
             padding: 28px 20px;
             transform: translateX(100%);
-            transition: 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+            transition: 0.3s;
             z-index: 1001;
             display: flex;
             flex-direction: column;
@@ -235,7 +210,7 @@
             border-bottom: 1px solid #f1f5f9;
             cursor: pointer;
         }
-        .drawer-item i { width: 28px; color: #3b82f6; font-size: 1.2rem; }
+        .drawer-item i { width: 28px; color: #3b82f6; }
         .close-drawer { align-self: flex-end; font-size: 1.6rem; cursor: pointer; }
         /* ===== MODALS ===== */
         .modal-bg {
@@ -259,7 +234,6 @@
             padding: 24px;
             z-index: 1100;
             display: none;
-            box-shadow: 0 25px 40px rgba(0,0,0,0.2);
         }
         .modal-active { display: block; }
         .btn {
@@ -272,7 +246,6 @@
             width: 100%;
             margin-top: 16px;
             cursor: pointer;
-            font-size: 1rem;
         }
         .btn-outline { background: white; border: 1px solid #cbd5e1; color: #1e293b; }
         .btn-whatsapp { background: #25D366; }
@@ -284,11 +257,10 @@
             margin-top: 6px;
             margin-bottom: 14px;
             font-size: 0.9rem;
-            outline: none;
         }
         label { font-weight: 600; font-size: 0.85rem; display: block; margin-top: 8px; }
         .preview-imgs { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
-        .preview-imgs img { width: 70px; height: 70px; object-fit: cover; border-radius: 16px; }
+        .preview-imgs img { width: 70px; height: 70px; border-radius: 16px; object-fit: cover; }
         .admin-product-row {
             background: #f8fafc;
             margin-bottom: 12px;
@@ -306,425 +278,270 @@
             object-fit: cover;
         }
         .image-gallery { display: flex; gap: 8px; overflow-x: auto; margin: 12px 0; }
-        .image-gallery img { width: 70px; height: 70px; border-radius: 16px; object-fit: cover; cursor: pointer; }
+        .image-gallery img { width: 70px; height: 70px; border-radius: 16px; cursor: pointer; }
         .review-box { background: #f1f5f9; padding: 12px; border-radius: 20px; margin-bottom: 10px; }
+        .connect-btn {
+            background: #0f172a;
+            color: white;
+            padding: 14px;
+            border-radius: 60px;
+            text-align: center;
+            cursor: pointer;
+            margin: 16px 0;
+        }
     </style>
 </head>
 <body>
 
-<div id="app">
-    <!-- HOME PAGE -->
-    <div id="homeView">
+<!-- ==================== MAIN APP CONTAINER ==================== -->
+<div id="appContainer">
+    <!-- HOME PAGE VIEW -->
+    <div id="homePageView">
+        <!-- Top Bar -->
         <div class="top-bar">
             <div class="logo">Drozioo</div>
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInputHome" placeholder="Search products...">
+                <input type="text" id="homeSearchInput" placeholder="Search products...">
             </div>
-            <button class="menu-icon" id="menuBtnHome"><i class="fas fa-bars"></i></button>
+            <button class="menu-icon" id="homeMenuBtn"><i class="fas fa-bars"></i></button>
         </div>
+
+        <!-- Hero Banner -->
         <div class="hero">
             <h1>Drozioo <span style="font-size:1rem;">by GOTM</span></h1>
             <p>Quality Products | Best Prices | Fast Delivery</p>
             <div class="tag">🔥 Free for sellers · Zero commission 🔥</div>
         </div>
-        <div class="categories-scroll" id="categoriesContainer"></div>
-        <div class="products-grid" id="productsGrid"></div>
-        <div class="load-more" id="loadMoreTrigger">⬇️ Scroll for more products</div>
+
+        <!-- Categories Section -->
+        <div class="categories-scroll" id="categoriesListContainer">
+            <!-- Dynamic categories will go here -->
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGridContainer">
+            <!-- Product cards will be injected here -->
+        </div>
+
+        <!-- Load More -->
+        <div class="load-more" id="loadMoreBtn">⬇️ Scroll for more products</div>
     </div>
 </div>
 
-<!-- DRAWER -->
+<!-- ==================== DRAWER MENU (SIDE MENU) ==================== -->
 <div id="drawerOverlay" class="drawer-overlay"></div>
-<div id="drawerGlobal" class="drawer">
-    <div class="close-drawer" id="closeDrawerBtn"><i class="fas fa-times"></i></div>
-    <div class="drawer-item" data-drawer-action="categories"><i class="fas fa-list-ul"></i> Categories</div>
-    <div class="drawer-item" data-drawer-action="sellerLogin"><i class="fas fa-store"></i> Seller Login</div>
-    <div class="drawer-item" data-drawer-action="adminLogin"><i class="fas fa-user-cog"></i> Admin Login</div>
-    <div class="drawer-item" data-drawer-action="about"><i class="fas fa-info-circle"></i> About Us</div>
+<div id="drawerMenu" class="drawer">
+    <div class="close-drawer" id="drawerCloseBtn"><i class="fas fa-times"></i></div>
+    <div class="drawer-item" id="drawerCategoriesBtn">
+        <i class="fas fa-list-ul"></i> Categories
+    </div>
+    <div class="drawer-item" id="drawerSellerLoginBtn">
+        <i class="fas fa-store"></i> Seller Login
+    </div>
+    <div class="drawer-item" id="drawerAdminLoginBtn">
+        <i class="fas fa-user-cog"></i> Admin Login
+    </div>
+    <div class="drawer-item" id="drawerAboutBtn">
+        <i class="fas fa-info-circle"></i> About Us
+    </div>
 </div>
 
-<!-- LOGIN MODAL -->
-<div id="modalBgGlobal" class="modal-bg"></div>
-<div id="loginModalGlobal" class="modal-card">
+<!-- ==================== LOGIN MODAL ==================== -->
+<div id="modalBackground" class="modal-bg"></div>
+
+<div id="loginModal" class="modal-card">
     <h3 id="loginModalTitle">Seller Login</h3>
     <input type="password" id="loginPasswordInput" placeholder="Enter password">
-    <div id="loginErrorMsg" class="error-msg"></div>
-    <button id="loginConfirmBtn" class="btn">Login</button>
-    <button id="closeLoginModalBtn" class="btn btn-outline">Cancel</button>
+    <div id="loginErrorMessage" class="error-msg"></div>
+    <button id="loginSubmitBtn" class="btn">Login</button>
+    <button id="loginCancelBtn" class="btn btn-outline">Cancel</button>
 </div>
 
-<!-- SELLER PANEL (Add Product) -->
-<div id="sellerPanelGlobal" class="modal-card">
+<!-- ==================== SELLER PANEL (Add Product) ==================== -->
+<div id="sellerPanelModal" class="modal-card">
     <h3><i class="fas fa-plus-circle"></i> Add New Product</h3>
-    <input type="text" id="sellerProdName" placeholder="Product Name *">
-    <input type="number" id="sellerSellPrice" placeholder="Selling Price (₹) *">
+    
+    <input type="text" id="sellerProductName" placeholder="Product Name *">
+    
+    <input type="number" id="sellerSellingPrice" placeholder="Selling Price (₹) *">
+    
     <input type="number" id="sellerMrpPrice" placeholder="MRP (Original Price) *">
-    <textarea id="sellerProdDesc" rows="2" placeholder="Description"></textarea>
-    <input type="text" id="sellerNewCategory" placeholder="New Category (e.g., Sports, Toys) - leave blank to select existing">
-    <select id="sellerCategorySelect">
-        <option value="">-- Select existing category --</option>
+    
+    <textarea id="sellerDescription" rows="2" placeholder="Product Description"></textarea>
+    
+    <input type="text" id="sellerNewCategoryInput" placeholder="New Category (e.g., Sports, Toys)">
+    
+    <select id="sellerExistingCategorySelect">
+        <option value="">-- OR Select existing category --</option>
     </select>
+    
     <input type="text" id="sellerWhatsappNumber" placeholder="WhatsApp Number * (with country code)">
+    
     <label>Upload Images (2-3 photos)</label>
-    <input type="file" id="sellerImageUpload" accept="image/*" multiple>
-    <div id="sellerImagePreview" class="preview-imgs"></div>
-    <button id="sellerPublishBtn" class="btn">🚀 Publish Product</button>
-    <button id="closeSellerPanelBtn" class="btn btn-outline">Close</button>
+    <input type="file" id="sellerImagesUpload" accept="image/*" multiple>
+    <div id="sellerImagesPreview" class="preview-imgs"></div>
+    
+    <button id="sellerPublishProductBtn" class="btn">🚀 Publish Product</button>
+    <button id="sellerPanelCloseBtn" class="btn btn-outline">Close</button>
 </div>
 
-<!-- ADMIN PANEL -->
-<div id="adminPanelGlobal" class="modal-card">
+<!-- ==================== ADMIN PANEL ==================== -->
+<div id="adminPanelModal" class="modal-card">
     <h3><i class="fas fa-shield-alt"></i> Admin Dashboard</h3>
-    <div id="adminProductListContainer" style="max-height: 400px; overflow-y: auto;"></div>
-    <button id="closeAdminPanelBtn" class="btn btn-outline">Close</button>
+    <div id="adminProductsListContainer" style="max-height: 400px; overflow-y: auto;"></div>
+    <button id="adminPanelCloseBtn" class="btn btn-outline">Close</button>
 </div>
 
-<!-- EDIT PRODUCT MODAL -->
-<div id="editModalGlobal" class="modal-card">
+<!-- ==================== EDIT PRODUCT MODAL ==================== -->
+<div id="editProductModal" class="modal-card">
     <h3>Edit Product</h3>
-    <input type="text" id="editProdName" placeholder="Product Name">
-    <input type="number" id="editSellPrice" placeholder="Selling Price">
-    <input type="number" id="editMrpPrice" placeholder="MRP">
-    <textarea id="editDesc" rows="2" placeholder="Description"></textarea>
-    <input type="text" id="editCategory" placeholder="Category">
-    <input type="text" id="editWhatsapp" placeholder="WhatsApp Number">
-    <button id="saveEditBtn" class="btn">Save Changes</button>
-    <button id="closeEditModalBtn" class="btn btn-outline">Cancel</button>
+    <input type="text" id="editProductName" placeholder="Product Name">
+    <input type="number" id="editProductPrice" placeholder="Selling Price">
+    <input type="number" id="editProductMrp" placeholder="MRP">
+    <textarea id="editProductDesc" rows="2" placeholder="Description"></textarea>
+    <input type="text" id="editProductCategory" placeholder="Category">
+    <input type="text" id="editProductWhatsapp" placeholder="WhatsApp Number">
+    <button id="editSaveBtn" class="btn">Save Changes</button>
+    <button id="editCancelBtn" class="btn btn-outline">Cancel</button>
 </div>
 
-<!-- PRODUCT DETAIL MODAL (WhatsApp button only, no seller number visible) -->
-<div id="detailModalGlobal" class="modal-card">
-    <div id="detailContentArea"></div>
-    <textarea id="detailReviewText" rows="2" placeholder="Write a review..."></textarea>
+<!-- ==================== PRODUCT DETAIL MODAL ==================== -->
+<div id="productDetailModal" class="modal-card">
+    <div id="productDetailContent"></div>
+    <textarea id="detailReviewTextarea" rows="2" placeholder="Write a review..."></textarea>
     <button id="detailPostReviewBtn" class="btn-outline" style="margin-top:8px;">⭐ Post Review</button>
-    <button id="closeDetailModalBtn" class="btn btn-outline" style="margin-top:12px;">Close</button>
-    <div id="detailReviewsList" style="margin-top: 16px; max-height: 200px; overflow-y: auto;"></div>
+    <button id="detailCloseBtn" class="btn btn-outline" style="margin-top:12px;">Close</button>
+    <div id="detailReviewsListContainer" style="margin-top: 16px; max-height: 200px; overflow-y: auto;"></div>
 </div>
 
-<!-- ABOUT MODAL -->
-<div id="aboutModalGlobal" class="modal-card">
+<!-- ==================== ABOUT US MODAL ==================== -->
+<div id="aboutModal" class="modal-card">
     <h2>✨ About Drozioo</h2>
-    <p>Modern eCommerce platform by GOTM. Zero commission, fast WhatsApp ordering.</p>
-    <div class="connect-btn" id="aboutConnectEmailBtn" style="background:#0f172a; color:white; padding:14px; border-radius:60px; text-align:center; margin:16px 0; cursor:pointer;">
+    <p style="margin: 16px 0; line-height: 1.5;">Modern eCommerce platform by GOTM. Zero commission, fast WhatsApp ordering.</p>
+    <div id="aboutConnectEmailBtn" class="connect-btn">
         <i class="fas fa-envelope"></i> Send Email to GOTM
     </div>
-    <p style="font-size:0.8rem;">gotmprajapat00@gmail.com</p>
-    <button id="closeAboutModalBtn" class="btn btn-outline">Close</button>
+    <p style="font-size:0.8rem; margin-bottom:16px;">gotmprajapat00@gmail.com</p>
+    <button id="aboutCloseBtn" class="btn btn-outline">Close</button>
 </div>
 
-<script>
-    // ========== FIREBASE CONFIG ==========
-    const firebaseConfig = {
-        apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
-        authDomain: "drozioostore.firebaseapp.com",
-        projectId: "drozioostore",
-        storageBucket: "drozioostore.firebasestorage.app",
-        messagingSenderId: "930907642567",
-        appId: "1:930907642567:web:460334236bea24d3b1bce2"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // ========== GLOBAL STATE ==========
-    let allProducts = [];
-    let lastVisible = null;
-    let hasMore = true;
-    let loading = false;
-    let activeCategory = null;
-    let currentSearch = "";
-    let selectedProduct = null;
-    let allCategories = new Set();
-
-    // ========== LOAD PRODUCTS ==========
-    async function loadProducts(reset = true, category = null, search = "") {
-        if (reset) {
-            allProducts = [];
-            lastVisible = null;
-            hasMore = true;
-            activeCategory = category;
-            currentSearch = search;
-        }
-        if (loading || !hasMore) return;
-        loading = true;
-        try {
-            let query = db.collection("products").orderBy("createdAt", "desc").limit(10);
-            if (category && category !== "all") {
-                query = db.collection("products").where("category", "==", category).orderBy("createdAt", "desc").limit(10);
-            }
-            if (lastVisible) query = query.startAfter(lastVisible);
-            const snapshot = await query.get();
-            let newProds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            if (search.trim()) {
-                newProds = newProds.filter(p => p.name?.toLowerCase().includes(search.toLowerCase()));
-            }
-            if (newProds.length < 10) hasMore = false;
-            if (snapshot.docs.length > 0) lastVisible = snapshot.docs[snapshot.docs.length - 1];
-            if (reset) allProducts = newProds;
-            else allProducts = [...allProducts, ...newProds];
-            
-            // update categories set
-            allProducts.forEach(p => { if(p.category) allCategories.add(p.category); });
-            renderCategories();
-            renderProducts();
-        } catch(e) { console.error(e); }
-        loading = false;
-    }
-
-    // ========== RENDER CATEGORIES DYNAMICALLY ==========
-    function renderCategories() {
-        const container = document.getElementById("categoriesContainer");
-        if (!container) return;
-        let cats = Array.from(allCategories).sort();
-        let html = `<span class="category-chip ${!activeCategory ? 'active' : ''}" data-cat="all">All</span>`;
-        cats.forEach(cat => {
-            html += `<span class="category-chip ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}">${escapeHtml(cat)}</span>`;
-        });
-        container.innerHTML = html;
-        document.querySelectorAll(".category-chip").forEach(chip => {
-            chip.addEventListener("click", () => {
-                const cat = chip.getAttribute("data-cat");
-                activeCategory = (cat === "all") ? null : cat;
-                loadProducts(true, activeCategory, currentSearch);
-            });
-        });
-    }
-
-    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m];}); }
-
-    // ========== RENDER PRODUCTS (Selling price big, MRP with line) ==========
-    function renderProducts() {
-        const grid = document.getElementById("productsGrid");
-        if (!grid) return;
-        if (allProducts.length === 0) {
-            grid.innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:40px'>✨ No products found ✨</div>";
-            return;
-        }
-        let html = "";
-        allProducts.forEach(p => {
-            const imgUrl = (p.images && p.images[0]) ? p.images[0] : "https://picsum.photos/id/20/300/300";
-            const discount = (p.originalPrice && p.originalPrice > p.price) ? Math.round(((p.originalPrice - p.price)/p.originalPrice)*100) : 0;
-            html += `
-                <div class="product-card" data-prod-id="${p.id}">
-                    <img class="product-img" src="${imgUrl}" loading="lazy">
-                    <div class="product-info">
-                        <div class="product-name">${escapeHtml(p.name)}</div>
-                        <div class="price-row">
-                            <span class="selling-price">₹${p.price}</span>
-                            ${p.originalPrice ? `<span class="mrp-price">₹${p.originalPrice}</span>` : ''}
-                            ${discount > 0 ? `<span class="discount-badge">${discount}% off</span>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-        grid.innerHTML = html;
-        document.querySelectorAll(".product-card").forEach(card => {
-            card.addEventListener("click", () => {
-                const id = card.getAttribute("data-prod-id");
-                selectedProduct = allProducts.find(p => p.id === id);
-                if (selectedProduct) openProductDetail();
-            });
-        });
-    }
-
-    // ========== PRODUCT DETAIL (WhatsApp button - no seller number visible) ==========
-    async function openProductDetail() {
-        if (!selectedProduct) return;
-        const reviewsSnap = await db.collection("reviews").where("productId", "==", selectedProduct.id).orderBy("createdAt","desc").get();
-        const reviews = reviewsSnap.docs.map(d => d.data().text);
-        const imagesHtml = (selectedProduct.images || []).map(img => `<img src="${img}" style="width:70px;height:70px;border-radius:16px;object-fit:cover;cursor:pointer;" onclick="document.getElementById('detailMainImg').src=this.src">`).join('');
-        const detailHTML = `
-            <img id="detailMainImg" class="detail-main-img" src="${selectedProduct.images?.[0] || 'https://picsum.photos/id/20/300/300'}">
-            <div class="image-gallery">${imagesHtml}</div>
-            <h2>${escapeHtml(selectedProduct.name)}</h2>
-            <div class="price-row" style="margin:10px 0;">
-                <span class="selling-price" style="font-size:1.8rem;">₹${selectedProduct.price}</span>
-                ${selectedProduct.originalPrice ? `<span class="mrp-price" style="font-size:1rem;">₹${selectedProduct.originalPrice}</span>` : ''}
+<!-- ==================== SAMPLE PRODUCT CARD STRUCTURE (for reference) ==================== -->
+<!-- 
+    Product Card HTML Structure (to be used by JavaScript):
+    <div class="product-card" data-product-id="productId123">
+        <img class="product-img" src="image_url" alt="product name">
+        <div class="product-info">
+            <div class="product-name">Product Name Here</div>
+            <div class="price-row">
+                <span class="selling-price">₹499</span>
+                <span class="mrp-price">₹1299</span>
+                <span class="discount-badge">62% off</span>
             </div>
-            <p>${escapeHtml(selectedProduct.description || "No description")}</p>
-            <button id="detailWhatsappOrderBtn" class="btn btn-whatsapp" style="background:#25D366;"><i class="fab fa-whatsapp"></i> 📲 Order Now on WhatsApp</button>
-        `;
-        document.getElementById("detailContentArea").innerHTML = detailHTML;
-        document.getElementById("detailReviewsList").innerHTML = reviews.length ? reviews.map(r => `<div class="review-box">⭐ ${escapeHtml(r)}</div>`).join('') : "<div>No reviews yet. Be first!</div>";
-        document.getElementById("detailModalGlobal").classList.add("modal-active");
-        document.getElementById("modalBgGlobal").style.display = "block";
-        
-        document.getElementById("detailWhatsappOrderBtn")?.addEventListener("click", () => {
-            const msg = `Hello, I want to order this product:%0A📦 Product: ${selectedProduct.name}%0A💰 Price: ₹${selectedProduct.price}%0A📝 My Details:%0AName: %0AAddress: %0APhone: `;
-            window.open(`https://wa.me/${selectedProduct.whatsapp?.replace(/[^0-9]/g, '')}?text=${msg}`, '_blank');
-        });
-        
-        document.getElementById("detailPostReviewBtn").onclick = async () => {
-            const text = document.getElementById("detailReviewText").value.trim();
-            if (!text) return alert("Write a review");
-            await db.collection("reviews").add({ productId: selectedProduct.id, text, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-            document.getElementById("detailReviewText").value = "";
-            openProductDetail();
-        };
-    }
+        </div>
+    </div>
+-->
 
-    // ========== SELLER: ADD PRODUCT (NEW CATEGORY SUPPORT) ==========
-    async function publishProduct() {
-        const name = document.getElementById("sellerProdName").value.trim();
-        const price = parseFloat(document.getElementById("sellerSellPrice").value);
-        const mrp = parseFloat(document.getElementById("sellerMrpPrice").value);
-        const desc = document.getElementById("sellerProdDesc").value;
-        const newCategoryInput = document.getElementById("sellerNewCategory").value.trim();
-        const selectedCategory = document.getElementById("sellerCategorySelect").value;
-        let category = "";
-        if (newCategoryInput) category = newCategoryInput;
-        else if (selectedCategory) category = selectedCategory;
-        else { alert("Please enter new category or select existing"); return; }
-        const whatsapp = document.getElementById("sellerWhatsappNumber").value.trim();
-        const files = document.getElementById("sellerImageUpload").files;
-        if (!name || !price || !mrp || !whatsapp || files.length === 0) { alert("All fields required + upload images!"); return; }
-        let images = [];
-        for (let i = 0; i < Math.min(files.length, 3); i++) {
-            const reader = new FileReader();
-            const base64 = await new Promise(resolve => { reader.onload = e => resolve(e.target.result); reader.readAsDataURL(files[i]); });
-            images.push(base64);
-        }
-        await db.collection("products").add({
-            name, price, originalPrice: mrp, description: desc, category, whatsapp, images,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        alert("✅ Product published!");
-        document.getElementById("sellerPanelGlobal").classList.remove("modal-active");
-        document.getElementById("modalBgGlobal").style.display = "none";
-        loadProducts(true, activeCategory, currentSearch);
-    }
+<!-- ==================== SAMPLE ADMIN PRODUCT ROW (for reference) ==================== -->
+<!--
+    <div class="admin-product-row">
+        <div><strong>Product Name</strong><br>₹499 | Category</div>
+        <div>
+            <button class="adminEditBtn" data-product-id="id" style="background:#3b82f6; border:none; padding:6px 14px; border-radius:40px; color:white;">✏️ Edit</button>
+            <button class="adminDeleteBtn" data-product-id="id" style="background:#ef4444; border:none; padding:6px 14px; border-radius:40px; margin-left:8px;">🗑️ Delete</button>
+        </div>
+    </div>
+-->
+
+<!-- ==================== ALL UNIQUE IDs SUMMARY ==================== -->
+<!--
+    🔴 BUTTONS WITH UNIQUE IDs:
+    1. homeMenuBtn
+    2. drawerCloseBtn
+    3. drawerCategoriesBtn
+    4. drawerSellerLoginBtn
+    5. drawerAdminLoginBtn
+    6. drawerAboutBtn
+    7. loginSubmitBtn
+    8. loginCancelBtn
+    9. sellerPublishProductBtn
+    10. sellerPanelCloseBtn
+    11. adminPanelCloseBtn
+    12. editSaveBtn
+    13. editCancelBtn
+    14. detailPostReviewBtn
+    15. detailCloseBtn
+    16. aboutConnectEmailBtn
+    17. aboutCloseBtn
+    18. loadMoreBtn
+
+    🟢 INPUTS WITH UNIQUE IDs:
+    1. homeSearchInput
+    2. loginPasswordInput
+    3. sellerProductName
+    4. sellerSellingPrice
+    5. sellerMrpPrice
+    6. sellerDescription
+    7. sellerNewCategoryInput
+    8. sellerExistingCategorySelect
+    9. sellerWhatsappNumber
+    10. sellerImagesUpload
+    11. editProductName
+    12. editProductPrice
+    13. editProductMrp
+    14. editProductDesc
+    15. editProductCategory
+    16. editProductWhatsapp
+    17. detailReviewTextarea
+
+    🟡 CONTAINERS / DISPLAY AREAS:
+    1. categoriesListContainer
+    2. productsGridContainer
+    3. adminProductsListContainer
+    4. productDetailContent
+    5. detailReviewsListContainer
+    6. sellerImagesPreview
+
+    🔵 MODAL IDs:
+    1. loginModal
+    2. sellerPanelModal
+    3. adminPanelModal
+    4. editProductModal
+    5. productDetailModal
+    6. aboutModal
+
+    🟣 OTHER ELEMENTS:
+    1. modalBackground
+    2. drawerOverlay
+    3. drawerMenu
+    4. loginModalTitle
+    5. loginErrorMessage
+-->
+
+<script>
+    // ============================================================
+    //  🔴🔴🔴 JAVASCRIPT LOGIC WILL BE ADDED BY CHATGPT 🔴🔴🔴
+    // ============================================================
+    // 
+    // This file contains ONLY HTML and CSS structure.
+    // All Firebase connections, product loading, 
+    // add to cart, WhatsApp ordering, reviews, 
+    // seller panel, admin panel, infinite scroll,
+    // and dynamic category rendering will be added later.
+    //
+    // Required Firebase Collections:
+    // - products (id, name, price, originalPrice, description, category, whatsapp, images, createdAt)
+    // - passwords (master: {sellerPassword, adminPassword})
+    // - reviews (productId, text, createdAt)
+    //
+    // ============================================================
     
-    async function populateCategorySelect() {
-        const snap = await db.collection("products").get();
-        const cats = new Set();
-        snap.docs.forEach(doc => { if(doc.data().category) cats.add(doc.data().category); });
-        const select = document.getElementById("sellerCategorySelect");
-        select.innerHTML = '<option value="">-- Select existing category --</option>';
-        cats.forEach(c => { select.innerHTML += `<option value="${c}">${c}</option>`; });
-    }
-    
-    // ========== ADMIN PANEL ==========
-    async function openAdminPanel() {
-        const snap = await db.collection("products").orderBy("createdAt","desc").get();
-        const container = document.getElementById("adminProductListContainer");
-        container.innerHTML = "";
-        snap.docs.forEach(doc => {
-            const prod = doc.data();
-            const div = document.createElement("div");
-            div.className = "admin-product-row";
-            div.innerHTML = `<div><strong>${escapeHtml(prod.name)}</strong><br>₹${prod.price} | ${prod.category}</div>
-            <div><button class="adminEditBtn" data-id="${doc.id}" style="background:#3b82f6; border:none; padding:6px 14px; border-radius:40px; color:white;">✏️ Edit</button>
-            <button class="adminDeleteBtn" data-id="${doc.id}" style="background:#ef4444; border:none; padding:6px 14px; border-radius:40px; margin-left:8px;">🗑️</button></div>`;
-            container.appendChild(div);
-        });
-        document.querySelectorAll(".adminEditBtn").forEach(btn => btn.addEventListener("click", async () => {
-            const id = btn.dataset.id;
-            const prodDoc = await db.collection("products").doc(id).get();
-            const data = prodDoc.data();
-            document.getElementById("editProdName").value = data.name;
-            document.getElementById("editSellPrice").value = data.price;
-            document.getElementById("editMrpPrice").value = data.originalPrice || "";
-            document.getElementById("editDesc").value = data.description || "";
-            document.getElementById("editCategory").value = data.category || "";
-            document.getElementById("editWhatsapp").value = data.whatsapp || "";
-            document.getElementById("editModalGlobal").classList.add("modal-active");
-            document.getElementById("modalBgGlobal").style.display = "block";
-            window.editId = id;
-        }));
-        document.querySelectorAll(".adminDeleteBtn").forEach(btn => btn.addEventListener("click", async () => {
-            if(confirm("Delete product?")) { await db.collection("products").doc(btn.dataset.id).delete(); openAdminPanel(); loadProducts(true, activeCategory, currentSearch); }
-        }));
-    }
-    
-    document.getElementById("saveEditBtn")?.addEventListener("click", async () => {
-        await db.collection("products").doc(window.editId).update({
-            name: document.getElementById("editProdName").value,
-            price: parseFloat(document.getElementById("editSellPrice").value),
-            originalPrice: parseFloat(document.getElementById("editMrpPrice").value) || null,
-            description: document.getElementById("editDesc").value,
-            category: document.getElementById("editCategory").value,
-            whatsapp: document.getElementById("editWhatsapp").value
-        });
-        alert("Updated!");
-        document.getElementById("editModalGlobal").classList.remove("modal-active");
-        document.getElementById("modalBgGlobal").style.display = "none";
-        openAdminPanel();
-        loadProducts(true, activeCategory, currentSearch);
-    });
-    
-    // ========== LOGIC HELPER ==========
-    function closeAllModals() {
-        document.querySelectorAll(".modal-card").forEach(m => m.classList.remove("modal-active"));
-        document.getElementById("modalBgGlobal").style.display = "none";
-    }
-    
-    // ========== DRAWER & AUTH ==========
-    function openDrawer() { document.getElementById("drawerGlobal").classList.add("drawer-open"); document.getElementById("drawerOverlay").classList.add("overlay-visible"); }
-    function closeDrawer() { document.getElementById("drawerGlobal").classList.remove("drawer-open"); document.getElementById("drawerOverlay").classList.remove("overlay-visible"); }
-    document.getElementById("menuBtnHome")?.addEventListener("click", openDrawer);
-    document.getElementById("closeDrawerBtn")?.addEventListener("click", closeDrawer);
-    document.getElementById("drawerOverlay")?.addEventListener("click", closeDrawer);
-    
-    document.querySelectorAll("[data-drawer-action]").forEach(el => {
-        el.addEventListener("click", async (e) => {
-            const action = e.currentTarget.getAttribute("data-drawer-action");
-            closeDrawer();
-            if(action === "sellerLogin") {
-                document.getElementById("loginModalTitle").innerText = "Seller Login";
-                document.getElementById("loginModalGlobal").setAttribute("data-type","seller");
-                document.getElementById("loginModalGlobal").classList.add("modal-active");
-                document.getElementById("modalBgGlobal").style.display = "block";
-            } else if(action === "adminLogin") {
-                document.getElementById("loginModalTitle").innerText = "Admin Login";
-                document.getElementById("loginModalGlobal").setAttribute("data-type","admin");
-                document.getElementById("loginModalGlobal").classList.add("modal-active");
-                document.getElementById("modalBgGlobal").style.display = "block";
-            } else if(action === "about") {
-                document.getElementById("aboutModalGlobal").classList.add("modal-active");
-                document.getElementById("modalBgGlobal").style.display = "block";
-            }
-        });
-    });
-    
-    document.getElementById("loginConfirmBtn")?.addEventListener("click", async () => {
-        const pass = document.getElementById("loginPasswordInput").value;
-        const type = document.getElementById("loginModalGlobal").getAttribute("data-type");
-        const doc = await db.collection("passwords").doc("master").get();
-        if(type === "seller") {
-            if(!doc.exists || !doc.data().sellerPassword) { await db.collection("passwords").doc("master").set({ sellerPassword: pass }, { merge: true }); alert("Seller password set! Logged in."); closeAllModals(); await populateCategorySelect(); document.getElementById("sellerPanelGlobal").classList.add("modal-active"); document.getElementById("modalBgGlobal").style.display = "block"; }
-            else if(doc.data().sellerPassword === pass) { closeAllModals(); await populateCategorySelect(); document.getElementById("sellerPanelGlobal").classList.add("modal-active"); document.getElementById("modalBgGlobal").style.display = "block"; }
-            else document.getElementById("loginErrorMsg").innerText = "Wrong password!";
-        } else {
-            if(!doc.exists || !doc.data().adminPassword) { await db.collection("passwords").doc("master").set({ adminPassword: pass }, { merge: true }); alert("Admin password set!"); closeAllModals(); openAdminPanel(); document.getElementById("adminPanelGlobal").classList.add("modal-active"); document.getElementById("modalBgGlobal").style.display = "block"; }
-            else if(doc.data().adminPassword === pass) { closeAllModals(); openAdminPanel(); document.getElementById("adminPanelGlobal").classList.add("modal-active"); document.getElementById("modalBgGlobal").style.display = "block"; }
-            else document.getElementById("loginErrorMsg").innerText = "Wrong admin password!";
-        }
-    });
-    
-    document.getElementById("closeLoginModalBtn")?.addEventListener("click", closeAllModals);
-    document.getElementById("closeSellerPanelBtn")?.addEventListener("click", closeAllModals);
-    document.getElementById("closeAdminPanelBtn")?.addEventListener("click", closeAllModals);
-    document.getElementById("closeDetailModalBtn")?.addEventListener("click", closeAllModals);
-    document.getElementById("closeEditModalBtn")?.addEventListener("click", closeAllModals);
-    document.getElementById("closeAboutModalBtn")?.addEventListener("click", closeAllModals);
-    document.getElementById("modalBgGlobal")?.addEventListener("click", closeAllModals);
-    document.getElementById("sellerPublishBtn")?.addEventListener("click", publishProduct);
-    document.getElementById("aboutConnectEmailBtn")?.addEventListener("click", () => { window.location.href = "mailto:gotmprajapat00@gmail.com?subject=Hello Drozioo&body=I'm interested"; });
-    document.getElementById("searchInputHome")?.addEventListener("input", (e) => { currentSearch = e.target.value; loadProducts(true, activeCategory, currentSearch); });
-    
-    document.getElementById("sellerImageUpload")?.addEventListener("change", (e) => {
-        const preview = document.getElementById("sellerImagePreview");
-        preview.innerHTML = "";
-        Array.from(e.target.files).slice(0,3).forEach(f => { const reader = new FileReader(); reader.onload = ev => { const img = document.createElement("img"); img.src = ev.target.result; preview.appendChild(img); }; reader.readAsDataURL(f); });
-    });
-    
-    // INFINITE SCROLL
-    window.addEventListener("scroll", () => {
-        if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && hasMore && !loading) loadProducts(false, activeCategory, currentSearch);
-    });
-    
-    loadProducts(true, null, "");
+    console.log("Drozioo UI Ready - Add JavaScript logic here");
+    console.log("All unique IDs are ready for Firebase integration");
 </script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+<script src="app.js"></script>
 </body>
 </html>
