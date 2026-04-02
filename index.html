@@ -539,9 +539,24 @@
     console.log("Drozioo UI Ready - Add JavaScript logic here");
     console.log("All unique IDs are ready for Firebase integration");
 </script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-<script src="app.js"></script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
+    authDomain: "drozioostore.firebaseapp.com",
+    projectId: "drozioostore",
+    storageBucket: "drozioostore.firebasestorage.app",
+    messagingSenderId: "930907642567",
+    appId: "1:930907642567:web:460334236bea24d3b1bce2"
+  };
+
+  window.app = initializeApp(firebaseConfig);
+</script>
+
+<!-- TERA JS -->
+<script type="module" src="app.js"></script>
 </body>
 </html>
