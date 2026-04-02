@@ -1,199 +1,260 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Drozioo Store</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body { margin:0; font-family: Arial; background:#f1f1f1; }
-    header { background:#000; color:#fff; padding:12px; text-align:center; }
-    input, button { padding:10px; margin:5px; border-radius:6px; border:none; }
-    .container { padding:10px; }
-    .product { background:#fff; padding:10px; margin:10px 0; border-radius:10px; }
-    img { width:100%; border-radius:10px; }
-    .hidden { display:none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drozioo</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ====== CSS ====== */
+body { font-family:'Poppins',sans-serif; margin:0; background:#f9f9f9;}
+header { display:flex; justify-content:space-between; align-items:center; padding:10px 15px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.logo { font-weight:bold; font-size:22px; background: linear-gradient(45deg,#f00,#00f,#ff0); -webkit-background-clip:text; color:transparent;}
+.search-bar { flex:1; margin:0 10px; }
+.search-bar input { width:100%; padding:7px; border-radius:5px; border:1px solid #ccc;}
+.menu-btn { font-size:24px; cursor:pointer;}
+.product-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:10px;}
+.product-card { background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.product-card img { width:100%; border-radius:5px;}
+.product-card h3 { font-size:16px; margin:5px 0;}
+.product-card .price { font-weight:bold; color:#2a9d8f;}
+.product-card .originalPrice { text-decoration:line-through; color:#888; font-size:13px;}
+.btn { background:#2a9d8f; color:#fff; padding:6px 12px; border:none; border-radius:5px; cursor:pointer;}
+.section { display:none; padding:10px;}
+.active { display:block;}
+input, textarea, select { width:100%; padding:6px; margin:5px 0; border-radius:5px; border:1px solid #ccc;}
+table { width:100%; border-collapse: collapse;}
+table th, table td { border:1px solid #ccc; padding:6px; text-align:left;}
+img.thumb { width:60px; height:60px; object-fit:cover; margin:2px;}
+</style>
 </head>
-
 <body>
 
 <header>
-  <h2>Drozioo</h2>
-  <input type="text" id="search" placeholder="Search..." onkeyup="searchProduct()">
+  <div class="logo">Drozioo</div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search products...">
+  </div>
+  <div class="menu-btn" onclick="showSection('about')">&#9776;</div>
 </header>
 
-<div class="container">
-
-  <div id="products"></div>
-
-  <!-- SELLER -->
-  <h3>Seller Panel</h3>
-  <input id="sellerPassSet" placeholder="Set Seller Password">
-  <button onclick="setPassword('seller')">Set Seller</button>
-
-  <input id="sellerLogin" placeholder="Seller Login">
-  <button onclick="login('seller')">Login</button>
-
-  <div id="sellerPanel" class="hidden">
-    <h4>Add Product</h4>
-    <input id="pname" placeholder="Name">
-    <input id="pprice" placeholder="Price">
-    <input id="pimg" placeholder="Image URL">
-    <textarea id="pdesc" placeholder="Description"></textarea>
-    <button onclick="addProduct()">Add</button>
-  </div>
-
-  <!-- ADMIN -->
-  <h3>Admin Panel</h3>
-  <input id="adminPassSet" placeholder="Set Admin Password">
-  <button onclick="setPassword('admin')">Set Admin</button>
-
-  <input id="adminLogin" placeholder="Admin Login">
-  <button onclick="login('admin')">Login</button>
-
+<!-- HOME SECTION -->
+<div id="home" class="section active">
+  <div class="product-grid" id="productGrid"></div>
 </div>
 
-<script type="module">
+<!-- PRODUCT DETAIL -->
+<div id="productDetail" class="section">
+  <button class="btn" onclick="showSection('home')">Back</button>
+  <h2 id="pdName"></h2>
+  <div id="pdImages"></div>
+  <p id="pdDesc"></p>
+  <div>Price: ₹<span id="pdPrice"></span> <span id="pdOriginalPrice" style="text-decoration:line-through;color:#888;"></span></div>
+  <div>Seller WhatsApp: <span id="pdWhatsapp"></span></div>
+  <button class="btn" id="orderBtn">Order on WhatsApp</button>
+  <h3>Reviews</h3>
+  <div id="reviewsList"></div>
+  <textarea id="reviewText" placeholder="Write a review"></textarea>
+  <button class="btn" onclick="postReview()">Post Review</button>
+</div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, get, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+<!-- SELLER PANEL -->
+<div id="sellerPanel" class="section">
+  <button class="btn" onclick="showSection('home')">Back</button>
+  <h2>Seller Panel</h2>
+  <input type="password" id="sellerPass" placeholder="Enter Seller Password">
+  <button class="btn" onclick="sellerLogin()">Login</button>
+  <div id="sellerForm" style="display:none;">
+    <input type="text" id="sName" placeholder="Product Name">
+    <input type="number" id="sPrice" placeholder="Selling Price">
+    <input type="number" id="sOriginalPrice" placeholder="Original Price">
+    <textarea id="sDesc" placeholder="Description"></textarea>
+    <input type="text" id="sCategory" placeholder="Category">
+    <input type="text" id="sWhatsapp" placeholder="WhatsApp Number">
+    <input type="file" id="sImages" multiple accept="image/*">
+    <button class="btn" onclick="uploadProduct()">Upload Product</button>
+  </div>
+</div>
 
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="section">
+  <button class="btn" onclick="showSection('home')">Back</button>
+  <h2>Admin Panel</h2>
+  <input type="password" id="adminPass" placeholder="Enter Admin Password">
+  <button class="btn" onclick="adminLogin()">Login</button>
+  <div id="adminTableDiv" style="display:none;">
+    <table id="adminTable">
+      <tr><th>Name</th><th>Price</th><th>Category</th><th>Actions</th></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ABOUT US -->
+<div id="about" class="section">
+  <button class="btn" onclick="showSection('home')">Back</button>
+  <h2>About Drozioo</h2>
+  <p>Modern eCommerce Platform by GOTM. Quality Products | Best Prices | Fast Delivery.</p>
+  <button class="btn" onclick="window.open('mailto:gotmprajapat00@gmail.com?subject=Contact Drozioo&body=Hello GOTM')">Connect via Gmail</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script>
+// ===== Firebase Setup =====
 const firebaseConfig = {
-  apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
-  authDomain: "drozioostore.firebaseapp.com",
-  databaseURL: "https://drozioostore-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "drozioostore"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+// ===== Global Variables =====
+let currentProductId = "";
 
-let isAdmin = false;
-
-// PASSWORD SET
-window.setPassword = async function(type){
-  let input = document.getElementById(type+"PassSet").value;
-  if(!input) return alert("Enter password");
-
-  let r = ref(db,"passwords/"+type);
-  let snap = await get(r);
-
-  if(snap.exists()){
-    alert("Already set!");
-  }else{
-    await set(r,input);
-    alert(type+" saved");
-  }
+// ===== Section Switch =====
+function showSection(sec){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  if(sec==='home') loadProducts();
+  document.getElementById(sec).classList.add('active');
 }
 
-// LOGIN
-window.login = async function(type){
-  let input = document.getElementById(type+"Login").value;
-  let r = ref(db,"passwords/"+type);
-  let snap = await get(r);
+// ===== Load Products =====
+const productGrid = document.getElementById('productGrid');
+const searchInput = document.getElementById('searchInput');
 
-  if(!snap.exists()){
-    alert("Set password first");
-    return;
-  }
-
-  if(input === snap.val()){
-    alert("Login success");
-
-    if(type=="seller"){
-      document.getElementById("sellerPanel").classList.remove("hidden");
-    }
-
-    if(type=="admin"){
-      isAdmin = true;
-      loadProducts();
-    }
-
-  }else{
-    alert("Wrong password");
-  }
-}
-
-// ADD PRODUCT
-window.addProduct = function(){
-  let name = document.getElementById("pname").value;
-  let price = document.getElementById("pprice").value;
-  let img = document.getElementById("pimg").value;
-  let desc = document.getElementById("pdesc").value;
-
-  push(ref(db,"products"),{
-    name,price,img,desc,time:Date.now()
-  });
-
-  alert("Added");
-}
-
-// LOAD PRODUCTS
-const box = document.getElementById("products");
-
-function loadProducts(){
-  onValue(ref(db,"products"), snap=>{
-    box.innerHTML="";
-    let arr=[];
-
-    snap.forEach(c=>{
-      arr.push({id:c.key,...c.val()});
-    });
-
-    arr.reverse();
-
-    arr.forEach(d=>{
-      box.innerHTML += `
-        <div class="product">
-          <img src="${d.img}">
-          <h3>${d.name}</h3>
-          <p>₹${d.price}</p>
-          <button onclick="order('${d.name}','${d.price}')">Order</button>
-          ${isAdmin ? `
-          <button onclick="del('${d.id}')">Delete</button>
-          <button onclick="edit('${d.id}')">Edit</button>` : ""}
-        </div>
-      `;
-    });
+async function loadProducts(){
+  productGrid.innerHTML = '';
+  const snapshot = await db.collection('products').orderBy('createdAt','desc').get();
+  snapshot.forEach(doc=>{
+    const p = doc.data();
+    if(searchInput.value && !p.name.toLowerCase().includes(searchInput.value.toLowerCase())) return;
+    const card = document.createElement('div');
+    card.className='product-card';
+    card.innerHTML=`<img src="${p.images[0]}" alt="${p.name}"><h3>${p.name}</h3>
+    <div class="price">₹${p.price}</div>
+    ${p.originalPrice? `<div class="originalPrice">₹${p.originalPrice}</div>` : ''}
+    <button class="btn" onclick="viewProduct('${doc.id}')">View</button>`;
+    productGrid.appendChild(card);
   });
 }
+searchInput.addEventListener('input', loadProducts);
 
-loadProducts();
-
-// DELETE
-window.del = function(id){
-  remove(ref(db,"products/"+id));
+// ===== View Product Detail =====
+async function viewProduct(id){
+  currentProductId = id;
+  const doc = await db.collection('products').doc(id).get();
+  const p = doc.data();
+  document.getElementById('pdName').innerText = p.name;
+  document.getElementById('pdDesc').innerText = p.description;
+  document.getElementById('pdPrice').innerText = p.price;
+  document.getElementById('pdOriginalPrice').innerText = p.originalPrice || '';
+  document.getElementById('pdWhatsapp').innerText = p.whatsapp;
+  const imgDiv = document.getElementById('pdImages');
+  imgDiv.innerHTML='';
+  p.images.forEach(url=>{
+    const im = document.createElement('img'); im.src=url; im.className='thumb';
+    imgDiv.appendChild(im);
+  });
+  document.getElementById('orderBtn').onclick=()=>window.open(`https://wa.me/${p.whatsapp.replace(/\D/g,'')}?text=Hello,%20I%20want%20to%20order%20this%20product:%0A${p.name}%0APrice:%20₹${p.price}%0AName:%0AAddress:%0APhone:`,'_blank');
+  loadReviews();
+  showSection('productDetail');
 }
 
-// EDIT
-window.edit = function(id){
-  let newName = prompt("New name");
-  let newPrice = prompt("New price");
+// ===== Reviews =====
+async function loadReviews(){
+  const revDiv = document.getElementById('reviewsList');
+  revDiv.innerHTML='';
+  const snapshot = await db.collection('reviews').where('productId','==',currentProductId).orderBy('createdAt','desc').get();
+  snapshot.forEach(doc=>{
+    const r = doc.data();
+    const p = document.createElement('p'); p.innerText=r.text; revDiv.appendChild(p);
+  });
+}
+async function postReview(){
+  const text = document.getElementById('reviewText').value;
+  if(!text) return alert('Write a review!');
+  await db.collection('reviews').add({productId:currentProductId,text,createdAt:firebase.firestore.Timestamp.now()});
+  document.getElementById('reviewText').value='';
+  loadReviews();
+}
 
-  update(ref(db,"products/"+id),{
-    name:newName,
-    price:newPrice
+// ===== Seller Login =====
+async function sellerLogin(){
+  const pass = document.getElementById('sellerPass').value;
+  const docRef = db.collection('passwords').doc('master');
+  const doc = await docRef.get();
+  if(!doc.exists){ await docRef.set({sellerPassword:pass},{merge:true}); alert('Password saved!'); }
+  else if(doc.data().sellerPassword !== pass){ return alert('Wrong password!'); }
+  document.getElementById('sellerForm').style.display='block';
+}
+
+// ===== Upload Product =====
+async function uploadProduct(){
+  const name=document.getElementById('sName').value;
+  const price=document.getElementById('sPrice').value;
+  const oPrice=document.getElementById('sOriginalPrice').value;
+  const desc=document.getElementById('sDesc').value;
+  const cat=document.getElementById('sCategory').value;
+  const whatsapp=document.getElementById('sWhatsapp').value;
+  const files=document.getElementById('sImages').files;
+  if(!name||!price||!desc||!cat||!whatsapp||files.length==0) return alert('Fill all fields and select images!');
+  const imgs=[];
+  for(let i=0;i<files.length;i++){
+    const file=files[i];
+    const ref=storage.ref().child('products/'+Date.now()+'_'+file.name);
+    await ref.put(file);
+    const url=await ref.getDownloadURL(); imgs.push(url);
+  }
+  await db.collection('products').add({name,price:Number(price),originalPrice:oPrice?Number(oPrice):null,description:desc,category:cat,whatsapp,images:imgs,createdAt:firebase.firestore.Timestamp.now()});
+  alert('Product Uploaded!');
+  showSection('home');
+}
+
+// ===== Admin Login =====
+async function adminLogin(){
+  const pass = document.getElementById('adminPass').value;
+  const docRef = db.collection('passwords').doc('master');
+  const doc = await docRef.get();
+  if(!doc.exists){ await docRef.set({adminPassword:pass},{merge:true}); alert('Admin password saved!'); }
+  else if(doc.data().adminPassword !== pass){ return alert('Wrong password!'); }
+  loadAdminTable();
+  document.getElementById('adminTableDiv').style.display='block';
+}
+
+// ===== Admin Table =====
+async function loadAdminTable(){
+  const table=document.getElementById('adminTable');
+  // Clear old rows except header
+  table.innerHTML='<tr><th>Name</th><th>Price</th><th>Category</th><th>Actions</th></tr>';
+  const snapshot = await db.collection('products').orderBy('createdAt','desc').get();
+  snapshot.forEach(doc=>{
+    const p=doc.data();
+    const row=table.insertRow();
+    row.insertCell(0).innerText=p.name;
+    row.insertCell(1).innerText=p.price;
+    row.insertCell(2).innerText=p.category;
+    const act=row.insertCell(3);
+    act.innerHTML=`<button onclick="editProduct('${doc.id}')">Edit</button> <button onclick="deleteProduct('${doc.id}')">Delete</button>`;
   });
 }
 
-// SEARCH
-window.searchProduct = function(){
-  let v = document.getElementById("search").value.toLowerCase();
-  let items = document.getElementsByClassName("product");
-
-  for(let i=0;i<items.length;i++){
-    let txt = items[i].innerText.toLowerCase();
-    items[i].style.display = txt.includes(v) ? "" : "none";
-  }
+// ===== Edit/Delete Product =====
+async function deleteProduct(id){ if(confirm('Delete product?')){ await db.collection('products').doc(id).delete(); loadAdminTable(); loadProducts(); }}
+async function editProduct(id){
+  const doc=await db.collection('products').doc(id).get();
+  const p=doc.data();
+  const newName=prompt('Product Name',p.name);
+  if(!newName) return;
+  await db.collection('products').doc(id).update({name:newName});
+  loadAdminTable(); loadProducts();
 }
-
-// ORDER
-window.order = function(name,price){
-  let msg = `Order:\n${name}\n₹${price}`;
-  window.open("https://wa.me/?text="+encodeURIComponent(msg));
-}
-
 </script>
-
 </body>
 </html>
