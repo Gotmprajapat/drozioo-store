@@ -1,562 +1,661 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Drozioo - Sell & Shop</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-        body {
-            background: #f8fafc;
-            color: #0f172a;
-            padding-bottom: 80px;
-        }
-        /* ===== TOP BAR ===== */
-        .top-bar {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            border-bottom: 1px solid #e9eef3;
-            z-index: 30;
-        }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #e11d48, #3b82f6, #facc15);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .search-box {
-            flex: 1;
-            background: #f1f5f9;
-            border-radius: 40px;
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid #e2e8f0;
-        }
-        .search-box i { color: #64748b; }
-        .search-box input {
-            background: transparent;
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 0.95rem;
-        }
-        .menu-icon {
-            font-size: 1.8rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: #1e293b;
-            width: 44px;
-            height: 44px;
-            border-radius: 30px;
-        }
-        /* ===== HERO ===== */
-        .hero {
-            background: linear-gradient(125deg, #fef7e0, #e0f2fe);
-            margin: 16px;
-            border-radius: 32px;
-            padding: 24px 20px;
-            text-align: center;
-        }
-        .hero h1 {
-            font-size: 2rem;
-            background: linear-gradient(115deg, #b91c1c, #2563eb, #eab308);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .hero .tag {
-            font-size: 0.75rem;
-            background: rgba(0,0,0,0.05);
-            display: inline-block;
-            padding: 4px 14px;
-            border-radius: 40px;
-            margin-top: 10px;
-        }
-        /* ===== CATEGORIES ===== */
-        .categories-scroll {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding: 12px 16px;
-            white-space: nowrap;
-        }
-        .category-chip {
-            background: white;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid #e2e8f0;
-            cursor: pointer;
-        }
-        .category-chip.active {
-            background: #0f172a;
-            color: white;
-        }
-        /* ===== PRODUCT GRID ===== */
-        .products-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            padding: 8px 16px 20px;
-        }
-        .product-card {
-            background: white;
-            border-radius: 24px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 1px solid #edf2f7;
-        }
-        .product-img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            background: #f1f5f9;
-        }
-        .product-info { padding: 12px; }
-        .product-name {
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-        .price-row {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        /* Selling price BADA */
-        .selling-price {
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: #0f172a;
-        }
-        /* MRP par tedi line (cut) */
-        .mrp-price {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            text-decoration: line-through;
-        }
-        .discount-badge {
-            background: #fee2e2;
-            color: #b91c1c;
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 30px;
-        }
-        .load-more {
-            text-align: center;
-            padding: 20px;
-            color: #3b82f6;
-            cursor: pointer;
-        }
-        /* ===== DRAWER MENU ===== */
-        .drawer-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.2s;
-        }
-        .drawer {
-            position: fixed;
-            right: 0;
-            top: 0;
-            width: 280px;
-            height: 100%;
-            background: white;
-            padding: 28px 20px;
-            transform: translateX(100%);
-            transition: 0.3s;
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-        .drawer-open { transform: translateX(0); }
-        .overlay-visible { visibility: visible; opacity: 1; }
-        .drawer-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 1rem;
-            font-weight: 500;
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f5f9;
-            cursor: pointer;
-        }
-        .drawer-item i { width: 28px; color: #3b82f6; }
-        .close-drawer { align-self: flex-end; font-size: 1.6rem; cursor: pointer; }
-        /* ===== MODALS ===== */
-        .modal-bg {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 1050;
-            display: none;
-        }
-        .modal-card {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            width: 90%;
-            max-width: 480px;
-            max-height: 85vh;
-            overflow-y: auto;
-            border-radius: 36px;
-            padding: 24px;
-            z-index: 1100;
-            display: none;
-        }
-        .modal-active { display: block; }
-        .btn {
-            background: #0f172a;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 60px;
-            font-weight: 600;
-            width: 100%;
-            margin-top: 16px;
-            cursor: pointer;
-        }
-        .btn-outline { background: white; border: 1px solid #cbd5e1; color: #1e293b; }
-        .btn-whatsapp { background: #25D366; }
-        input, textarea, select {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 28px;
-            margin-top: 6px;
-            margin-bottom: 14px;
-            font-size: 0.9rem;
-        }
-        label { font-weight: 600; font-size: 0.85rem; display: block; margin-top: 8px; }
-        .preview-imgs { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
-        .preview-imgs img { width: 70px; height: 70px; border-radius: 16px; object-fit: cover; }
-        .admin-product-row {
-            background: #f8fafc;
-            margin-bottom: 12px;
-            padding: 12px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .error-msg { color: #e11d48; font-size: 0.75rem; margin-top: 4px; }
-        .detail-main-img {
-            width: 100%;
-            border-radius: 28px;
-            max-height: 280px;
-            object-fit: cover;
-        }
-        .image-gallery { display: flex; gap: 8px; overflow-x: auto; margin: 12px 0; }
-        .image-gallery img { width: 70px; height: 70px; border-radius: 16px; cursor: pointer; }
-        .review-box { background: #f1f5f9; padding: 12px; border-radius: 20px; margin-bottom: 10px; }
-        .connect-btn {
-            background: #0f172a;
-            color: white;
-            padding: 14px;
-            border-radius: 60px;
-            text-align: center;
-            cursor: pointer;
-            margin: 16px 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Drozioo – Shop with WhatsApp</title>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #1e293b;
+      padding-bottom: 2rem;
+    }
+
+    /* logo style: two colors, different font sizes */
+    .logo {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .logo span:first-child {
+      color: #e11d48; /* deep rose */
+      font-size: 2.8rem;
+      font-family: 'Segoe UI', 'Poppins', cursive;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+    }
+    .logo span:last-child {
+      color: #0f3b2c; /* dark forest */
+      font-size: 2rem;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+    .logo small {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #5b6e8c;
+      letter-spacing: 1px;
+      margin-left: 8px;
+    }
+    .logo:hover {
+      transform: scale(1.01);
+    }
+
+    /* banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-radius: 32px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      box-shadow: 0 15px 30px -12px rgba(0,0,0,0.2);
+    }
+    .hero-banner h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1px;
+    }
+    .hero-banner h1 span {
+      color: #facc15;
+      font-size: 3.2rem;
+    }
+    .hero-banner p {
+      color: #cbd5e1;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    /* containers */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .search-box {
+      display: flex;
+      background: white;
+      border-radius: 60px;
+      padding: 5px 15px;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+    }
+    .search-box i {
+      color: #94a3b8;
+    }
+    .search-box input {
+      border: none;
+      padding: 10px 12px;
+      width: 250px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #cbd5e1;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-left: 8px;
+    }
+    .btn-primary {
+      background: #e11d48;
+      border: none;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-primary:hover {
+      background: #be123c;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #0f3b2c;
+      color: white;
+      border: none;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 28px;
+      margin: 2rem 0;
+    }
+    .product-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
+    }
+    .product-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: #f1f5f9;
+    }
+    .product-info {
+      padding: 1rem;
+    }
+    .product-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .price-row {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      margin: 8px 0;
+    }
+    .current-price {
+      font-weight: 800;
+      color: #e11d48;
+      font-size: 1.3rem;
+    }
+    .mrp {
+      text-decoration: line-through;
+      color: #94a3b8;
+      font-size: 0.85rem;
+    }
+    .category-badge {
+      background: #eef2ff;
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #1e40af;
+      margin-top: 6px;
+    }
+    .stock {
+      font-size: 0.7rem;
+      color: #16a34a;
+      font-weight: 500;
+    }
+    /* modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-card {
+      background: white;
+      max-width: 500px;
+      width: 90%;
+      border-radius: 32px;
+      padding: 1.8rem;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .close-modal {
+      float: right;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+    /* panels */
+    .panel {
+      background: white;
+      border-radius: 32px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 20px;
+      border: 1px solid #cbd5e1;
+      outline: none;
+    }
+    button {
+      cursor: pointer;
+    }
+    .admin-actions button {
+      margin: 5px;
+      padding: 6px 12px;
+      border-radius: 30px;
+    }
+    .edit-btn { background: #eab308; color: black; border: none; }
+    .delete-btn { background: #dc2626; color: white; border: none; }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 640px) {
+      .logo span:first-child { font-size: 2rem; }
+      .logo span:last-child { font-size: 1.5rem; }
+      .hero-banner h1 { font-size: 2rem; }
+    }
+    .success-msg {
+      background: #dcfce7;
+      padding: 8px;
+      border-radius: 20px;
+      margin: 10px 0;
+    }
+  </style>
 </head>
 <body>
-
-<!-- ==================== MAIN APP CONTAINER ==================== -->
-<div id="appContainer">
-    <!-- HOME PAGE VIEW -->
-    <div id="homePageView">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <div class="logo">Drozioo</div>
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="homeSearchInput" placeholder="Search products...">
-            </div>
-            <button class="menu-icon" id="homeMenuBtn"><i class="fas fa-bars"></i></button>
-        </div>
-
-        <!-- Hero Banner -->
-        <div class="hero">
-            <h1>Drozioo <span style="font-size:1rem;">by GOTM</span></h1>
-            <p>Quality Products | Best Prices | Fast Delivery</p>
-            <div class="tag">🔥 Free for sellers · Zero commission 🔥</div>
-        </div>
-
-        <!-- Categories Section -->
-        <div class="categories-scroll" id="categoriesListContainer">
-            <!-- Dynamic categories will go here -->
-        </div>
-
-        <!-- Products Grid -->
-        <div class="products-grid" id="productsGridContainer">
-            <!-- Product cards will be injected here -->
-        </div>
-
-        <!-- Load More -->
-        <div class="load-more" id="loadMoreBtn">⬇️ Scroll for more products</div>
+<div class="container">
+  <header>
+    <div class="logo" onclick="showHome()">
+      <span>DROZIOO</span><span> by Gotm</span> <small>✦</small>
     </div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()">
+      </div>
+      <button class="btn-outline" onclick="showSellerLogin()"><i class="fab fa-whatsapp"></i> Seller</button>
+      <button class="btn-outline" onclick="showAdminLogin()"><i class="fas fa-crown"></i> Admin</button>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <div class="hero-banner">
+    <h1><span>DROZIOO</span> <br>by Gotm</h1>
+    <p>WhatsApp se order karo • India ki fastest selling platform</p>
+  </div>
+
+  <!-- Category filter row -->
+  <div style="display: flex; gap: 12px; flex-wrap: wrap; margin: 1rem 0;" id="categoryFilterContainer">
+    <button class="btn-outline" onclick="filterByCategory('all')" style="background:#eef2ff;">All</button>
+  </div>
+
+  <!-- Products grid -->
+  <h2><i class="fas fa-store"></i> Trending Products</h2>
+  <div id="productsGrid" class="product-grid">Loading products...</div>
 </div>
 
-<!-- ==================== DRAWER MENU (SIDE MENU) ==================== -->
-<div id="drawerOverlay" class="drawer-overlay"></div>
-<div id="drawerMenu" class="drawer">
-    <div class="close-drawer" id="drawerCloseBtn"><i class="fas fa-times"></i></div>
-    <div class="drawer-item" id="drawerCategoriesBtn">
-        <i class="fas fa-list-ul"></i> Categories
-    </div>
-    <div class="drawer-item" id="drawerSellerLoginBtn">
-        <i class="fas fa-store"></i> Seller Login
-    </div>
-    <div class="drawer-item" id="drawerAdminLoginBtn">
-        <i class="fas fa-user-cog"></i> Admin Login
-    </div>
-    <div class="drawer-item" id="drawerAboutBtn">
-        <i class="fas fa-info-circle"></i> About Us
-    </div>
+<!-- MODAL: Product Detail -->
+<div id="detailModal" class="modal">
+  <div class="modal-card">
+    <span class="close-modal" onclick="closeDetailModal()">&times;</span>
+    <div id="detailContent"></div>
+    <button id="orderNowBtn" class="btn-primary" style="width:100%; margin-top:16px;"><i class="fab fa-whatsapp"></i> Order on WhatsApp</button>
+  </div>
 </div>
 
-<!-- ==================== LOGIN MODAL ==================== -->
-<div id="modalBackground" class="modal-bg"></div>
-
-<div id="loginModal" class="modal-card">
-    <h3 id="loginModalTitle">Seller Login</h3>
-    <input type="password" id="loginPasswordInput" placeholder="Enter password">
-    <div id="loginErrorMessage" class="error-msg"></div>
-    <button id="loginSubmitBtn" class="btn">Login</button>
-    <button id="loginCancelBtn" class="btn btn-outline">Cancel</button>
+<!-- MODAL: Seller Login -->
+<div id="sellerLoginModal" class="modal">
+  <div class="modal-card">
+    <span class="close-modal" onclick="closeModal('sellerLoginModal')">&times;</span>
+    <h3>🔐 Seller Login</h3>
+    <input type="password" id="sellerPassword" placeholder="Enter seller password" style="margin:15px 0">
+    <button class="btn-primary" onclick="authenticateSeller()">Login</button>
+    <hr style="margin:15px 0">
+    <p>Become a seller? <strong>Connect to our manager</strong></p>
+    <button class="btn-outline" onclick="contactManager()"><i class="fab fa-whatsapp"></i> Contact Manager</button>
+  </div>
 </div>
 
-<!-- ==================== SELLER PANEL (Add Product) ==================== -->
-<div id="sellerPanelModal" class="modal-card">
+<!-- MODAL: Admin Login -->
+<div id="adminLoginModal" class="modal">
+  <div class="modal-card">
+    <span class="close-modal" onclick="closeModal('adminLoginModal')">&times;</span>
+    <h3>👑 Admin Access</h3>
+    <input type="password" id="adminPassword" placeholder="Admin password" style="margin:15px 0">
+    <button class="btn-primary" onclick="authenticateAdmin()">Login</button>
+  </div>
+</div>
+
+<!-- MODAL: Seller Panel (Add Product) -->
+<div id="sellerPanelModal" class="modal">
+  <div class="modal-card" style="max-width: 700px;">
+    <span class="close-modal" onclick="closeModal('sellerPanelModal')">&times;</span>
     <h3><i class="fas fa-plus-circle"></i> Add New Product</h3>
-    
-    <input type="text" id="sellerProductName" placeholder="Product Name *">
-    
-    <input type="number" id="sellerSellingPrice" placeholder="Selling Price (₹) *">
-    
-    <input type="number" id="sellerMrpPrice" placeholder="MRP (Original Price) *">
-    
-    <textarea id="sellerDescription" rows="2" placeholder="Product Description"></textarea>
-    
-    <input type="text" id="sellerNewCategoryInput" placeholder="New Category (e.g., Sports, Toys)">
-    
-    <select id="sellerExistingCategorySelect">
-        <option value="">-- OR Select existing category --</option>
-    </select>
-    
-    <input type="text" id="sellerWhatsappNumber" placeholder="WhatsApp Number * (with country code)">
-    
-    <label>Upload Images (2-3 photos)</label>
-    <input type="file" id="sellerImagesUpload" accept="image/*" multiple>
-    <div id="sellerImagesPreview" class="preview-imgs"></div>
-    
-    <button id="sellerPublishProductBtn" class="btn">🚀 Publish Product</button>
-    <button id="sellerPanelCloseBtn" class="btn btn-outline">Close</button>
-</div>
-
-<!-- ==================== ADMIN PANEL ==================== -->
-<div id="adminPanelModal" class="modal-card">
-    <h3><i class="fas fa-shield-alt"></i> Admin Dashboard</h3>
-    <div id="adminProductsListContainer" style="max-height: 400px; overflow-y: auto;"></div>
-    <button id="adminPanelCloseBtn" class="btn btn-outline">Close</button>
-</div>
-
-<!-- ==================== EDIT PRODUCT MODAL ==================== -->
-<div id="editProductModal" class="modal-card">
-    <h3>Edit Product</h3>
-    <input type="text" id="editProductName" placeholder="Product Name">
-    <input type="number" id="editProductPrice" placeholder="Selling Price">
-    <input type="number" id="editProductMrp" placeholder="MRP">
-    <textarea id="editProductDesc" rows="2" placeholder="Description"></textarea>
-    <input type="text" id="editProductCategory" placeholder="Category">
-    <input type="text" id="editProductWhatsapp" placeholder="WhatsApp Number">
-    <button id="editSaveBtn" class="btn">Save Changes</button>
-    <button id="editCancelBtn" class="btn btn-outline">Cancel</button>
-</div>
-
-<!-- ==================== PRODUCT DETAIL MODAL ==================== -->
-<div id="productDetailModal" class="modal-card">
-    <div id="productDetailContent"></div>
-    <textarea id="detailReviewTextarea" rows="2" placeholder="Write a review..."></textarea>
-    <button id="detailPostReviewBtn" class="btn-outline" style="margin-top:8px;">⭐ Post Review</button>
-    <button id="detailCloseBtn" class="btn btn-outline" style="margin-top:12px;">Close</button>
-    <div id="detailReviewsListContainer" style="margin-top: 16px; max-height: 200px; overflow-y: auto;"></div>
-</div>
-
-<!-- ==================== ABOUT US MODAL ==================== -->
-<div id="aboutModal" class="modal-card">
-    <h2>✨ About Drozioo</h2>
-    <p style="margin: 16px 0; line-height: 1.5;">Modern eCommerce platform by GOTM. Zero commission, fast WhatsApp ordering.</p>
-    <div id="aboutConnectEmailBtn" class="connect-btn">
-        <i class="fas fa-envelope"></i> Send Email to GOTM
+    <div id="sellerForm">
+      <div class="form-group"><label>Product Name*</label><input id="prodName" placeholder="e.g. Cotton T-shirt"></div>
+      <div class="form-group"><label>Price (₹)*</label><input id="prodPrice" placeholder="299"></div>
+      <div class="form-group"><label>MRP (₹)*</label><input id="prodMrp" placeholder="599"></div>
+      <div class="form-group"><label>Image URL*</label><input id="prodImage" placeholder="https://..."></div>
+      <div class="form-group"><label>Description</label><textarea id="prodDesc" rows="2"></textarea></div>
+      <div class="form-group"><label>Category</label><input id="prodCategory" placeholder="Fashion, Electronics, etc"></div>
+      <div class="form-group"><label>Quantity (optional)</label><input id="prodQty" placeholder="Only 5 left"></div>
+      <div class="form-group"><label>WhatsApp Number (with country code)</label><input id="prodWhatsapp" placeholder="91xxxxxxxxxx"></div>
+      <button class="btn-primary" onclick="publishProduct()">Publish Product</button>
     </div>
-    <p style="font-size:0.8rem; margin-bottom:16px;">gotmprajapat00@gmail.com</p>
-    <button id="aboutCloseBtn" class="btn btn-outline">Close</button>
+    <div id="sellerMsg"></div>
+  </div>
 </div>
 
-<!-- ==================== SAMPLE PRODUCT CARD STRUCTURE (for reference) ==================== -->
-<!-- 
-    Product Card HTML Structure (to be used by JavaScript):
-    <div class="product-card" data-product-id="productId123">
-        <img class="product-img" src="image_url" alt="product name">
-        <div class="product-info">
-            <div class="product-name">Product Name Here</div>
-            <div class="price-row">
-                <span class="selling-price">₹499</span>
-                <span class="mrp-price">₹1299</span>
-                <span class="discount-badge">62% off</span>
-            </div>
-        </div>
-    </div>
--->
-
-<!-- ==================== SAMPLE ADMIN PRODUCT ROW (for reference) ==================== -->
-<!--
-    <div class="admin-product-row">
-        <div><strong>Product Name</strong><br>₹499 | Category</div>
-        <div>
-            <button class="adminEditBtn" data-product-id="id" style="background:#3b82f6; border:none; padding:6px 14px; border-radius:40px; color:white;">✏️ Edit</button>
-            <button class="adminDeleteBtn" data-product-id="id" style="background:#ef4444; border:none; padding:6px 14px; border-radius:40px; margin-left:8px;">🗑️ Delete</button>
-        </div>
-    </div>
--->
-
-<!-- ==================== ALL UNIQUE IDs SUMMARY ==================== -->
-<!--
-    🔴 BUTTONS WITH UNIQUE IDs:
-    1. homeMenuBtn
-    2. drawerCloseBtn
-    3. drawerCategoriesBtn
-    4. drawerSellerLoginBtn
-    5. drawerAdminLoginBtn
-    6. drawerAboutBtn
-    7. loginSubmitBtn
-    8. loginCancelBtn
-    9. sellerPublishProductBtn
-    10. sellerPanelCloseBtn
-    11. adminPanelCloseBtn
-    12. editSaveBtn
-    13. editCancelBtn
-    14. detailPostReviewBtn
-    15. detailCloseBtn
-    16. aboutConnectEmailBtn
-    17. aboutCloseBtn
-    18. loadMoreBtn
-
-    🟢 INPUTS WITH UNIQUE IDs:
-    1. homeSearchInput
-    2. loginPasswordInput
-    3. sellerProductName
-    4. sellerSellingPrice
-    5. sellerMrpPrice
-    6. sellerDescription
-    7. sellerNewCategoryInput
-    8. sellerExistingCategorySelect
-    9. sellerWhatsappNumber
-    10. sellerImagesUpload
-    11. editProductName
-    12. editProductPrice
-    13. editProductMrp
-    14. editProductDesc
-    15. editProductCategory
-    16. editProductWhatsapp
-    17. detailReviewTextarea
-
-    🟡 CONTAINERS / DISPLAY AREAS:
-    1. categoriesListContainer
-    2. productsGridContainer
-    3. adminProductsListContainer
-    4. productDetailContent
-    5. detailReviewsListContainer
-    6. sellerImagesPreview
-
-    🔵 MODAL IDs:
-    1. loginModal
-    2. sellerPanelModal
-    3. adminPanelModal
-    4. editProductModal
-    5. productDetailModal
-    6. aboutModal
-
-    🟣 OTHER ELEMENTS:
-    1. modalBackground
-    2. drawerOverlay
-    3. drawerMenu
-    4. loginModalTitle
-    5. loginErrorMessage
--->
+<!-- MODAL: Admin Dashboard -->
+<div id="adminPanelModal" class="modal">
+  <div class="modal-card" style="max-width: 1000px; width:95%">
+    <span class="close-modal" onclick="closeModal('adminPanelModal')">&times;</span>
+    <h3>📋 Admin Dashboard – Manage Products</h3>
+    <div id="adminProductsList" style="max-height: 60vh; overflow-y: auto;">Loading...</div>
+  </div>
+</div>
 
 <script>
-    // ============================================================
-    //  🔴🔴🔴 JAVASCRIPT LOGIC WILL BE ADDED BY CHATGPT 🔴🔴🔴
-    // ============================================================
-    // 
-    // This file contains ONLY HTML and CSS structure.
-    // All Firebase connections, product loading, 
-    // add to cart, WhatsApp ordering, reviews, 
-    // seller panel, admin panel, infinite scroll,
-    // and dynamic category rendering will be added later.
-    //
-    // Required Firebase Collections:
-    // - products (id, name, price, originalPrice, description, category, whatsapp, images, createdAt)
-    // - passwords (master: {sellerPassword, adminPassword})
-    // - reviews (productId, text, createdAt)
-    //
-    // ============================================================
-    
-    console.log("Drozioo UI Ready - Add JavaScript logic here");
-    console.log("All unique IDs are ready for Firebase integration");
-</script>
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+  // ---------- FIREBASE INIT ----------
   const firebaseConfig = {
     apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
     authDomain: "drozioostore.firebaseapp.com",
+    databaseURL: "https://drozioostore-default-rtdb.asia-southeast1.firebasedatabase.app",
     projectId: "drozioostore",
     storageBucket: "drozioostore.firebasestorage.app",
     messagingSenderId: "930907642567",
-    appId: "1:930907642567:web:460334236bea24d3b1bce2"
+    appId: "1:930907642567:web:460334236bea24d3b1bce2",
+    measurementId: "G-SJF910VQZ2"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  // global vars
+  let allProducts = [];
+  let currentDetailProduct = null;
+  let currentCategoryFilter = "all";
+
+  // Helper: fetch products (sorted by createdAt desc)
+  async function loadProducts() {
+    const snapshot = await database.ref('products').once('value');
+    const data = snapshot.val();
+    if(data) {
+      allProducts = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+      allProducts.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+    } else {
+      allProducts = [];
+    }
+    renderCategoryFilters();
+    renderProducts();
+  }
+
+  function renderCategoryFilters() {
+    const cats = new Set();
+    allProducts.forEach(p => { if(p.category && p.category.trim()) cats.add(p.category.trim()); });
+    const container = document.getElementById('categoryFilterContainer');
+    container.innerHTML = `<button class="btn-outline" onclick="filterByCategory('all')" style="background:#eef2ff;">All</button>`;
+    for(let cat of cats) {
+      container.innerHTML += `<button class="btn-outline" onclick="filterByCategory('${cat.replace(/'/g, "\\'")}')">${cat}</button>`;
+    }
+  }
+
+  function filterByCategory(cat) {
+    currentCategoryFilter = cat;
+    renderProducts();
+  }
+
+  function filterProducts() {
+    renderProducts();
+  }
+
+  function renderProducts() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    let filtered = [...allProducts];
+    if(currentCategoryFilter !== 'all') {
+      filtered = filtered.filter(p => (p.category || '').toLowerCase() === currentCategoryFilter.toLowerCase());
+    }
+    if(searchTerm) {
+      filtered = filtered.filter(p => (p.name || '').toLowerCase().includes(searchTerm));
+    }
+    const grid = document.getElementById('productsGrid');
+    if(filtered.length === 0) {
+      grid.innerHTML = '<div style="padding:2rem;text-align:center">✨ No products found ✨</div>';
+      return;
+    }
+    grid.innerHTML = filtered.map(p => `
+      <div class="product-card" onclick="showProductDetail('${p.id}')">
+        <img class="product-img" src="${p.image || 'https://via.placeholder.com/300'}" onerror="this.src='https://via.placeholder.com/300'">
+        <div class="product-info">
+          <div class="product-title">${escapeHtml(p.name || 'Product')}</div>
+          <div class="price-row"><span class="current-price">₹${p.price || '0'}</span><span class="mrp">₹${p.mrp || ''}</span></div>
+          ${p.category ? `<div class="category-badge"><i class="fas fa-tag"></i> ${escapeHtml(p.category)}</div>` : ''}
+          ${p.quantity ? `<div class="stock"><i class="fas fa-box"></i> Only ${escapeHtml(p.quantity)} left</div>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function showProductDetail(productId) {
+    const product = allProducts.find(p => p.id === productId);
+    if(!product) return;
+    currentDetailProduct = product;
+    const detailHtml = `
+      <img src="${product.image || 'https://via.placeholder.com/300'}" style="width:100%; border-radius:24px; margin-bottom:1rem;">
+      <h2>${escapeHtml(product.name)}</h2>
+      <div class="price-row"><span class="current-price">₹${product.price}</span> <span class="mrp">₹${product.mrp}</span></div>
+      <p><strong>Category:</strong> ${product.category || 'General'}</p>
+      <p><strong>Description:</strong> ${escapeHtml(product.description || 'No description')}</p>
+      ${product.quantity ? `<p><i class="fas fa-box"></i> Stock: ${escapeHtml(product.quantity)}</p>` : '<p>Stock: Available</p>'}
+    `;
+    document.getElementById('detailContent').innerHTML = detailHtml;
+    document.getElementById('detailModal').style.display = 'flex';
+    const orderBtn = document.getElementById('orderNowBtn');
+    orderBtn.onclick = () => openWhatsAppOrder(product);
+  }
+
+  function openWhatsAppOrder(product) {
+    let sellerWhatsapp = product.whatsapp || '';
+    if(!sellerWhatsapp) sellerWhatsapp = '917982095149'; // fallback manager
+    let phone = sellerWhatsapp.replace(/\D/g, '');
+    if(!phone.startsWith('91')) phone = '91' + phone;
+    const message = `I want to order:
+
+Product Name: ${product.name}
+Price: ₹${product.price}
+
+My Details:
+Full Name:
+Mobile Number:
+FullAddress:
+Pincode:`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  }
+
+  function closeDetailModal() { document.getElementById('detailModal').style.display = 'none'; }
+
+  // Auth & Admin/Seller
+  async function authenticateSeller() {
+    const pwd = document.getElementById('sellerPassword').value;
+    const snapshot = await database.ref('passwords/sellerPassword').once('value');
+    const correct = snapshot.val();
+    if(pwd === correct) {
+      closeModal('sellerLoginModal');
+      document.getElementById('sellerPanelModal').style.display = 'flex';
+      document.getElementById('sellerMsg').innerHTML = '';
+    } else {
+      alert('❌ Incorrect seller password');
+    }
+  }
+
+  async function authenticateAdmin() {
+    const pwd = document.getElementById('adminPassword').value;
+    const snapshot = await database.ref('passwords/adminPassword').once('value');
+    const correct = snapshot.val();
+    if(pwd === correct) {
+      closeModal('adminLoginModal');
+      await showAdminDashboard();
+    } else {
+      alert('❌ Incorrect admin password');
+    }
+  }
+
+  async function showAdminDashboard() {
+    document.getElementById('adminPanelModal').style.display = 'flex';
+    await refreshAdminProductList();
+  }
+
+  async function refreshAdminProductList() {
+    const snapshot = await database.ref('products').once('value');
+    const data = snapshot.val();
+    let productsArr = [];
+    if(data) {
+      productsArr = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+      productsArr.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+    }
+    const container = document.getElementById('adminProductsList');
+    if(productsArr.length === 0) { container.innerHTML = '<p>No products added yet.</p>'; return; }
+    container.innerHTML = productsArr.map(p => `
+      <div style="border:1px solid #e2e8f0; border-radius:20px; padding:12px; margin-bottom:12px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center;">
+        <div><strong>${escapeHtml(p.name)}</strong> | ₹${p.price} | ${p.category || 'no cat'}</div>
+        <div>
+          <button class="edit-btn" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i> Edit</button>
+          <button class="delete-btn" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.editProduct = async (id) => {
+    const product = allProducts.find(p => p.id === id);
+    if(!product) return;
+    const newName = prompt("Edit Product Name", product.name);
+    if(newName === null) return;
+    const newPrice = prompt("Price", product.price);
+    const newMrp = prompt("MRP", product.mrp);
+    const newCategory = prompt("Category", product.category);
+    const updates = {
+      name: newName,
+      price: newPrice,
+      mrp: newMrp,
+      category: newCategory,
+      updatedAt: Date.now()
+    };
+    await database.ref(`products/${id}`).update(updates);
+    await loadProducts();
+    await refreshAdminProductList();
+    alert("Product updated!");
   };
 
-  window.app = initializeApp(firebaseConfig);
-</script>
+  window.deleteProduct = async (id) => {
+    if(confirm("Delete product permanently?")) {
+      await database.ref(`products/${id}`).remove();
+      await loadProducts();
+      await refreshAdminProductList();
+      alert("Deleted");
+    }
+  };
 
-<!-- TERA JS -->
-<script type="module" src="app.js"></script>
+  async function publishProduct() {
+    const name = document.getElementById('prodName').value.trim();
+    const price = document.getElementById('prodPrice').value.trim();
+    const mrp = document.getElementById('prodMrp').value.trim();
+    const image = document.getElementById('prodImage').value.trim();
+    const desc = document.getElementById('prodDesc').value.trim();
+    const category = document.getElementById('prodCategory').value.trim();
+    const quantity = document.getElementById('prodQty').value.trim();
+    const whatsapp = document.getElementById('prodWhatsapp').value.trim();
+    if(!name || !price || !image) {
+      document.getElementById('sellerMsg').innerHTML = '<div class="success-msg" style="background:#fee2e2;">Please fill Name, Price and Image URL</div>';
+      return;
+    }
+    const newProduct = {
+      name, price, mrp, image, description: desc, category, quantity, whatsapp,
+      createdAt: Date.now()
+    };
+    try {
+      await database.ref('products').push(newProduct);
+      document.getElementById('sellerMsg').innerHTML = '<div class="success-msg">✅ Product published successfully!</div>';
+      document.getElementById('prodName').value = '';
+      document.getElementById('prodPrice').value = '';
+      document.getElementById('prodMrp').value = '';
+      document.getElementById('prodImage').value = '';
+      document.getElementById('prodDesc').value = '';
+      document.getElementById('prodCategory').value = '';
+      document.getElementById('prodQty').value = '';
+      document.getElementById('prodWhatsapp').value = '';
+      await loadProducts();
+      setTimeout(() => document.getElementById('sellerMsg').innerHTML = '', 2000);
+    } catch(e) {
+      alert("Firebase error: " + e.message);
+    }
+  }
+
+  function contactManager() {
+    window.open("https://wa.me/917982095149?text=Hi%20Manager,%20I%20want%20to%20become%20a%20seller%20on%20Drozioo", "_blank");
+  }
+
+  function showSellerLogin() { document.getElementById('sellerLoginModal').style.display = 'flex'; }
+  function showAdminLogin() { document.getElementById('adminLoginModal').style.display = 'flex'; }
+  function showHome() { 
+    currentCategoryFilter = "all";
+    document.getElementById('searchInput').value = '';
+    renderProducts(); 
+  }
+  function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+  // seed default passwords & sample product if empty (respect firebase rules, no write rule issue only if authenticated via client but we write once)
+  async function initializeDefaults() {
+    const pwdSnapshot = await database.ref('passwords').once('value');
+    if(!pwdSnapshot.exists()) {
+      await database.ref('passwords').set({
+        adminPassword: "admin123",
+        sellerPassword: "seller123"
+      });
+    }
+    const prodSnapshot = await database.ref('products').once('value');
+    if(!prodSnapshot.exists()) {
+      const sample = {
+        name: "Classic Denim Jacket",
+        price: "1999",
+        mrp: "3999",
+        image: "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=400",
+        description: "Premium quality denim, perfect for winters.",
+        category: "Fashion",
+        quantity: "8",
+        whatsapp: "917982095149",
+        createdAt: Date.now()
+      };
+      await database.ref('products').push(sample);
+    }
+    await loadProducts();
+  }
+
+  window.onclick = function(e) {
+    if(e.target.classList.contains('modal')) e.target.style.display = 'none';
+  };
+  initializeDefaults();
+</script>
 </body>
 </html>
