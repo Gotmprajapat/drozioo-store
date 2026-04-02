@@ -1,229 +1,89 @@
-// ================= FIREBASE =================
-const firebaseConfig = {
-  apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
-  authDomain: "drozioostore.firebaseapp.com",
-  projectId: "drozioostore"
-};
+// ================= IMPORT =================
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// ================= GLOBAL =================
-let allProducts = [];
-let selectedProduct = null;
-let editId = null;
-
-// ================= MODAL =================
-function openModal(id){
-  document.getElementById("modalBackground").style.display="block";
-  document.getElementById(id).classList.add("modal-active");
-}
-function closeModal(){
-  document.getElementById("modalBackground").style.display="none";
-  document.querySelectorAll(".modal-card").forEach(m=>m.classList.remove("modal-active"));
-}
-
-// ================= DRAWER =================
-const drawer = document.getElementById("drawerMenu");
-const overlay = document.getElementById("drawerOverlay");
-
-document.getElementById("homeMenuBtn").onclick = ()=>{
-  drawer.classList.add("drawer-open");
-  overlay.classList.add("overlay-visible");
-};
-document.getElementById("drawerCloseBtn").onclick = closeDrawer;
-overlay.onclick = closeDrawer;
-
-function closeDrawer(){
-  drawer.classList.remove("drawer-open");
-  overlay.classList.remove("overlay-visible");
-}
+// ================= INIT =================
+const db = getFirestore(window.app);
 
 // ================= LOGIN =================
-let loginType = "";
-
-document.getElementById("drawerSellerLoginBtn").onclick = ()=>{
-  loginType="seller";
-  document.getElementById("loginModalTitle").innerText="Seller Login";
-  openModal("loginModal");
-};
-document.getElementById("drawerAdminLoginBtn").onclick = ()=>{
-  loginType="admin";
-  document.getElementById("loginModalTitle").innerText="Admin Login";
-  openModal("loginModal");
-};
-
-document.getElementById("loginSubmitBtn").onclick = async ()=>{
+document.getElementById("loginSubmitBtn")?.addEventListener("click", async () => {
   const pass = document.getElementById("loginPasswordInput").value;
 
-  const doc = await db.collection("passwords").doc("master").get();
+  const snap = await getDocs(collection(db, "passwords"));
+  let ok = false;
 
-  if(!doc.exists){
-    if(loginType==="seller"){
-      await db.collection("passwords").doc("master").set({sellerPassword:pass});
-    } else {
-      await db.collection("passwords").doc("master").set({adminPassword:pass});
+  snap.forEach(d => {
+    const data = d.data();
+    if (pass === data.adminPassword || pass === data.sellerPassword) {
+      ok = true;
     }
-    alert("Password saved!");
-    successLogin();
+  });
+
+  if (ok) {
+    alert("Login Success ✅");
+  } else {
+    alert("Wrong Password ❌");
+  }
+});
+
+// ================= ADD PRODUCT =================
+document.getElementById("sellerPublishProductBtn")?.addEventListener("click", async () => {
+
+  const name = document.getElementById("sellerProductName").value;
+  const price = document.getElementById("sellerSellingPrice").value;
+  const mrp = document.getElementById("sellerMrpPrice").value;
+  const whatsapp = document.getElementById("sellerWhatsappNumber").value;
+
+  if (!name || !price) {
+    alert("Fill all fields");
     return;
   }
 
-  const data = doc.data();
-
-  if(loginType==="seller" && pass===data.sellerPassword){
-    successLogin();
-  }
-  else if(loginType==="admin" && pass===data.adminPassword){
-    successLogin();
-  }
-  else{
-    document.getElementById("loginErrorMessage").innerText="Wrong password!";
-  }
-};
-
-function successLogin(){
-  closeModal();
-  if(loginType==="seller") openModal("sellerPanelModal");
-  else openModal("adminPanelModal"), loadAdmin();
-}
-
-// ================= ADD PRODUCT =================
-document.getElementById("sellerPublishProductBtn").onclick = async ()=>{
-  const name = sellerProductName.value;
-  const price = sellerSellingPrice.value;
-  const mrp = sellerMrpPrice.value;
-  const desc = sellerDescription.value;
-  const cat = sellerNewCategoryInput.value || sellerExistingCategorySelect.value;
-  const wp = sellerWhatsappNumber.value;
-
-  await db.collection("products").add({
-    name, price, originalPrice: mrp,
-    description: desc, category: cat,
-    whatsapp: wp,
-    images: [],
-    createdAt: new Date()
+  await addDoc(collection(db, "products"), {
+    name,
+    price,
+    mrp,
+    whatsapp,
+    createdAt: Date.now()
   });
 
-  alert("Product Added!");
-  closeModal();
+  alert("Product Added 🔥");
   loadProducts();
-};
+});
 
 // ================= LOAD PRODUCTS =================
-async function loadProducts(){
-  const snap = await db.collection("products").orderBy("createdAt","desc").get();
-  allProducts = snap.docs.map(d=>({id:d.id,...d.data()}));
-  renderProducts();
-}
-
-function renderProducts(){
+async function loadProducts() {
   const container = document.getElementById("productsGridContainer");
+  if (!container) return;
+
   container.innerHTML = "";
 
-  allProducts.forEach(p=>{
-    const discount = p.originalPrice ? 
-      Math.round((1 - p.price/p.originalPrice)*100) : 0;
+  const snap = await getDocs(collection(db, "products"));
 
-    container.innerHTML += `
-    <div class="product-card" onclick="openDetail('${p.id}')">
-      <img class="product-img" src="https://picsum.photos/300">
-      <div class="product-info">
-        <div class="product-name">${p.name}</div>
-        <div class="price-row">
-          <span class="selling-price">₹${p.price}</span>
-          <span class="mrp-price">₹${p.originalPrice||""}</span>
-          ${discount?`<span class="discount-badge">${discount}% off</span>`:""}
-        </div>
-      </div>
-    </div>`;
+  snap.forEach(docu => {
+    const d = docu.data();
+
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <h4>${d.name}</h4>
+      <p>₹${d.price}</p>
+      <button onclick="orderNow('${d.whatsapp}','${d.name}')">Order</button>
+    `;
+
+    container.appendChild(div);
   });
 }
 
-// ================= PRODUCT DETAIL =================
-async function openDetail(id){
-  selectedProduct = allProducts.find(p=>p.id===id);
+loadProducts();
 
-  document.getElementById("productDetailContent").innerHTML = `
-    <h3>${selectedProduct.name}</h3>
-    <p>₹${selectedProduct.price}</p>
-    <button class="btn btn-whatsapp" onclick="orderNow()">Order on WhatsApp</button>
-  `;
-
-  loadReviews(id);
-  openModal("productDetailModal");
-}
-
-function orderNow(){
-  const p = selectedProduct;
-  const msg = `Order:\n${p.name}\n₹${p.price}`;
-  window.open(`https://wa.me/${p.whatsapp}?text=${encodeURIComponent(msg)}`);
-}
-
-// ================= REVIEWS =================
-document.getElementById("detailPostReviewBtn").onclick = async ()=>{
-  const text = detailReviewTextarea.value;
-
-  await db.collection("reviews").add({
-    productId: selectedProduct.id,
-    text,
-    createdAt: new Date()
-  });
-
-  detailReviewTextarea.value="";
-  loadReviews(selectedProduct.id);
+// ================= WHATSAPP =================
+window.orderNow = (num, name) => {
+  const msg = `I want to buy ${name}`;
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`);
 };
 
-async function loadReviews(id){
-  const snap = await db.collection("reviews").where("productId","==",id).get();
-
-  let html="";
-  snap.forEach(d=>{
-    html += `<div class="review-box">${d.data().text}</div>`;
-  });
-
-  document.getElementById("detailReviewsListContainer").innerHTML = html;
-}
-
-// ================= ADMIN =================
-async function loadAdmin(){
-  const snap = await db.collection("products").get();
-
-  let html="";
-  snap.forEach(d=>{
-    const p=d.data();
-
-    html+=`
-    <div class="admin-product-row">
-      <div>${p.name}<br>₹${p.price}</div>
-      <div>
-        <button onclick="editProduct('${d.id}')">✏️</button>
-        <button onclick="deleteProduct('${d.id}')">🗑️</button>
-      </div>
-    </div>`;
-  });
-
-  document.getElementById("adminProductsListContainer").innerHTML = html;
-}
-
-function editProduct(id){
-  editId=id;
-  openModal("editProductModal");
-}
-
-document.getElementById("editSaveBtn").onclick = async ()=>{
-  await db.collection("products").doc(editId).update({
-    name: editProductName.value,
-    price: editProductPrice.value
-  });
-  closeModal();
+// ================= DELETE =================
+window.deleteProduct = async (id) => {
+  await deleteDoc(doc(db, "products", id));
   loadProducts();
 };
-
-function deleteProduct(id){
-  db.collection("products").doc(id).delete();
-  loadAdmin();
-}
-
-// ================= INIT =================
-loadProducts();
