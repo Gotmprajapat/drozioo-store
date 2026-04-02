@@ -1,735 +1,730 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Drozioo · Modern Ecommerce Platform</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-    body {
-      background: #f8fafc;
-      color: #0f172a;
-      padding-bottom: 80px;
-    }
-    /* Top Bar */
-    .top-bar {
-      position: sticky;
-      top: 0;
-      background: white;
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      border-bottom: 1px solid #e9eef3;
-      z-index: 30;
-    }
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #e11d48, #3b82f6, #facc15);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.5px;
-    }
-    .search-box {
-      flex: 1;
-      background: #f1f5f9;
-      border-radius: 40px;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid #e2e8f0;
-    }
-    .search-box i { color: #64748b; font-size: 1rem; }
-    .search-box input {
-      background: transparent;
-      border: none;
-      outline: none;
-      width: 100%;
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-    .menu-icon {
-      font-size: 1.8rem;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: #1e293b;
-      width: 44px;
-      height: 44px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .menu-icon:active { background: #eef2ff; }
-    /* Hero */
-    .hero {
-      background: linear-gradient(125deg, #fef7e0, #e0f2fe);
-      margin: 16px 16px 20px;
-      border-radius: 32px;
-      padding: 24px 20px;
-      text-align: center;
-    }
-    .hero h1 {
-      font-size: 2rem;
-      background: linear-gradient(115deg, #b91c1c, #2563eb, #eab308);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-weight: 800;
-    }
-    .hero p { color: #1e293b; font-weight: 500; margin-top: 6px; font-size: 0.9rem; }
-    .hero .tag {
-      font-size: 0.75rem;
-      background: rgba(0,0,0,0.05);
-      display: inline-block;
-      padding: 4px 14px;
-      border-radius: 40px;
-      margin-top: 10px;
-    }
-    /* Categories scroll */
-    .categories-scroll {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 12px 16px;
-      white-space: nowrap;
-      scrollbar-width: thin;
-    }
-    .category-chip {
-      background: #ffffff;
-      padding: 8px 20px;
-      border-radius: 40px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      border: 1px solid #e2e8f0;
-      cursor: pointer;
-    }
-    .category-chip.active {
-      background: #0f172a;
-      color: white;
-      border-color: #0f172a;
-    }
-    /* Product Grid 2 cols */
-    .products-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      padding: 8px 16px 20px;
-    }
-    .product-card {
-      background: white;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      cursor: pointer;
-      transition: 0.2s;
-      border: 1px solid #edf2f7;
-    }
-    .product-card:active { transform: scale(0.98); }
-    .product-img {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      background: #f1f5f9;
-    }
-    .product-info { padding: 12px 12px 14px; }
-    .product-name {
-      font-weight: 700;
-      font-size: 0.9rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .price-row {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-    .current-price { font-weight: 800; font-size: 1.2rem; color: #0f172a; }
-    .old-price { font-size: 0.7rem; color: #94a3b8; text-decoration: line-through; }
-    .load-more {
-      text-align: center;
-      padding: 20px;
-      color: #3b82f6;
-      font-weight: 500;
-    }
-    /* Drawer */
-    .drawer-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.4);
-      z-index: 1000;
-      visibility: hidden;
-      opacity: 0;
-      transition: 0.2s;
-    }
-    .drawer {
-      position: fixed;
-      right: 0;
-      top: 0;
-      width: 280px;
-      height: 100%;
-      background: white;
-      box-shadow: -6px 0 20px rgba(0,0,0,0.08);
-      padding: 28px 20px;
-      transform: translateX(100%);
-      transition: 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
-      z-index: 1001;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    .drawer-open { transform: translateX(0); }
-    .overlay-visible { visibility: visible; opacity: 1; }
-    .drawer-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 10px 0;
-      border-bottom: 1px solid #f1f5f9;
-      cursor: pointer;
-    }
-    .drawer-item i { width: 28px; color: #3b82f6; font-size: 1.2rem; }
-    .close-drawer { align-self: flex-end; font-size: 1.6rem; cursor: pointer; }
-    /* Modal base */
-    .modal-bg {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 1050;
-      display: none;
-    }
-    .modal-card {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      width: 90%;
-      max-width: 480px;
-      max-height: 85vh;
-      overflow-y: auto;
-      border-radius: 36px;
-      padding: 24px;
-      z-index: 1100;
-      display: none;
-      box-shadow: 0 25px 40px rgba(0,0,0,0.2);
-    }
-    .modal-active { display: block; }
-    .btn {
-      background: #0f172a;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 60px;
-      font-weight: 600;
-      width: 100%;
-      margin-top: 16px;
-      cursor: pointer;
-    }
-    .btn-outline { background: white; border: 1px solid #cbd5e1; color: #1e293b; }
-    input, textarea, select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #e2e8f0;
-      border-radius: 28px;
-      margin-top: 6px;
-      margin-bottom: 14px;
-      font-size: 0.9rem;
-    }
-    label { font-weight: 600; font-size: 0.85rem; }
-    .preview-imgs { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
-    .preview-imgs img { width: 70px; height: 70px; object-fit: cover; border-radius: 16px; }
-    .admin-product-row {
-      background: #f8fafc;
-      margin-bottom: 12px;
-      padding: 12px;
-      border-radius: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .error-msg { color: #e11d48; font-size: 0.75rem; margin-top: 4px; }
-    .image-gallery { display: flex; gap: 8px; overflow-x: auto; margin: 12px 0; }
-    .image-gallery img { width: 80px; height: 80px; border-radius: 16px; object-fit: cover; cursor: pointer; }
-    .back-home {
-      margin: 12px 16px;
-      background: #eef2ff;
-      display: inline-block;
-      padding: 8px 16px;
-      border-radius: 40px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Drozioo - Sell & Shop</title>
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #f8fafc;
+            color: #0f172a;
+            padding-bottom: 80px;
+        }
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border-bottom: 1px solid #e9eef3;
+            z-index: 30;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e11d48, #3b82f6, #facc15);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .search-box {
+            flex: 1;
+            background: #f1f5f9;
+            border-radius: 40px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .search-box i { color: #64748b; font-size: 1rem; }
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .menu-icon {
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #1e293b;
+            width: 44px;
+            height: 44px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-icon:active { background: #eef2ff; }
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(125deg, #fef7e0, #e0f2fe);
+            margin: 16px 16px 20px;
+            border-radius: 32px;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2rem;
+            background: linear-gradient(115deg, #b91c1c, #2563eb, #eab308);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+        .hero p { color: #1e293b; font-weight: 500; margin-top: 6px; font-size: 0.9rem; }
+        .hero .tag {
+            font-size: 0.75rem;
+            background: rgba(0,0,0,0.05);
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 40px;
+            margin-top: 10px;
+        }
+        /* ===== CATEGORIES SCROLL ===== */
+        .categories-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 12px 16px;
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+        .category-chip {
+            background: #ffffff;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .category-chip.active {
+            background: #0f172a;
+            color: white;
+            border-color: #0f172a;
+        }
+        /* ===== PRODUCT GRID 2 COL ===== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 8px 16px 20px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #edf2f7;
+        }
+        .product-card:active { transform: scale(0.98); }
+        .product-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background: #f1f5f9;
+        }
+        .product-info { padding: 12px 12px 14px; }
+        .product-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        /* Selling price BADA dikhega */
+        .selling-price {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #0f172a;
+        }
+        /* MRP par tedi line (cut) */
+        .mrp-price {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+        .discount-badge {
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        .load-more {
+            text-align: center;
+            padding: 20px;
+            color: #3b82f6;
+            font-weight: 500;
+        }
+        /* ===== DRAWER ===== */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+        .drawer {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: -6px 0 20px rgba(0,0,0,0.08);
+            padding: 28px 20px;
+            transform: translateX(100%);
+            transition: 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .drawer-open { transform: translateX(0); }
+        .overlay-visible { visibility: visible; opacity: 1; }
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+        }
+        .drawer-item i { width: 28px; color: #3b82f6; font-size: 1.2rem; }
+        .close-drawer { align-self: flex-end; font-size: 1.6rem; cursor: pointer; }
+        /* ===== MODALS ===== */
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1050;
+            display: none;
+        }
+        .modal-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            width: 90%;
+            max-width: 480px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 36px;
+            padding: 24px;
+            z-index: 1100;
+            display: none;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.2);
+        }
+        .modal-active { display: block; }
+        .btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 60px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 16px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-outline { background: white; border: 1px solid #cbd5e1; color: #1e293b; }
+        .btn-whatsapp { background: #25D366; }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 28px;
+            margin-top: 6px;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        label { font-weight: 600; font-size: 0.85rem; display: block; margin-top: 8px; }
+        .preview-imgs { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
+        .preview-imgs img { width: 70px; height: 70px; object-fit: cover; border-radius: 16px; }
+        .admin-product-row {
+            background: #f8fafc;
+            margin-bottom: 12px;
+            padding: 12px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .error-msg { color: #e11d48; font-size: 0.75rem; margin-top: 4px; }
+        .detail-main-img {
+            width: 100%;
+            border-radius: 28px;
+            max-height: 280px;
+            object-fit: cover;
+        }
+        .image-gallery { display: flex; gap: 8px; overflow-x: auto; margin: 12px 0; }
+        .image-gallery img { width: 70px; height: 70px; border-radius: 16px; object-fit: cover; cursor: pointer; }
+        .review-box { background: #f1f5f9; padding: 12px; border-radius: 20px; margin-bottom: 10px; }
+    </style>
 </head>
 <body>
-<div id="app"></div>
+
+<div id="app">
+    <!-- HOME PAGE -->
+    <div id="homeView">
+        <div class="top-bar">
+            <div class="logo">Drozioo</div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInputHome" placeholder="Search products...">
+            </div>
+            <button class="menu-icon" id="menuBtnHome"><i class="fas fa-bars"></i></button>
+        </div>
+        <div class="hero">
+            <h1>Drozioo <span style="font-size:1rem;">by GOTM</span></h1>
+            <p>Quality Products | Best Prices | Fast Delivery</p>
+            <div class="tag">🔥 Free for sellers · Zero commission 🔥</div>
+        </div>
+        <div class="categories-scroll" id="categoriesContainer"></div>
+        <div class="products-grid" id="productsGrid"></div>
+        <div class="load-more" id="loadMoreTrigger">⬇️ Scroll for more products</div>
+    </div>
+</div>
+
+<!-- DRAWER -->
+<div id="drawerOverlay" class="drawer-overlay"></div>
+<div id="drawerGlobal" class="drawer">
+    <div class="close-drawer" id="closeDrawerBtn"><i class="fas fa-times"></i></div>
+    <div class="drawer-item" data-drawer-action="categories"><i class="fas fa-list-ul"></i> Categories</div>
+    <div class="drawer-item" data-drawer-action="sellerLogin"><i class="fas fa-store"></i> Seller Login</div>
+    <div class="drawer-item" data-drawer-action="adminLogin"><i class="fas fa-user-cog"></i> Admin Login</div>
+    <div class="drawer-item" data-drawer-action="about"><i class="fas fa-info-circle"></i> About Us</div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="modalBgGlobal" class="modal-bg"></div>
+<div id="loginModalGlobal" class="modal-card">
+    <h3 id="loginModalTitle">Seller Login</h3>
+    <input type="password" id="loginPasswordInput" placeholder="Enter password">
+    <div id="loginErrorMsg" class="error-msg"></div>
+    <button id="loginConfirmBtn" class="btn">Login</button>
+    <button id="closeLoginModalBtn" class="btn btn-outline">Cancel</button>
+</div>
+
+<!-- SELLER PANEL (Add Product) -->
+<div id="sellerPanelGlobal" class="modal-card">
+    <h3><i class="fas fa-plus-circle"></i> Add New Product</h3>
+    <input type="text" id="sellerProdName" placeholder="Product Name *">
+    <input type="number" id="sellerSellPrice" placeholder="Selling Price (₹) *">
+    <input type="number" id="sellerMrpPrice" placeholder="MRP (Original Price) *">
+    <textarea id="sellerProdDesc" rows="2" placeholder="Description"></textarea>
+    <input type="text" id="sellerNewCategory" placeholder="New Category (e.g., Sports, Toys) - leave blank to select existing">
+    <select id="sellerCategorySelect">
+        <option value="">-- Select existing category --</option>
+    </select>
+    <input type="text" id="sellerWhatsappNumber" placeholder="WhatsApp Number * (with country code)">
+    <label>Upload Images (2-3 photos)</label>
+    <input type="file" id="sellerImageUpload" accept="image/*" multiple>
+    <div id="sellerImagePreview" class="preview-imgs"></div>
+    <button id="sellerPublishBtn" class="btn">🚀 Publish Product</button>
+    <button id="closeSellerPanelBtn" class="btn btn-outline">Close</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanelGlobal" class="modal-card">
+    <h3><i class="fas fa-shield-alt"></i> Admin Dashboard</h3>
+    <div id="adminProductListContainer" style="max-height: 400px; overflow-y: auto;"></div>
+    <button id="closeAdminPanelBtn" class="btn btn-outline">Close</button>
+</div>
+
+<!-- EDIT PRODUCT MODAL -->
+<div id="editModalGlobal" class="modal-card">
+    <h3>Edit Product</h3>
+    <input type="text" id="editProdName" placeholder="Product Name">
+    <input type="number" id="editSellPrice" placeholder="Selling Price">
+    <input type="number" id="editMrpPrice" placeholder="MRP">
+    <textarea id="editDesc" rows="2" placeholder="Description"></textarea>
+    <input type="text" id="editCategory" placeholder="Category">
+    <input type="text" id="editWhatsapp" placeholder="WhatsApp Number">
+    <button id="saveEditBtn" class="btn">Save Changes</button>
+    <button id="closeEditModalBtn" class="btn btn-outline">Cancel</button>
+</div>
+
+<!-- PRODUCT DETAIL MODAL (WhatsApp button only, no seller number visible) -->
+<div id="detailModalGlobal" class="modal-card">
+    <div id="detailContentArea"></div>
+    <textarea id="detailReviewText" rows="2" placeholder="Write a review..."></textarea>
+    <button id="detailPostReviewBtn" class="btn-outline" style="margin-top:8px;">⭐ Post Review</button>
+    <button id="closeDetailModalBtn" class="btn btn-outline" style="margin-top:12px;">Close</button>
+    <div id="detailReviewsList" style="margin-top: 16px; max-height: 200px; overflow-y: auto;"></div>
+</div>
+
+<!-- ABOUT MODAL -->
+<div id="aboutModalGlobal" class="modal-card">
+    <h2>✨ About Drozioo</h2>
+    <p>Modern eCommerce platform by GOTM. Zero commission, fast WhatsApp ordering.</p>
+    <div class="connect-btn" id="aboutConnectEmailBtn" style="background:#0f172a; color:white; padding:14px; border-radius:60px; text-align:center; margin:16px 0; cursor:pointer;">
+        <i class="fas fa-envelope"></i> Send Email to GOTM
+    </div>
+    <p style="font-size:0.8rem;">gotmprajapat00@gmail.com</p>
+    <button id="closeAboutModalBtn" class="btn btn-outline">Close</button>
+</div>
 
 <script>
-  // ===== REAL FIREBASE CONFIG =====
-  const firebaseConfig = {
-    apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
-    authDomain: "drozioostore.firebaseapp.com",
-    projectId: "drozioostore",
-    storageBucket: "drozioostore.firebasestorage.app",
-    messagingSenderId: "930907642567",
-    appId: "1:930907642567:web:460334236bea24d3b1bce2"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  // ===== GLOBAL STATE =====
-  let currentView = "home";
-  let allProducts = [];
-  let lastVisible = null;
-  let hasMore = true;
-  let loading = false;
-  let activeCategory = null;
-  let selectedProduct = null;
-  let currentSearchTerm = "";
-
-  // ===== UTILITY =====
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>"']/g, function(m) {
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
-    });
-  }
-
-  // ===== FETCH PRODUCTS (with search & category) =====
-  async function fetchProducts(reset = true, category = null, search = "") {
-    if (reset) {
-      allProducts = [];
-      lastVisible = null;
-      hasMore = true;
-      activeCategory = category;
-      currentSearchTerm = search;
-    }
-    if (loading || !hasMore) return;
-    loading = true;
-
-    try {
-      let query = db.collection("products").orderBy("createdAt", "desc").limit(12);
-      if (category && category !== "all" && category !== null) {
-        query = db.collection("products").where("category", "==", category).orderBy("createdAt", "desc").limit(12);
-      }
-      if (lastVisible) query = query.startAfter(lastVisible);
-      const snapshot = await query.get();
-      let newProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      
-      // apply search filter on client side for better UX
-      if (search.trim() !== "") {
-        newProducts = newProducts.filter(p => p.name?.toLowerCase().includes(search.toLowerCase()));
-      }
-      
-      if (newProducts.length < 12) hasMore = false;
-      if (snapshot.docs.length > 0) lastVisible = snapshot.docs[snapshot.docs.length - 1];
-      
-      if (reset) allProducts = newProducts;
-      else allProducts = [...allProducts, ...newProducts];
-      
-      if (currentView === "home") renderHome();
-    } catch(e) { console.error(e); }
-    loading = false;
-  }
-
-  // ===== RENDER HOME =====
-  function renderHome() {
-    const appDiv = document.getElementById("app");
-    let categoriesSet = new Set();
-    allProducts.forEach(p => { if(p.category) categoriesSet.add(p.category); });
-    let categories = Array.from(categoriesSet);
-    
-    let catsHtml = `<div class="categories-scroll">
-        <span class="category-chip ${!activeCategory ? 'active' : ''}" data-cat="all">All</span>`;
-    categories.forEach(cat => {
-      catsHtml += `<span class="category-chip ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}">${escapeHtml(cat)}</span>`;
-    });
-    catsHtml += `</div>`;
-
-    let productsHtml = `<div class="products-grid">`;
-    if (allProducts.length === 0) {
-      productsHtml = `<div style="text-align:center; padding:40px;">✨ No products found. Sellers can add products ✨</div>`;
-    } else {
-      allProducts.forEach(p => {
-        const imgUrl = (p.images && p.images[0]) ? p.images[0] : "https://picsum.photos/id/20/300/300";
-        productsHtml += `
-          <div class="product-card" data-id="${p.id}">
-            <img class="product-img" src="${imgUrl}" loading="lazy">
-            <div class="product-info">
-              <div class="product-name">${escapeHtml(p.name)}</div>
-              <div class="price-row">
-                <span class="current-price">₹${p.price}</span>
-                ${p.originalPrice ? `<span class="old-price">₹${p.originalPrice}</span>` : ''}
-              </div>
-            </div>
-          </div>
-        `;
-      });
-    }
-    productsHtml += `</div>`;
-    if (hasMore && allProducts.length > 0) productsHtml += `<div id="load-more-trigger" class="load-more"><i class="fas fa-arrow-down"></i> Scroll for more</div>`;
-
-    const topBarHtml = `
-      <div class="top-bar">
-        <div class="logo">Drozioo</div>
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input type="text" id="globalSearchInput" placeholder="Search products..." value="${escapeHtml(currentSearchTerm)}">
-        </div>
-        <button class="menu-icon" id="menuBtn"><i class="fas fa-bars"></i></button>
-      </div>
-      <div class="hero">
-        <h1>Drozioo <span style="font-size:1rem;">by GOTM</span></h1>
-        <p>Quality Products | Best Prices | Fast Delivery</p>
-        <div class="tag">🔥 Free for sellers · Zero commission 🔥</div>
-      </div>
-    `;
-    
-    appDiv.innerHTML = topBarHtml + catsHtml + productsHtml;
-    
-    // attach product click events
-    document.querySelectorAll('.product-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const id = card.getAttribute('data-id');
-        selectedProduct = allProducts.find(p => p.id === id);
-        if (selectedProduct) { currentView = "productDetail"; render(); }
-      });
-    });
-    
-    // category filter
-    document.querySelectorAll('.category-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const cat = chip.getAttribute('data-cat');
-        const newCategory = (cat === 'all') ? null : cat;
-        fetchProducts(true, newCategory, currentSearchTerm);
-      });
-    });
-    
-    // live search
-    const searchInput = document.getElementById("globalSearchInput");
-    if (searchInput) {
-      searchInput.addEventListener("input", (e) => {
-        currentSearchTerm = e.target.value;
-        fetchProducts(true, activeCategory, currentSearchTerm);
-      });
-    }
-    
-    // infinite scroll
-    const trigger = document.getElementById("load-more-trigger");
-    if (trigger) {
-      const observer = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
-          fetchProducts(false, activeCategory, currentSearchTerm);
-        }
-      });
-      observer.observe(trigger);
-    }
-    
-    // menu button
-    document.getElementById("menuBtn")?.addEventListener("click", openDrawer);
-    attachDrawerEvents();
-  }
-
-  // ===== DRAWER & MODAL LOGIC =====
-  function openDrawer() {
-    let drawerDiv = document.getElementById("drawerGlobal");
-    let overlay = document.getElementById("drawerOverlayGlobal");
-    if (!drawerDiv) {
-      const drawerHtml = `
-        <div id="drawerOverlayGlobal" class="drawer-overlay"></div>
-        <div id="drawerGlobal" class="drawer">
-          <div class="close-drawer" id="closeDrawerBtn"><i class="fas fa-times"></i></div>
-          <div class="drawer-item" data-drawer-action="categories"><i class="fas fa-list-ul"></i> Categories</div>
-          <div class="drawer-item" data-drawer-action="sellerLogin"><i class="fas fa-store"></i> Seller Login</div>
-          <div class="drawer-item" data-drawer-action="adminLogin"><i class="fas fa-user-cog"></i> Admin Login</div>
-          <div class="drawer-item" data-drawer-action="about"><i class="fas fa-info-circle"></i> About Us</div>
-        </div>
-      `;
-      document.body.insertAdjacentHTML('beforeend', drawerHtml);
-      drawerDiv = document.getElementById("drawerGlobal");
-      overlay = document.getElementById("drawerOverlayGlobal");
-      document.getElementById("closeDrawerBtn")?.addEventListener("click", closeDrawer);
-      overlay?.addEventListener("click", closeDrawer);
-    }
-    drawerDiv.classList.add("drawer-open");
-    overlay.classList.add("overlay-visible");
-    
-    // attach drawer actions dynamically
-    document.querySelectorAll("[data-drawer-action]").forEach(el => {
-      el.removeEventListener("click", drawerActionHandler);
-      el.addEventListener("click", drawerActionHandler);
-    });
-  }
-  
-  function closeDrawer() {
-    const drawer = document.getElementById("drawerGlobal");
-    const overlay = document.getElementById("drawerOverlayGlobal");
-    if (drawer) drawer.classList.remove("drawer-open");
-    if (overlay) overlay.classList.remove("overlay-visible");
-  }
-  
-  async function drawerActionHandler(e) {
-    const action = e.currentTarget.getAttribute("data-drawer-action");
-    closeDrawer();
-    if (action === "categories") {
-      const cats = ["all","Electronics","Fashion","Home","Beauty"];
-      const chosen = prompt("Select category: " + cats.join(", "));
-      if (chosen && chosen !== "all") fetchProducts(true, chosen, currentSearchTerm);
-      else if (chosen === "all") fetchProducts(true, null, currentSearchTerm);
-    } else if (action === "sellerLogin") {
-      showLoginModal("seller");
-    } else if (action === "adminLogin") {
-      showLoginModal("admin");
-    } else if (action === "about") {
-      alert("✨ About Drozioo: Zero commission, direct WhatsApp orders, built by GOTM. Mission: empower local sellers.\n📧 Email: gotmprajapat00@gmail.com");
-      window.open("mailto:gotmprajapat00@gmail.com?subject=Hello Drozioo&body=I'm interested in Drozioo platform");
-    }
-  }
-  
-  function attachDrawerEvents() {
-    const menuBtn = document.getElementById("menuBtn");
-    if (menuBtn) menuBtn.onclick = openDrawer;
-  }
-  
-  // ===== LOGIN MODAL =====
-  function showLoginModal(type) {
-    let modalDiv = document.getElementById("loginModalGlobal");
-    if (!modalDiv) {
-      const modalHtml = `
-        <div id="modalBgGlobal" class="modal-bg"></div>
-        <div id="loginModalGlobal" class="modal-card">
-          <h3 id="loginTitle">Seller Login</h3>
-          <input type="password" id="loginPasswordInput" placeholder="Enter password">
-          <div id="loginErrorMsg" class="error-msg"></div>
-          <button id="loginConfirmBtn" class="btn">Login</button>
-          <button id="closeLoginModalBtn" class="btn btn-outline">Cancel</button>
-        </div>
-      `;
-      document.body.insertAdjacentHTML('beforeend', modalHtml);
-      document.getElementById("closeLoginModalBtn")?.addEventListener("click", () => {
-        document.getElementById("loginModalGlobal").classList.remove("modal-active");
-        document.getElementById("modalBgGlobal").style.display = "none";
-      });
-      document.getElementById("modalBgGlobal")?.addEventListener("click", () => {
-        document.getElementById("loginModalGlobal").classList.remove("modal-active");
-        document.getElementById("modalBgGlobal").style.display = "none";
-      });
-    }
-    document.getElementById("loginTitle").innerText = type === "seller" ? "Seller Login" : "Admin Login";
-    document.getElementById("loginModalGlobal").setAttribute("data-login-type", type);
-    document.getElementById("loginPasswordInput").value = "";
-    document.getElementById("loginErrorMsg").innerText = "";
-    document.getElementById("loginModalGlobal").classList.add("modal-active");
-    document.getElementById("modalBgGlobal").style.display = "block";
-    
-    const confirmBtn = document.getElementById("loginConfirmBtn");
-    confirmBtn.onclick = async () => {
-      const pass = document.getElementById("loginPasswordInput").value;
-      const loginType = document.getElementById("loginModalGlobal").getAttribute("data-login-type");
-      const docSnap = await db.collection("passwords").doc("master").get();
-      if (loginType === "seller") {
-        if (!docSnap.exists || !docSnap.data().sellerPassword) {
-          await db.collection("passwords").doc("master").set({ sellerPassword: pass }, { merge: true });
-          alert("✅ Seller password saved! You are now logged in.");
-          document.getElementById("loginModalGlobal").classList.remove("modal-active");
-          document.getElementById("modalBgGlobal").style.display = "none";
-          currentView = "sellerPanel";
-          render();
-        } else if (docSnap.data().sellerPassword === pass) {
-          document.getElementById("loginModalGlobal").classList.remove("modal-active");
-          document.getElementById("modalBgGlobal").style.display = "none";
-          currentView = "sellerPanel";
-          render();
-        } else {
-          document.getElementById("loginErrorMsg").innerText = "❌ Wrong password! Access denied.";
-        }
-      } else { // admin
-        if (!docSnap.exists || !docSnap.data().adminPassword) {
-          await db.collection("passwords").doc("master").set({ adminPassword: pass }, { merge: true });
-          alert("✅ Admin password saved! You are now logged in.");
-          document.getElementById("loginModalGlobal").classList.remove("modal-active");
-          document.getElementById("modalBgGlobal").style.display = "none";
-          currentView = "adminPanel";
-          render();
-        } else if (docSnap.data().adminPassword === pass) {
-          document.getElementById("loginModalGlobal").classList.remove("modal-active");
-          document.getElementById("modalBgGlobal").style.display = "none";
-          currentView = "adminPanel";
-          render();
-        } else {
-          document.getElementById("loginErrorMsg").innerText = "❌ Wrong admin password!";
-        }
-      }
+    // ========== FIREBASE CONFIG ==========
+    const firebaseConfig = {
+        apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
+        authDomain: "drozioostore.firebaseapp.com",
+        projectId: "drozioostore",
+        storageBucket: "drozioostore.firebasestorage.app",
+        messagingSenderId: "930907642567",
+        appId: "1:930907642567:web:460334236bea24d3b1bce2"
     };
-  }
-  
-  // ===== SELLER PANEL (Add product with image preview) =====
-  function renderSellerPanel() {
-    const appDiv = document.getElementById("app");
-    appDiv.innerHTML = `
-      <div class="top-bar"><div class="logo">Drozioo</div><button class="menu-icon" id="backHomeBtn"><i class="fas fa-arrow-left"></i></button></div>
-      <div style="padding: 20px;">
-        <h2>➕ Add New Product</h2>
-        <input type="text" id="prodName" placeholder="Product Name *">
-        <input type="number" id="sellPrice" placeholder="Selling Price (₹) *">
-        <input type="number" id="origPrice" placeholder="MRP (Optional)">
-        <textarea id="prodDesc" rows="2" placeholder="Description"></textarea>
-        <select id="prodCategory"><option>Electronics</option><option>Fashion</option><option>Home</option><option>Beauty</option></select>
-        <input type="text" id="sellerWhatsapp" placeholder="WhatsApp number * (with country code)">
-        <label>Upload Images (2-3 photos)</label>
-        <input type="file" id="imageUpload" accept="image/*" multiple>
-        <div id="imagePreview" class="preview-imgs"></div>
-        <button id="publishBtn" class="btn">🚀 Publish Product</button>
-      </div>
-    `;
-    document.getElementById("backHomeBtn")?.addEventListener("click", () => { currentView = "home"; fetchProducts(true, null, ""); render(); });
-    document.getElementById("publishBtn")?.addEventListener("click", async () => {
-      const name = document.getElementById("prodName").value.trim();
-      const price = parseFloat(document.getElementById("sellPrice").value);
-      const originalPrice = parseFloat(document.getElementById("origPrice").value) || null;
-      const description = document.getElementById("prodDesc").value;
-      const category = document.getElementById("prodCategory").value;
-      const whatsapp = document.getElementById("sellerWhatsapp").value.trim();
-      const files = document.getElementById("imageUpload").files;
-      if (!name || !price || !whatsapp || files.length === 0) { alert("Please fill name, price, whatsapp and upload at least 1 image!"); return; }
-      let images = [];
-      for (let i = 0; i < Math.min(files.length, 3); i++) {
-        const reader = new FileReader();
-        const imgBase64 = await new Promise(resolve => { reader.onload = e => resolve(e.target.result); reader.readAsDataURL(files[i]); });
-        images.push(imgBase64);
-      }
-      await db.collection("products").add({
-        name, price, originalPrice, description, category, whatsapp, images,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      alert("✅ Product published successfully!");
-      currentView = "home";
-      fetchProducts(true, null, "");
-      render();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ========== GLOBAL STATE ==========
+    let allProducts = [];
+    let lastVisible = null;
+    let hasMore = true;
+    let loading = false;
+    let activeCategory = null;
+    let currentSearch = "";
+    let selectedProduct = null;
+    let allCategories = new Set();
+
+    // ========== LOAD PRODUCTS ==========
+    async function loadProducts(reset = true, category = null, search = "") {
+        if (reset) {
+            allProducts = [];
+            lastVisible = null;
+            hasMore = true;
+            activeCategory = category;
+            currentSearch = search;
+        }
+        if (loading || !hasMore) return;
+        loading = true;
+        try {
+            let query = db.collection("products").orderBy("createdAt", "desc").limit(10);
+            if (category && category !== "all") {
+                query = db.collection("products").where("category", "==", category).orderBy("createdAt", "desc").limit(10);
+            }
+            if (lastVisible) query = query.startAfter(lastVisible);
+            const snapshot = await query.get();
+            let newProds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            if (search.trim()) {
+                newProds = newProds.filter(p => p.name?.toLowerCase().includes(search.toLowerCase()));
+            }
+            if (newProds.length < 10) hasMore = false;
+            if (snapshot.docs.length > 0) lastVisible = snapshot.docs[snapshot.docs.length - 1];
+            if (reset) allProducts = newProds;
+            else allProducts = [...allProducts, ...newProds];
+            
+            // update categories set
+            allProducts.forEach(p => { if(p.category) allCategories.add(p.category); });
+            renderCategories();
+            renderProducts();
+        } catch(e) { console.error(e); }
+        loading = false;
+    }
+
+    // ========== RENDER CATEGORIES DYNAMICALLY ==========
+    function renderCategories() {
+        const container = document.getElementById("categoriesContainer");
+        if (!container) return;
+        let cats = Array.from(allCategories).sort();
+        let html = `<span class="category-chip ${!activeCategory ? 'active' : ''}" data-cat="all">All</span>`;
+        cats.forEach(cat => {
+            html += `<span class="category-chip ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}">${escapeHtml(cat)}</span>`;
+        });
+        container.innerHTML = html;
+        document.querySelectorAll(".category-chip").forEach(chip => {
+            chip.addEventListener("click", () => {
+                const cat = chip.getAttribute("data-cat");
+                activeCategory = (cat === "all") ? null : cat;
+                loadProducts(true, activeCategory, currentSearch);
+            });
+        });
+    }
+
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m];}); }
+
+    // ========== RENDER PRODUCTS (Selling price big, MRP with line) ==========
+    function renderProducts() {
+        const grid = document.getElementById("productsGrid");
+        if (!grid) return;
+        if (allProducts.length === 0) {
+            grid.innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:40px'>✨ No products found ✨</div>";
+            return;
+        }
+        let html = "";
+        allProducts.forEach(p => {
+            const imgUrl = (p.images && p.images[0]) ? p.images[0] : "https://picsum.photos/id/20/300/300";
+            const discount = (p.originalPrice && p.originalPrice > p.price) ? Math.round(((p.originalPrice - p.price)/p.originalPrice)*100) : 0;
+            html += `
+                <div class="product-card" data-prod-id="${p.id}">
+                    <img class="product-img" src="${imgUrl}" loading="lazy">
+                    <div class="product-info">
+                        <div class="product-name">${escapeHtml(p.name)}</div>
+                        <div class="price-row">
+                            <span class="selling-price">₹${p.price}</span>
+                            ${p.originalPrice ? `<span class="mrp-price">₹${p.originalPrice}</span>` : ''}
+                            ${discount > 0 ? `<span class="discount-badge">${discount}% off</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        grid.innerHTML = html;
+        document.querySelectorAll(".product-card").forEach(card => {
+            card.addEventListener("click", () => {
+                const id = card.getAttribute("data-prod-id");
+                selectedProduct = allProducts.find(p => p.id === id);
+                if (selectedProduct) openProductDetail();
+            });
+        });
+    }
+
+    // ========== PRODUCT DETAIL (WhatsApp button - no seller number visible) ==========
+    async function openProductDetail() {
+        if (!selectedProduct) return;
+        const reviewsSnap = await db.collection("reviews").where("productId", "==", selectedProduct.id).orderBy("createdAt","desc").get();
+        const reviews = reviewsSnap.docs.map(d => d.data().text);
+        const imagesHtml = (selectedProduct.images || []).map(img => `<img src="${img}" style="width:70px;height:70px;border-radius:16px;object-fit:cover;cursor:pointer;" onclick="document.getElementById('detailMainImg').src=this.src">`).join('');
+        const detailHTML = `
+            <img id="detailMainImg" class="detail-main-img" src="${selectedProduct.images?.[0] || 'https://picsum.photos/id/20/300/300'}">
+            <div class="image-gallery">${imagesHtml}</div>
+            <h2>${escapeHtml(selectedProduct.name)}</h2>
+            <div class="price-row" style="margin:10px 0;">
+                <span class="selling-price" style="font-size:1.8rem;">₹${selectedProduct.price}</span>
+                ${selectedProduct.originalPrice ? `<span class="mrp-price" style="font-size:1rem;">₹${selectedProduct.originalPrice}</span>` : ''}
+            </div>
+            <p>${escapeHtml(selectedProduct.description || "No description")}</p>
+            <button id="detailWhatsappOrderBtn" class="btn btn-whatsapp" style="background:#25D366;"><i class="fab fa-whatsapp"></i> 📲 Order Now on WhatsApp</button>
+        `;
+        document.getElementById("detailContentArea").innerHTML = detailHTML;
+        document.getElementById("detailReviewsList").innerHTML = reviews.length ? reviews.map(r => `<div class="review-box">⭐ ${escapeHtml(r)}</div>`).join('') : "<div>No reviews yet. Be first!</div>";
+        document.getElementById("detailModalGlobal").classList.add("modal-active");
+        document.getElementById("modalBgGlobal").style.display = "block";
+        
+        document.getElementById("detailWhatsappOrderBtn")?.addEventListener("click", () => {
+            const msg = `Hello, I want to order this product:%0A📦 Product: ${selectedProduct.name}%0A💰 Price: ₹${selectedProduct.price}%0A📝 My Details:%0AName: %0AAddress: %0APhone: `;
+            window.open(`https://wa.me/${selectedProduct.whatsapp?.replace(/[^0-9]/g, '')}?text=${msg}`, '_blank');
+        });
+        
+        document.getElementById("detailPostReviewBtn").onclick = async () => {
+            const text = document.getElementById("detailReviewText").value.trim();
+            if (!text) return alert("Write a review");
+            await db.collection("reviews").add({ productId: selectedProduct.id, text, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            document.getElementById("detailReviewText").value = "";
+            openProductDetail();
+        };
+    }
+
+    // ========== SELLER: ADD PRODUCT (NEW CATEGORY SUPPORT) ==========
+    async function publishProduct() {
+        const name = document.getElementById("sellerProdName").value.trim();
+        const price = parseFloat(document.getElementById("sellerSellPrice").value);
+        const mrp = parseFloat(document.getElementById("sellerMrpPrice").value);
+        const desc = document.getElementById("sellerProdDesc").value;
+        const newCategoryInput = document.getElementById("sellerNewCategory").value.trim();
+        const selectedCategory = document.getElementById("sellerCategorySelect").value;
+        let category = "";
+        if (newCategoryInput) category = newCategoryInput;
+        else if (selectedCategory) category = selectedCategory;
+        else { alert("Please enter new category or select existing"); return; }
+        const whatsapp = document.getElementById("sellerWhatsappNumber").value.trim();
+        const files = document.getElementById("sellerImageUpload").files;
+        if (!name || !price || !mrp || !whatsapp || files.length === 0) { alert("All fields required + upload images!"); return; }
+        let images = [];
+        for (let i = 0; i < Math.min(files.length, 3); i++) {
+            const reader = new FileReader();
+            const base64 = await new Promise(resolve => { reader.onload = e => resolve(e.target.result); reader.readAsDataURL(files[i]); });
+            images.push(base64);
+        }
+        await db.collection("products").add({
+            name, price, originalPrice: mrp, description: desc, category, whatsapp, images,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("✅ Product published!");
+        document.getElementById("sellerPanelGlobal").classList.remove("modal-active");
+        document.getElementById("modalBgGlobal").style.display = "none";
+        loadProducts(true, activeCategory, currentSearch);
+    }
+    
+    async function populateCategorySelect() {
+        const snap = await db.collection("products").get();
+        const cats = new Set();
+        snap.docs.forEach(doc => { if(doc.data().category) cats.add(doc.data().category); });
+        const select = document.getElementById("sellerCategorySelect");
+        select.innerHTML = '<option value="">-- Select existing category --</option>';
+        cats.forEach(c => { select.innerHTML += `<option value="${c}">${c}</option>`; });
+    }
+    
+    // ========== ADMIN PANEL ==========
+    async function openAdminPanel() {
+        const snap = await db.collection("products").orderBy("createdAt","desc").get();
+        const container = document.getElementById("adminProductListContainer");
+        container.innerHTML = "";
+        snap.docs.forEach(doc => {
+            const prod = doc.data();
+            const div = document.createElement("div");
+            div.className = "admin-product-row";
+            div.innerHTML = `<div><strong>${escapeHtml(prod.name)}</strong><br>₹${prod.price} | ${prod.category}</div>
+            <div><button class="adminEditBtn" data-id="${doc.id}" style="background:#3b82f6; border:none; padding:6px 14px; border-radius:40px; color:white;">✏️ Edit</button>
+            <button class="adminDeleteBtn" data-id="${doc.id}" style="background:#ef4444; border:none; padding:6px 14px; border-radius:40px; margin-left:8px;">🗑️</button></div>`;
+            container.appendChild(div);
+        });
+        document.querySelectorAll(".adminEditBtn").forEach(btn => btn.addEventListener("click", async () => {
+            const id = btn.dataset.id;
+            const prodDoc = await db.collection("products").doc(id).get();
+            const data = prodDoc.data();
+            document.getElementById("editProdName").value = data.name;
+            document.getElementById("editSellPrice").value = data.price;
+            document.getElementById("editMrpPrice").value = data.originalPrice || "";
+            document.getElementById("editDesc").value = data.description || "";
+            document.getElementById("editCategory").value = data.category || "";
+            document.getElementById("editWhatsapp").value = data.whatsapp || "";
+            document.getElementById("editModalGlobal").classList.add("modal-active");
+            document.getElementById("modalBgGlobal").style.display = "block";
+            window.editId = id;
+        }));
+        document.querySelectorAll(".adminDeleteBtn").forEach(btn => btn.addEventListener("click", async () => {
+            if(confirm("Delete product?")) { await db.collection("products").doc(btn.dataset.id).delete(); openAdminPanel(); loadProducts(true, activeCategory, currentSearch); }
+        }));
+    }
+    
+    document.getElementById("saveEditBtn")?.addEventListener("click", async () => {
+        await db.collection("products").doc(window.editId).update({
+            name: document.getElementById("editProdName").value,
+            price: parseFloat(document.getElementById("editSellPrice").value),
+            originalPrice: parseFloat(document.getElementById("editMrpPrice").value) || null,
+            description: document.getElementById("editDesc").value,
+            category: document.getElementById("editCategory").value,
+            whatsapp: document.getElementById("editWhatsapp").value
+        });
+        alert("Updated!");
+        document.getElementById("editModalGlobal").classList.remove("modal-active");
+        document.getElementById("modalBgGlobal").style.display = "none";
+        openAdminPanel();
+        loadProducts(true, activeCategory, currentSearch);
     });
-    document.getElementById("imageUpload").addEventListener("change", (e) => {
-      const previewDiv = document.getElementById("imagePreview");
-      previewDiv.innerHTML = "";
-      Array.from(e.target.files).slice(0,3).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = ev => { const img = document.createElement("img"); img.src = ev.target.result; previewDiv.appendChild(img); };
-        reader.readAsDataURL(file);
-      });
+    
+    // ========== LOGIC HELPER ==========
+    function closeAllModals() {
+        document.querySelectorAll(".modal-card").forEach(m => m.classList.remove("modal-active"));
+        document.getElementById("modalBgGlobal").style.display = "none";
+    }
+    
+    // ========== DRAWER & AUTH ==========
+    function openDrawer() { document.getElementById("drawerGlobal").classList.add("drawer-open"); document.getElementById("drawerOverlay").classList.add("overlay-visible"); }
+    function closeDrawer() { document.getElementById("drawerGlobal").classList.remove("drawer-open"); document.getElementById("drawerOverlay").classList.remove("overlay-visible"); }
+    document.getElementById("menuBtnHome")?.addEventListener("click", openDrawer);
+    document.getElementById("closeDrawerBtn")?.addEventListener("click", closeDrawer);
+    document.getElementById("drawerOverlay")?.addEventListener("click", closeDrawer);
+    
+    document.querySelectorAll("[data-drawer-action]").forEach(el => {
+        el.addEventListener("click", async (e) => {
+            const action = e.currentTarget.getAttribute("data-drawer-action");
+            closeDrawer();
+            if(action === "sellerLogin") {
+                document.getElementById("loginModalTitle").innerText = "Seller Login";
+                document.getElementById("loginModalGlobal").setAttribute("data-type","seller");
+                document.getElementById("loginModalGlobal").classList.add("modal-active");
+                document.getElementById("modalBgGlobal").style.display = "block";
+            } else if(action === "adminLogin") {
+                document.getElementById("loginModalTitle").innerText = "Admin Login";
+                document.getElementById("loginModalGlobal").setAttribute("data-type","admin");
+                document.getElementById("loginModalGlobal").classList.add("modal-active");
+                document.getElementById("modalBgGlobal").style.display = "block";
+            } else if(action === "about") {
+                document.getElementById("aboutModalGlobal").classList.add("modal-active");
+                document.getElementById("modalBgGlobal").style.display = "block";
+            }
+        });
     });
-  }
-  
-  // ===== ADMIN PANEL (Manage all products) =====
-  async function renderAdminPanel() {
-    const appDiv = document.getElementById("app");
-    appDiv.innerHTML = `<div class="top-bar"><div class="logo">Admin Panel</div><button class="menu-icon" id="backHomeAdmin"><i class="fas fa-home"></i></button></div><div id="adminProductsList" style="padding: 20px;"></div>`;
-    document.getElementById("backHomeAdmin")?.addEventListener("click", () => { currentView = "home"; fetchProducts(true, null, ""); render(); });
-    const container = document.getElementById("adminProductsList");
-    const snapshot = await db.collection("products").orderBy("createdAt", "desc").get();
-    container.innerHTML = "<h3>📦 Manage Products</h3>";
-    snapshot.docs.forEach(doc => {
-      const prod = doc.data();
-      const div = document.createElement("div");
-      div.className = "admin-product-row";
-      div.innerHTML = `<div><strong>${escapeHtml(prod.name)}</strong><br>₹${prod.price} · ${prod.category}</div>
-      <div><button class="editProdBtn" data-id="${doc.id}" style="background:#2563eb; border:none; padding:6px 14px; border-radius:40px; color:white;">✏️ Edit</button>
-      <button class="deleteProdBtn" data-id="${doc.id}" style="background:#ef4444; border:none; padding:6px 14px; border-radius:40px; margin-left:8px;">🗑️</button></div>`;
-      container.appendChild(div);
+    
+    document.getElementById("loginConfirmBtn")?.addEventListener("click", async () => {
+        const pass = document.getElementById("loginPasswordInput").value;
+        const type = document.getElementById("loginModalGlobal").getAttribute("data-type");
+        const doc = await db.collection("passwords").doc("master").get();
+        if(type === "seller") {
+            if(!doc.exists || !doc.data().sellerPassword) { await db.collection("passwords").doc("master").set({ sellerPassword: pass }, { merge: true }); alert("Seller password set! Logged in."); closeAllModals(); await populateCategorySelect(); document.getElementById("sellerPanelGlobal").classList.add("modal-active"); document.getElementById("modalBgGlobal").style.display = "block"; }
+            else if(doc.data().sellerPassword === pass) { closeAllModals(); await populateCategorySelect(); document.getElementById("sellerPanelGlobal").classList.add("modal-active"); document.getElementById("modalBgGlobal").style.display = "block"; }
+            else document.getElementById("loginErrorMsg").innerText = "Wrong password!";
+        } else {
+            if(!doc.exists || !doc.data().adminPassword) { await db.collection("passwords").doc("master").set({ adminPassword: pass }, { merge: true }); alert("Admin password set!"); closeAllModals(); openAdminPanel(); document.getElementById("adminPanelGlobal").classList.add("modal-active"); document.getElementById("modalBgGlobal").style.display = "block"; }
+            else if(doc.data().adminPassword === pass) { closeAllModals(); openAdminPanel(); document.getElementById("adminPanelGlobal").classList.add("modal-active"); document.getElementById("modalBgGlobal").style.display = "block"; }
+            else document.getElementById("loginErrorMsg").innerText = "Wrong admin password!";
+        }
     });
-    document.querySelectorAll(".editProdBtn").forEach(btn => btn.addEventListener("click", async (e) => {
-      const id = btn.dataset.id;
-      const prodDoc = await db.collection("products").doc(id).get();
-      const data = prodDoc.data();
-      const newName = prompt("Edit name:", data.name);
-      const newPrice = prompt("Edit price:", data.price);
-      if (newName && newPrice) {
-        await db.collection("products").doc(id).update({ name: newName, price: parseFloat(newPrice) });
-        renderAdminPanel();
-        fetchProducts(true, activeCategory, currentSearchTerm);
-      }
-    }));
-    document.querySelectorAll(".deleteProdBtn").forEach(btn => btn.addEventListener("click", async () => {
-      if (confirm("Delete product permanently?")) {
-        await db.collection("products").doc(btn.dataset.id).delete();
-        renderAdminPanel();
-        fetchProducts(true, activeCategory, currentSearchTerm);
-      }
-    }));
-  }
-  
-  // ===== PRODUCT DETAIL WITH WHATSAPP & REVIEWS =====
-  async function renderProductDetail() {
-    if (!selectedProduct) return;
-    const reviewsSnap = await db.collection("reviews").where("productId", "==", selectedProduct.id).orderBy("createdAt", "desc").get();
-    const reviews = reviewsSnap.docs.map(d => d.data().text);
-    const imagesHtml = (selectedProduct.images || []).map(img => `<img src="${img}" style="width:70px; height:70px; object-fit:cover; border-radius:12px;">`).join('');
-    const appDiv = document.getElementById("app");
-    appDiv.innerHTML = `
-      <div class="top-bar"><div class="logo">Drozioo</div><button class="menu-icon" id="backHomeDetail"><i class="fas fa-arrow-left"></i></button></div>
-      <div style="padding: 20px;">
-        <img src="${selectedProduct.images?.[0]}" style="width:100%; border-radius:28px; max-height:300px; object-fit:cover;">
-        <div class="image-gallery">${imagesHtml}</div>
-        <h2>${escapeHtml(selectedProduct.name)}</h2>
-        <div><strong class="current-price">₹${selectedProduct.price}</strong> ${selectedProduct.originalPrice ? `<span class="old-price">₹${selectedProduct.originalPrice}</span>` : ''}</div>
-        <p style="margin:12px 0;">${escapeHtml(selectedProduct.description || "No description")}</p>
-        <button id="whatsappOrderDetailBtn" class="btn" style="background:#25D366;">📲 Order Now on WhatsApp</button>
-        <h3 style="margin-top:24px;">⭐ Customer Reviews</h3>
-        <textarea id="newReviewText" rows="2" placeholder="Write a review..."></textarea>
-        <button id="postReviewDetailBtn" class="btn-outline" style="margin-top:8px;">Post Review</button>
-        <div id="reviewsContainer" style="margin-top: 16px;">${reviews.map(r => `<div style="background:#f1f5f9; padding:12px; border-radius:20px; margin-bottom:10px;">⭐ ${escapeHtml(r)}</div>`).join('')}</div>
-      </div>
-    `;
-    document.getElementById("backHomeDetail")?.addEventListener("click", () => { currentView = "home"; fetchProducts(true, activeCategory, currentSearchTerm); render(); });
-    document.getElementById("whatsappOrderDetailBtn")?.addEventListener("click", () => {
-      const msg = `Hello, I want to order this product: 📦 Product: ${selectedProduct.name} 💰 Price: ₹${selectedProduct.price} 📝 My Details: Name: Address: Phone:`;
-      window.open(`https://wa.me/${selectedProduct.whatsapp?.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+    
+    document.getElementById("closeLoginModalBtn")?.addEventListener("click", closeAllModals);
+    document.getElementById("closeSellerPanelBtn")?.addEventListener("click", closeAllModals);
+    document.getElementById("closeAdminPanelBtn")?.addEventListener("click", closeAllModals);
+    document.getElementById("closeDetailModalBtn")?.addEventListener("click", closeAllModals);
+    document.getElementById("closeEditModalBtn")?.addEventListener("click", closeAllModals);
+    document.getElementById("closeAboutModalBtn")?.addEventListener("click", closeAllModals);
+    document.getElementById("modalBgGlobal")?.addEventListener("click", closeAllModals);
+    document.getElementById("sellerPublishBtn")?.addEventListener("click", publishProduct);
+    document.getElementById("aboutConnectEmailBtn")?.addEventListener("click", () => { window.location.href = "mailto:gotmprajapat00@gmail.com?subject=Hello Drozioo&body=I'm interested"; });
+    document.getElementById("searchInputHome")?.addEventListener("input", (e) => { currentSearch = e.target.value; loadProducts(true, activeCategory, currentSearch); });
+    
+    document.getElementById("sellerImageUpload")?.addEventListener("change", (e) => {
+        const preview = document.getElementById("sellerImagePreview");
+        preview.innerHTML = "";
+        Array.from(e.target.files).slice(0,3).forEach(f => { const reader = new FileReader(); reader.onload = ev => { const img = document.createElement("img"); img.src = ev.target.result; preview.appendChild(img); }; reader.readAsDataURL(f); });
     });
-    document.getElementById("postReviewDetailBtn")?.addEventListener("click", async () => {
-      const text = document.getElementById("newReviewText").value.trim();
-      if (!text) return alert("Write a review");
-      await db.collection("reviews").add({ productId: selectedProduct.id, text, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-      alert("Review posted!");
-      renderProductDetail();
+    
+    // INFINITE SCROLL
+    window.addEventListener("scroll", () => {
+        if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && hasMore && !loading) loadProducts(false, activeCategory, currentSearch);
     });
-  }
-  
-  // ===== MAIN RENDER DISPATCH =====
-  function render() {
-    if (currentView === "home") renderHome();
-    else if (currentView === "sellerPanel") renderSellerPanel();
-    else if (currentView === "adminPanel") renderAdminPanel();
-    else if (currentView === "productDetail") renderProductDetail();
-  }
-  
-  // BOOTSTRAP
-  fetchProducts(true, null, "");
-  render();
+    
+    loadProducts(true, null, "");
 </script>
 </body>
 </html>
