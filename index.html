@@ -11,7 +11,6 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #f8fafc; color: #0f172a; padding-bottom: 70px; }
-        /* ===== TOP BAR ===== */
         .top-bar { position: sticky; top: 0; background: white; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border-bottom: 1px solid #e9eef3; z-index: 30; }
         .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #e11d48, #3b82f6, #facc15); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .search-box { flex: 1; background: #f1f5f9; border-radius: 40px; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border: 1px solid #e2e8f0; }
@@ -19,20 +18,16 @@
         .search-box input { background: transparent; border: none; outline: none; width: 100%; font-size: 0.95rem; }
         .icon-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #1e293b; width: 44px; height: 44px; border-radius: 30px; display: flex; align-items: center; justify-content: center; }
         .icon-btn:active { background: #eef2ff; }
-        /* ===== HERO ===== */
         .hero { background: linear-gradient(125deg, #fef7e0, #e0f2fe); margin: 16px; border-radius: 32px; padding: 24px 20px; text-align: center; }
         .hero h1 { font-size: 2rem; background: linear-gradient(115deg, #b91c1c, #2563eb, #eab308); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .hero .tag { font-size: 0.75rem; background: rgba(0,0,0,0.05); display: inline-block; padding: 4px 14px; border-radius: 40px; margin-top: 10px; }
-        /* ===== BOTTOM NAVIGATION ===== */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 8px 20px 16px; border-top: 1px solid #e9eef3; z-index: 40; }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 0.7rem; }
         .nav-item i { font-size: 1.4rem; }
         .nav-item.active { color: #3b82f6; }
-        /* ===== CATEGORIES ===== */
         .categories-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 12px 16px; white-space: nowrap; scrollbar-width: thin; }
         .category-chip { background: white; padding: 8px 20px; border-radius: 40px; font-size: 0.85rem; font-weight: 600; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
         .category-chip.active { background: #0f172a; color: white; border-color: #0f172a; }
-        /* ===== PRODUCT GRID ===== */
         .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 8px 16px 80px; }
         .product-card { background: white; border-radius: 24px; overflow: hidden; cursor: pointer; border: 1px solid #edf2f7; transition: transform 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
         .product-card:active { transform: scale(0.98); }
@@ -43,7 +38,6 @@
         .selling-price { font-weight: 800; font-size: 1.4rem; color: #0f172a; }
         .mrp-price { font-size: 0.75rem; color: #94a3b8; text-decoration: line-through; }
         .discount-badge { background: #fee2e2; color: #b91c1c; font-size: 0.65rem; padding: 2px 8px; border-radius: 30px; font-weight: 600; }
-        /* ===== DRAWER ===== */
         .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s; }
         .drawer { position: fixed; right: 0; top: 0; width: 280px; height: 100%; background: white; padding: 28px 20px; transform: translateX(100%); transition: 0.3s; z-index: 1001; display: flex; flex-direction: column; gap: 24px; }
         .drawer-open { transform: translateX(0); }
@@ -51,7 +45,6 @@
         .drawer-item { display: flex; align-items: center; gap: 16px; font-size: 1rem; font-weight: 500; padding: 10px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
         .drawer-item i { width: 28px; color: #3b82f6; }
         .close-drawer { align-self: flex-end; font-size: 1.6rem; cursor: pointer; }
-        /* ===== MODALS ===== */
         .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1050; display: none; }
         .modal-card { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; width: 90%; max-width: 480px; max-height: 85vh; overflow-y: auto; border-radius: 36px; padding: 24px; z-index: 1100; display: none; box-shadow: 0 20px 35px rgba(0,0,0,0.2); }
         .modal-active { display: block; }
@@ -62,12 +55,11 @@
         input:focus, textarea:focus, select:focus { border-color: #3b82f6; }
         label { font-weight: 600; font-size: 0.85rem; display: block; margin-top: 8px; }
         .preview-imgs { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
-        .preview-imgs img { width: 70px; height: 70px; border-radius: 16px; object-fit: cover; }
+        .preview-imgs img { width: 70px; height: 70px; border-radius: 16px; object-fit: cover; cursor: pointer; }
         .admin-product-row { background: #f8fafc; margin-bottom: 12px; padding: 12px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .error-msg { color: #e11d48; font-size: 0.75rem; margin-top: 4px; }
         .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1f2937; color: white; padding: 12px 24px; border-radius: 60px; font-size: 0.85rem; z-index: 1200; animation: fadeInOut 2s ease; }
         @keyframes fadeInOut { 0% { opacity: 0; bottom: 60px; } 10% { opacity: 1; bottom: 80px; } 90% { opacity: 1; bottom: 80px; } 100% { opacity: 0; bottom: 60px; } }
-        /* ===== PRODUCT DETAIL FULL PAGE (Meesho/Amazon Style) ===== */
         .detail-page { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: white; z-index: 2000; overflow-y: auto; display: none; }
         .detail-page.active { display: block; }
         .detail-header { position: sticky; top: 0; background: white; padding: 12px 16px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid #e9eef3; z-index: 10; }
@@ -77,18 +69,28 @@
         .image-gallery { display: flex; gap: 8px; overflow-x: auto; margin: 16px 0; }
         .image-gallery img { width: 80px; height: 80px; border-radius: 16px; cursor: pointer; object-fit: cover; border: 2px solid transparent; }
         .image-gallery img:active { border-color: #3b82f6; }
-        .order-card { background: #f1f5f9; padding: 16px; border-radius: 24px; margin: 16px 0; }
+        .info-card { background: #f1f5f9; padding: 16px; border-radius: 24px; margin: 16px 0; }
+        .delivery-badge { display: inline-block; background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 30px; font-size: 0.75rem; margin-top: 8px; }
         .profile-info { background: #f1f5f9; padding: 20px; border-radius: 28px; text-align: center; margin-bottom: 20px; }
         .address-box { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 16px; margin: 12px 0; }
         .connect-btn { background: #0f172a; color: white; padding: 14px; border-radius: 60px; text-align: center; cursor: pointer; margin: 16px 0; }
-        .seller-contact-banner { background: #fef3c7; padding: 12px; border-radius: 20px; margin-bottom: 16px; text-align: center; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .seller-contact-banner button { background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 40px; cursor: pointer; }
+        .seller-banner { background: #fef3c7; padding: 12px; border-radius: 20px; margin-bottom: 16px; text-align: center; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .seller-banner button { background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 40px; cursor: pointer; }
+        .review-item { background: #f8fafc; padding: 14px; border-radius: 20px; margin-bottom: 12px; }
+        .review-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; }
+        .review-name { font-weight: 700; color: #3b82f6; }
+        .review-text { font-size: 0.9rem; line-height: 1.4; }
+        .show-more-btn { background: none; border: none; color: #3b82f6; font-size: 0.8rem; cursor: pointer; margin-top: 8px; }
+        .related-section { margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0; }
+        .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+        .related-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; cursor: pointer; }
+        .related-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .related-name { font-size: 0.75rem; padding: 6px; font-weight: 500; }
     </style>
 </head>
 <body>
 
 <div id="appContainer">
-    <!-- HOME PAGE -->
     <div id="homePageView">
         <div class="top-bar">
             <div class="logo">Drozioo</div>
@@ -105,13 +107,11 @@
     </div>
 </div>
 
-<!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
     <button class="nav-item" id="navHomeBtn"><i class="fas fa-home"></i><span>Home</span></button>
     <button class="nav-item" id="navProfileBtn"><i class="fas fa-user"></i><span>Profile</span></button>
 </div>
 
-<!-- DRAWER MENU -->
 <div id="drawerOverlay" class="drawer-overlay"></div>
 <div id="drawerMenu" class="drawer">
     <div class="close-drawer" id="drawerCloseBtn"><i class="fas fa-times"></i></div>
@@ -121,8 +121,8 @@
     <div class="drawer-item" id="drawerAboutBtn"><i class="fas fa-info-circle"></i> About Us</div>
 </div>
 
-<!-- LOGIN MODAL -->
 <div id="modalBackground" class="modal-bg"></div>
+
 <div id="loginModal" class="modal-card">
     <h3 id="loginModalTitle">Customer Login</h3>
     <input type="tel" id="loginPhone" placeholder="Phone Number *">
@@ -132,90 +132,93 @@
     <button id="loginCancelBtn" class="btn btn-outline">Cancel</button>
 </div>
 
-<!-- ADDRESS SETUP MODAL -->
+<div id="sellerLoginModal" class="modal-card">
+    <h3>Seller Login</h3>
+    <input type="password" id="sellerPasswordOnly" placeholder="Enter Password">
+    <div id="sellerLoginError" class="error-msg"></div>
+    <div class="seller-banner" style="margin-top: 10px;">
+        <span><i class="fas fa-question-circle"></i> Want to become a seller?</span>
+        <button id="contactAdminFromSellerBtn">Contact Admin</button>
+    </div>
+    <button id="sellerLoginSubmitBtn" class="btn">Login</button>
+    <button id="sellerLoginCancelBtn" class="btn btn-outline">Cancel</button>
+</div>
+
+<div id="adminLoginModal" class="modal-card">
+    <h3>Admin Login</h3>
+    <input type="password" id="adminPasswordOnly" placeholder="Enter Password">
+    <div id="adminLoginError" class="error-msg"></div>
+    <button id="adminLoginSubmitBtn" class="btn">Login</button>
+    <button id="adminLoginCancelBtn" class="btn btn-outline">Cancel</button>
+</div>
+
 <div id="addressModal" class="modal-card">
     <h3>📍 Set Your Delivery Address</h3>
     <input type="text" id="addrFullName" placeholder="Full Name *">
     <input type="tel" id="addrPhone" placeholder="Phone Number *">
-    <input type="text" id="addrFullAddress" placeholder="Full Address (Street, Area) *">
+    <input type="text" id="addrFullAddress" placeholder="Full Address *">
     <input type="text" id="addrCity" placeholder="City *">
     <input type="text" id="addrState" placeholder="State *">
     <input type="text" id="addrPincode" placeholder="Pincode *">
     <button id="addressSaveBtn" class="btn">Save Address</button>
-    <button id="addressSkipBtn" class="btn btn-outline">Skip for now</button>
+    <button id="addressSkipBtn" class="btn btn-outline">Skip</button>
 </div>
 
-<!-- PROFILE PAGE -->
 <div id="profilePage" style="display:none; padding-bottom: 80px;">
-    <div class="top-bar" style="position: relative;"><div class="logo">My Profile</div><button class="icon-btn" id="profileBackBtn"><i class="fas fa-arrow-left"></i></button></div>
-    <div style="padding: 20px;">
-        <div id="profileInfo"></div>
-        <h3 style="margin-top: 24px;">📦 My Orders</h3>
-        <div id="myOrdersList"></div>
-    </div>
+    <div class="top-bar"><div class="logo">My Profile</div><button class="icon-btn" id="profileBackBtn"><i class="fas fa-arrow-left"></i></button></div>
+    <div style="padding: 20px;"><div id="profileInfo"></div><h3 style="margin-top:24px;">📦 My Orders</h3><div id="myOrdersList"></div></div>
 </div>
 
-<!-- SELLER PANEL -->
 <div id="sellerPanelModal" class="modal-card">
     <h3><i class="fas fa-plus-circle"></i> Add New Product</h3>
-    <div class="seller-contact-banner">
-        <span><i class="fas fa-store"></i> Want to become a seller?</span>
-        <button id="contactAdminBtn"><i class="fas fa-envelope"></i> Contact Admin</button>
-    </div>
     <input type="text" id="sellerProductName" placeholder="Product Name *">
     <input type="number" id="sellerSellingPrice" placeholder="Selling Price (₹) *">
-    <input type="number" id="sellerMrpPrice" placeholder="MRP (Original Price) *">
-    <textarea id="sellerDescription" rows="2" placeholder="Product Description"></textarea>
-    <input type="text" id="sellerNewCategoryInput" placeholder="New Category (e.g., Sports, Toys)">
-    <select id="sellerExistingCategorySelect"><option value="">-- OR Select existing category --</option></select>
-    <input type="text" id="sellerWhatsappNumber" placeholder="WhatsApp Number * (with country code)">
+    <input type="number" id="sellerMrpPrice" placeholder="MRP *">
+    <textarea id="sellerDescription" rows="2" placeholder="Description"></textarea>
+    <input type="text" id="sellerDeliveryDays" placeholder="Delivery Time (e.g., 3-5 business days)">
+    <input type="text" id="sellerNewCategoryInput" placeholder="New Category">
+    <select id="sellerExistingCategorySelect"><option value="">-- OR Select category --</option></select>
+    <input type="text" id="sellerWhatsappNumber" placeholder="WhatsApp Number *">
     <label>Upload Images (2-3 photos)</label>
     <input type="file" id="sellerImagesUpload" accept="image/*" multiple>
     <div id="sellerImagesPreview" class="preview-imgs"></div>
-    <button id="sellerPublishProductBtn" class="btn">🚀 Publish Product</button>
+    <button id="sellerPublishProductBtn" class="btn">Publish</button>
     <button id="sellerPanelCloseBtn" class="btn btn-outline">Close</button>
 </div>
 
-<!-- ADMIN PANEL -->
 <div id="adminPanelModal" class="modal-card">
     <h3><i class="fas fa-shield-alt"></i> Admin Dashboard</h3>
     <div id="adminProductsListContainer" style="max-height: 400px; overflow-y: auto;"></div>
     <button id="adminPanelCloseBtn" class="btn btn-outline">Close</button>
 </div>
 
-<!-- EDIT PRODUCT MODAL -->
 <div id="editProductModal" class="modal-card">
     <h3>Edit Product</h3>
-    <input type="text" id="editProductName" placeholder="Product Name">
-    <input type="number" id="editProductPrice" placeholder="Selling Price">
+    <input type="text" id="editProductName" placeholder="Name">
+    <input type="number" id="editProductPrice" placeholder="Price">
     <input type="number" id="editProductMrp" placeholder="MRP">
     <textarea id="editProductDesc" rows="2" placeholder="Description"></textarea>
+    <input type="text" id="editDeliveryDays" placeholder="Delivery Time">
     <input type="text" id="editProductCategory" placeholder="Category">
-    <input type="text" id="editProductWhatsapp" placeholder="WhatsApp Number">
-    <button id="editSaveBtn" class="btn">Save Changes</button>
+    <input type="text" id="editProductWhatsapp" placeholder="WhatsApp">
+    <button id="editSaveBtn" class="btn">Save</button>
     <button id="editCancelBtn" class="btn btn-outline">Cancel</button>
 </div>
 
-<!-- PRODUCT DETAIL FULL PAGE -->
 <div id="detailPage" class="detail-page">
-    <div class="detail-header">
-        <i class="fas fa-arrow-left back-btn" id="detailBackBtn"></i>
-        <div class="logo" style="font-size: 1.2rem;">Product Details</div>
-    </div>
+    <div class="detail-header"><i class="fas fa-arrow-left back-btn" id="detailBackBtn"></i><div class="logo" style="font-size:1.2rem;">Product Details</div></div>
     <div class="detail-content" id="detailContent"></div>
 </div>
 
-<!-- ABOUT MODAL -->
 <div id="aboutModal" class="modal-card">
     <h2>✨ About Drozioo</h2>
-    <p style="margin: 16px 0; line-height: 1.5;">Drozioo is a modern, fast, and seller-friendly eCommerce platform built by GOTM. Zero commission, direct WhatsApp ordering.</p>
+    <p style="margin:16px 0;">Modern eCommerce platform by GOTM. Zero commission, fast WhatsApp ordering.</p>
     <div class="connect-btn" id="aboutConnectEmailBtn"><i class="fas fa-envelope"></i> Send Email to GOTM</div>
-    <p style="font-size: 0.8rem; margin: 16px 0;">gotmprajapat00@gmail.com</p>
+    <p style="font-size:0.8rem; margin:16px 0;">gotmprajapat00@gmail.com</p>
     <button id="aboutCloseBtn" class="btn btn-outline">Close</button>
 </div>
 
 <script>
-    // ==================== FIREBASE CONFIG ====================
     const firebaseConfig = {
         apiKey: "AIzaSyCiG9rMuPURjLhJDE3HorL0QrL7qE86h5c",
         authDomain: "drozioostore.firebaseapp.com",
@@ -228,248 +231,121 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // ==================== GLOBAL STATE ====================
-    let allProducts = [];
-    let activeCategory = null;
-    let currentSearch = "";
-    let currentCustomer = null;
-    let currentCustomerData = null;
-    let currentDetailProduct = null;
+    let allProducts = [], activeCategory = null, currentSearch = "", currentCustomer = null, currentCustomerData = null, currentDetailProduct = null, allReviewsCache = {};
 
-    // ==================== UTILITY FUNCTIONS ====================
-    function showToast(msg) {
-        let toast = document.createElement("div");
-        toast.className = "toast";
-        toast.innerText = msg;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
-    }
+    function showToast(msg) { let t = document.createElement("div"); t.className = "toast"; t.innerText = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2500); }
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m];
-        });
-    }
+    // Persistent Login
+    function saveLogin(phone) { localStorage.setItem("drozioo_customer", phone); currentCustomer = phone; }
+    function loadSavedLogin() { const saved = localStorage.getItem("drozioo_customer"); if(saved) { currentCustomer = saved; loadCustomerData(); } }
+    async function loadCustomerData() { if(currentCustomer) { const snap = await db.ref(`users/${currentCustomer}`).once("value"); currentCustomerData = snap.val() || { phone: currentCustomer }; } }
 
-    // ==================== LOAD PRODUCTS FROM FIREBASE ====================
     async function loadProducts() {
-        try {
-            const snapshot = await db.ref("products").once("value");
-            allProducts = [];
-            snapshot.forEach(child => {
-                allProducts.push({ id: child.key, ...child.val() });
-            });
-            allProducts.reverse();
-            renderCategories();
-            renderProducts();
-        } catch (e) {
-            console.error(e);
-            showToast("Error loading products");
-        }
+        const snap = await db.ref("products").once("value");
+        allProducts = [];
+        snap.forEach(child => { allProducts.push({ id: child.key, ...child.val() }); });
+        allProducts.reverse();
+        renderCategories(); renderProducts();
     }
 
-    // ==================== RENDER CATEGORIES ====================
     function renderCategories() {
-        const categoriesSet = new Set();
-        allProducts.forEach(p => { if (p.category) categoriesSet.add(p.category); });
-        const categories = Array.from(categoriesSet).sort();
+        const cats = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
         let html = `<span class="category-chip ${!activeCategory ? 'active' : ''}" data-cat="all">All</span>`;
-        categories.forEach(cat => {
-            html += `<span class="category-chip ${activeCategory === cat ? 'active' : ''}" data-cat="${cat}">${escapeHtml(cat)}</span>`;
-        });
+        cats.forEach(c => { html += `<span class="category-chip ${activeCategory === c ? 'active' : ''}" data-cat="${c}">${escapeHtml(c)}</span>`; });
         document.getElementById("categoriesListContainer").innerHTML = html;
-        
-        document.querySelectorAll(".category-chip").forEach(chip => {
-            chip.addEventListener("click", () => {
-                const cat = chip.getAttribute("data-cat");
-                activeCategory = (cat === "all") ? null : cat;
-                renderProducts();
-            });
-        });
+        document.querySelectorAll(".category-chip").forEach(chip => { chip.addEventListener("click", () => { activeCategory = chip.getAttribute("data-cat") === "all" ? null : chip.getAttribute("data-cat"); renderProducts(); }); });
     }
 
-    // ==================== RENDER PRODUCTS ====================
     function renderProducts() {
-        let filtered = [...allProducts];
-        if (activeCategory) {
-            filtered = filtered.filter(p => p.category === activeCategory);
-        }
-        if (currentSearch.trim()) {
-            filtered = filtered.filter(p => p.name && p.name.toLowerCase().includes(currentSearch.toLowerCase()));
-        }
-        
+        let filtered = allProducts.filter(p => (!activeCategory || p.category === activeCategory) && (!currentSearch || (p.name && p.name.toLowerCase().includes(currentSearch.toLowerCase()))));
         const grid = document.getElementById("productsGridContainer");
-        if (filtered.length === 0) {
-            grid.innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:40px'>✨ No products found ✨</div>";
-            return;
-        }
-        
+        if(!filtered.length) { grid.innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:40px'>✨ No products ✨</div>"; return; }
         let html = "";
         filtered.forEach(p => {
-            const imgUrl = (p.images && p.images[0]) ? p.images[0] : "https://picsum.photos/id/20/300/300";
-            const discount = (p.originalPrice && p.originalPrice > p.price) ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
-            html += `
-                <div class="product-card" data-id="${p.id}">
-                    <img class="product-img" src="${imgUrl}" loading="lazy">
-                    <div class="product-info">
-                        <div class="product-name">${escapeHtml(p.name)}</div>
-                        <div class="price-row">
-                            <span class="selling-price">₹${p.price}</span>
-                            ${p.originalPrice ? `<span class="mrp-price">₹${p.originalPrice}</span>` : ''}
-                            ${discount > 0 ? `<span class="discount-badge">${discount}% off</span>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
+            const img = p.images?.[0] || "https://picsum.photos/id/20/300/300";
+            const discount = (p.originalPrice && p.originalPrice > p.price) ? Math.round(((p.originalPrice - p.price)/p.originalPrice)*100) : 0;
+            html += `<div class="product-card" data-id="${p.id}"><img class="product-img" src="${img}"><div class="product-info"><div class="product-name">${escapeHtml(p.name)}</div><div class="price-row"><span class="selling-price">₹${p.price}</span>${p.originalPrice ? `<span class="mrp-price">₹${p.originalPrice}</span>` : ''}${discount > 0 ? `<span class="discount-badge">${discount}% off</span>` : ''}</div></div></div>`;
         });
         grid.innerHTML = html;
-        
-        document.querySelectorAll(".product-card").forEach(card => {
-            card.addEventListener("click", () => {
-                const id = card.getAttribute("data-id");
-                currentDetailProduct = allProducts.find(p => p.id === id);
-                if (currentDetailProduct) openProductDetail();
-            });
-        });
+        document.querySelectorAll(".product-card").forEach(card => { card.addEventListener("click", () => { currentDetailProduct = allProducts.find(p => p.id === card.getAttribute("data-id")); if(currentDetailProduct) openProductDetail(); }); });
     }
 
-    // ==================== OPEN PRODUCT DETAIL (FULL SCREEN) ====================
     async function openProductDetail() {
-        if (!currentDetailProduct) return;
-        
-        // Load reviews
+        if(!currentDetailProduct) return;
         const reviewsSnap = await db.ref("reviews").orderByChild("productId").equalTo(currentDetailProduct.id).once("value");
-        let reviewsHtml = "";
-        reviewsSnap.forEach(child => {
-            const r = child.val();
-            reviewsHtml += `<div class="review-box"><strong>${escapeHtml(r.customerName || r.customerPhone)}</strong><br>⭐ ${escapeHtml(r.text)}</div>`;
-        });
+        let allReviews = [];
+        reviewsSnap.forEach(child => { allReviews.push({ id: child.key, ...child.val() }); });
+        allReviews.reverse();
+        allReviewsCache[currentDetailProduct.id] = allReviews;
         
         const imagesHtml = (currentDetailProduct.images || []).map(img => `<img src="${img}" onclick="document.getElementById('detailMainImg').src=this.src">`).join('');
-        const userAddress = (currentCustomerData?.address) ? 
-            `<div class="order-card">
-                <i class="fas fa-map-marker-alt"></i> <strong>Delivery to:</strong><br>
-                ${escapeHtml(currentCustomerData.address.fullName)}<br>
-                ${escapeHtml(currentCustomerData.address.fullAddress)}<br>
-                ${escapeHtml(currentCustomerData.address.city)}, ${escapeHtml(currentCustomerData.address.state)} - ${currentCustomerData.address.pincode}<br>
-                📞 ${currentCustomerData.address.phone}
-            </div>` : 
-            `<div class="order-card"><i class="fas fa-exclamation-triangle"></i> Please set address in Profile to order</div>`;
+        const userAddress = currentCustomerData?.address ? `<div class="info-card"><i class="fas fa-map-marker-alt"></i> <strong>Delivery to:</strong><br>${escapeHtml(currentCustomerData.address.fullName)}<br>${escapeHtml(currentCustomerData.address.fullAddress)}<br>${currentCustomerData.address.city}, ${currentCustomerData.address.state} - ${currentCustomerData.address.pincode}<br>📞 ${currentCustomerData.address.phone}</div>` : `<div class="info-card"><i class="fas fa-exclamation-triangle"></i> Please set address in Profile to order</div>`;
+        
+        const showReviews = allReviews.slice(0, 2);
+        const hasMoreReviews = allReviews.length > 2;
         
         document.getElementById("detailContent").innerHTML = `
-            <img id="detailMainImg" class="detail-main-img" src="${currentDetailProduct.images?.[0] || 'https://picsum.photos/id/20/300/300'}">
+            <img id="detailMainImg" class="detail-main-img" src="${currentDetailProduct.images?.[0]}">
             <div class="image-gallery">${imagesHtml}</div>
             <h2>${escapeHtml(currentDetailProduct.name)}</h2>
-            <div class="price-row" style="margin: 10px 0;">
-                <span class="selling-price" style="font-size: 1.8rem;">₹${currentDetailProduct.price}</span>
-                ${currentDetailProduct.originalPrice ? `<span class="mrp-price" style="font-size: 1rem;">₹${currentDetailProduct.originalPrice}</span>` : ''}
-            </div>
-            <p style="margin: 12px 0;">${escapeHtml(currentDetailProduct.description || "No description")}</p>
+            <div class="price-row"><span class="selling-price" style="font-size:1.8rem;">₹${currentDetailProduct.price}</span>${currentDetailProduct.originalPrice ? `<span class="mrp-price">₹${currentDetailProduct.originalPrice}</span>` : ''}</div>
+            <div class="delivery-badge"><i class="fas fa-truck"></i> Delivery: ${currentDetailProduct.deliveryDays || "3-5 business days"}</div>
+            <p style="margin:16px 0;">${escapeHtml(currentDetailProduct.description || "No description")}</p>
             ${userAddress}
-            <button id="detailWhatsappBtn" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> 📲 Order Now on WhatsApp</button>
-            <div style="margin-top: 30px;">
-                <h3>⭐ Customer Reviews</h3>
-                <div id="detailReviewsList">${reviewsHtml || "<div>No reviews yet. Be first!</div>"}</div>
-                <textarea id="detailReviewText" rows="2" placeholder="Write a review..." style="margin-top: 16px;"></textarea>
-                <button id="detailPostReviewBtn" class="btn-outline" style="margin-top: 8px; width: 100%;">Post Review</button>
-            </div>
+            <button id="detailWhatsappBtn" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Order Now on WhatsApp</button>
+            <div style="margin-top:30px;"><h3>⭐ Customer Reviews</h3><div id="reviewsContainer"></div><textarea id="newReviewText" rows="2" placeholder="Write a review..." style="margin-top:16px;"></textarea><button id="submitReviewBtn" class="btn-outline" style="margin-top:8px; width:100%;">Publish Review</button></div>
+            <div class="related-section"><h3>You may also like</h3><div class="related-grid" id="relatedProductsGrid"></div></div>
         `;
         
-        document.getElementById("detailPage").classList.add("active");
+        const reviewsContainer = document.getElementById("reviewsContainer");
+        reviewsContainer.innerHTML = showReviews.map(r => `<div class="review-item"><div class="review-header"><span class="review-name">${escapeHtml(r.customerName || r.customerPhone)}</span><span>⭐</span></div><div class="review-text">${escapeHtml(r.text)}</div></div>`).join('');
+        if(hasMoreReviews) reviewsContainer.innerHTML += `<button id="showMoreReviewsBtn" class="show-more-btn">Show more reviews (${allReviews.length - 2} more)</button>`;
         
-        // WhatsApp Order Button
-        document.getElementById("detailWhatsappBtn")?.addEventListener("click", () => {
-            if (!currentCustomerData?.address) {
-                showToast("Please set address in Profile first!");
-                document.getElementById("detailPage").classList.remove("active");
-                document.getElementById("navProfileBtn").click();
-                return;
-            }
-            const addr = currentCustomerData.address;
-            const msg = `Hello, I want to order this product:%0A%0A📦 Product: ${currentDetailProduct.name}%0A💰 Price: ₹${currentDetailProduct.price}%0A%0A📝 My Details:%0AName: ${addr.fullName}%0APhone: ${addr.phone}%0AAddress: ${addr.fullAddress}, ${addr.city}, ${addr.state} - ${addr.pincode}%0A%0APlease confirm my order. Thank you!`;
-            window.open(`https://wa.me/${currentDetailProduct.whatsapp?.replace(/[^0-9]/g, '')}?text=${msg}`, '_blank');
-            saveOrder(currentDetailProduct);
+        document.getElementById("showMoreReviewsBtn")?.addEventListener("click", () => {
+            reviewsContainer.innerHTML = allReviews.map(r => `<div class="review-item"><div class="review-header"><span class="review-name">${escapeHtml(r.customerName || r.customerPhone)}</span><span>⭐</span></div><div class="review-text">${escapeHtml(r.text)}</div></div>`).join('');
         });
         
-        // Post Review
-        document.getElementById("detailPostReviewBtn")?.addEventListener("click", async () => {
-            const text = document.getElementById("detailReviewText").value.trim();
-            if (!text) { showToast("Please write a review"); return; }
-            if (!currentCustomer) { showToast("Please login to review"); return; }
-            await db.ref("reviews").push().set({
-                productId: currentDetailProduct.id,
-                text: text,
-                customerName: currentCustomerData?.name || currentCustomer,
-                customerPhone: currentCustomer,
-                createdAt: Date.now()
-            });
-            document.getElementById("detailReviewText").value = "";
-            showToast("Review posted! Thanks for your feedback.");
+        const related = allProducts.filter(p => p.id !== currentDetailProduct.id && p.category === currentDetailProduct.category).slice(0, 4);
+        const relatedGrid = document.getElementById("relatedProductsGrid");
+        relatedGrid.innerHTML = related.map(p => `<div class="related-card" data-id="${p.id}"><img class="related-img" src="${p.images?.[0]}"><div class="related-name">${escapeHtml(p.name)}</div><div class="selling-price" style="font-size:1rem;">₹${p.price}</div></div>`).join('');
+        document.querySelectorAll(".related-card").forEach(card => { card.addEventListener("click", () => { currentDetailProduct = allProducts.find(p => p.id === card.getAttribute("data-id")); openProductDetail(); }); });
+        
+        document.getElementById("detailPage").classList.add("active");
+        document.getElementById("detailWhatsappBtn")?.addEventListener("click", () => {
+            if(!currentCustomerData?.address) { showToast("Set address in Profile first!"); document.getElementById("detailPage").classList.remove("active"); document.getElementById("navProfileBtn").click(); return; }
+            const addr = currentCustomerData.address;
+            const msg = `Hello, I want to order:%0A📦 ${currentDetailProduct.name}%0A💰 ₹${currentDetailProduct.price}%0A%0A📝 My Details:%0AName: ${addr.fullName}%0APhone: ${addr.phone}%0AAddress: ${addr.fullAddress}, ${addr.city}, ${addr.state} - ${addr.pincode}`;
+            window.open(`https://wa.me/${currentDetailProduct.whatsapp?.replace(/[^0-9]/g, '')}?text=${msg}`, '_blank');
+            if(currentCustomer) saveOrder();
+        });
+        
+        document.getElementById("submitReviewBtn")?.addEventListener("click", async () => {
+            const text = document.getElementById("newReviewText").value.trim();
+            if(!text) { showToast("Write a review"); return; }
+            if(!currentCustomer) { showToast("Login to review"); return; }
+            await db.ref("reviews").push().set({ productId: currentDetailProduct.id, text, customerName: currentCustomerData?.name || currentCustomer, customerPhone: currentCustomer, createdAt: Date.now() });
+            showToast("Review published!");
+            document.getElementById("newReviewText").value = "";
             openProductDetail();
         });
     }
     
-    // ==================== SAVE ORDER TO DATABASE ====================
-    async function saveOrder(product) {
-        if (!currentCustomer) return;
-        const orderRef = db.ref(`orders/${currentCustomer}`).push();
-        await orderRef.set({
-            productId: product.id,
-            productName: product.name,
-            price: product.price,
-            address: currentCustomerData?.address,
-            createdAt: Date.now()
-        });
-    }
+    async function saveOrder() { await db.ref(`orders/${currentCustomer}`).push().set({ productId: currentDetailProduct.id, productName: currentDetailProduct.name, price: currentDetailProduct.price, address: currentCustomerData?.address, createdAt: Date.now() }); }
     
-    // ==================== LOAD PROFILE & ORDERS ====================
     async function loadProfile() {
-        if (!currentCustomer) {
-            showToast("Please login first");
-            document.getElementById("homePageView").style.display = "block";
-            document.getElementById("profilePage").style.display = "none";
-            document.getElementById("navHomeBtn").classList.add("active");
-            document.getElementById("navProfileBtn").classList.remove("active");
-            return;
-        }
-        
-        const userSnap = await db.ref(`users/${currentCustomer}`).once("value");
-        currentCustomerData = userSnap.val() || { phone: currentCustomer };
-        const addr = currentCustomerData.address;
-        
-        document.getElementById("profileInfo").innerHTML = `
-            <div class="profile-info">
-                <i class="fas fa-user-circle" style="font-size: 3rem;"></i>
-                <h3>${escapeHtml(currentCustomerData.name || currentCustomer)}</h3>
-                <p>📞 ${currentCustomer}</p>
-            </div>
-            <h3>📍 Delivery Address</h3>
-            ${addr ? `
-                <div class="address-box">
-                    <strong>${escapeHtml(addr.fullName)}</strong><br>
-                    ${escapeHtml(addr.fullAddress)}<br>
-                    ${escapeHtml(addr.city)}, ${escapeHtml(addr.state)} - ${addr.pincode}<br>
-                    📞 ${addr.phone}
-                </div>
-                <button id="editAddressBtn" class="btn-outline" style="margin-top: 8px; width: 100%;">Edit Address</button>
-            ` : '<button id="addAddressBtn" class="btn">Add Address</button>'}
-        `;
-        
+        if(!currentCustomer) { showToast("Login first"); document.getElementById("homePageView").style.display = "block"; document.getElementById("profilePage").style.display = "none"; return; }
+        await loadCustomerData();
+        const addr = currentCustomerData?.address;
+        document.getElementById("profileInfo").innerHTML = `<div class="profile-info"><i class="fas fa-user-circle" style="font-size:3rem;"></i><h3>${escapeHtml(currentCustomerData?.name || currentCustomer)}</h3><p>📞 ${currentCustomer}</p></div><h3>📍 Address</h3>${addr ? `<div class="address-box"><strong>${escapeHtml(addr.fullName)}</strong><br>${escapeHtml(addr.fullAddress)}<br>${addr.city}, ${addr.state} - ${addr.pincode}<br>📞 ${addr.phone}</div><button id="editAddressBtn" class="btn-outline" style="width:100%;">Edit Address</button>` : '<button id="addAddressBtn" class="btn">Add Address</button>'}`;
         document.getElementById("editAddressBtn")?.addEventListener("click", () => showAddressModal(true));
         document.getElementById("addAddressBtn")?.addEventListener("click", () => showAddressModal(false));
-        
-        // Load orders
         const ordersSnap = await db.ref(`orders/${currentCustomer}`).once("value");
         let ordersHtml = "";
-        ordersSnap.forEach(child => {
-            const o = child.val();
-            ordersHtml += `<div class="address-box"><strong>${escapeHtml(o.productName)}</strong><br>₹${o.price}<br><small>${new Date(o.createdAt).toLocaleDateString()}</small></div>`;
-        });
+        ordersSnap.forEach(child => { const o = child.val(); ordersHtml += `<div class="address-box"><strong>${escapeHtml(o.productName)}</strong><br>₹${o.price}<br><small>${new Date(o.createdAt).toLocaleDateString()}</small></div>`; });
         document.getElementById("myOrdersList").innerHTML = ordersHtml || "<div style='text-align:center; padding:20px;'>No orders yet</div>";
     }
     
-    // ==================== ADDRESS MODAL ====================
     function showAddressModal(isEdit) {
         const addr = currentCustomerData?.address;
         document.getElementById("addrFullName").value = addr?.fullName || "";
@@ -480,346 +356,106 @@
         document.getElementById("addrPincode").value = addr?.pincode || "";
         document.getElementById("addressModal").classList.add("modal-active");
         document.getElementById("modalBackground").style.display = "block";
-        
         document.getElementById("addressSaveBtn").onclick = async () => {
-            const address = {
-                fullName: document.getElementById("addrFullName").value.trim(),
-                phone: document.getElementById("addrPhone").value.trim(),
-                fullAddress: document.getElementById("addrFullAddress").value.trim(),
-                city: document.getElementById("addrCity").value.trim(),
-                state: document.getElementById("addrState").value.trim(),
-                pincode: document.getElementById("addrPincode").value.trim()
-            };
-            if (!address.fullName || !address.phone || !address.fullAddress || !address.city || !address.state || !address.pincode) {
-                showToast("All fields required");
-                return;
-            }
+            const address = { fullName: document.getElementById("addrFullName").value.trim(), phone: document.getElementById("addrPhone").value.trim(), fullAddress: document.getElementById("addrFullAddress").value.trim(), city: document.getElementById("addrCity").value.trim(), state: document.getElementById("addrState").value.trim(), pincode: document.getElementById("addrPincode").value.trim() };
+            if(!address.fullName || !address.phone || !address.fullAddress || !address.city || !address.state || !address.pincode) { showToast("All fields required"); return; }
             await db.ref(`users/${currentCustomer}`).update({ address, name: address.fullName });
             currentCustomerData = { ...currentCustomerData, address, name: address.fullName };
             document.getElementById("addressModal").classList.remove("modal-active");
             document.getElementById("modalBackground").style.display = "none";
-            loadProfile();
-            showToast("Address saved successfully!");
+            loadProfile(); showToast("Address saved!");
         };
     }
     
-    // ==================== AUTHENTICATION ====================
+    // Auth Functions
     async function handleCustomerLogin() {
         const phone = document.getElementById("loginPhone").value.trim();
         const pass = document.getElementById("loginPassword").value;
-        if (!phone || !pass) { showToast("Phone and password required"); return; }
-        
+        if(!phone || !pass) { showToast("Phone and password required"); return; }
         const userSnap = await db.ref(`users/${phone}`).once("value");
-        if (!userSnap.exists()) {
-            await db.ref(`users/${phone}`).set({ password: pass, phone: phone, createdAt: Date.now() });
-            currentCustomer = phone;
-            showToast("Account created successfully!");
-            document.getElementById("loginModal").classList.remove("modal-active");
-            document.getElementById("modalBackground").style.display = "none";
-            showAddressModal(false);
-            loadProfile();
-        } else if (userSnap.val().password === pass) {
-            currentCustomer = phone;
-            currentCustomerData = userSnap.val();
-            showToast("Login successful!");
-            document.getElementById("loginModal").classList.remove("modal-active");
-            document.getElementById("modalBackground").style.display = "none";
-            if (!currentCustomerData?.address) showAddressModal(false);
-            loadProfile();
-        } else {
-            document.getElementById("loginErrorMessage").innerText = "Wrong password!";
-        }
+        if(!userSnap.exists()) { await db.ref(`users/${phone}`).set({ password: pass, phone, createdAt: Date.now() }); saveLogin(phone); showToast("Account created!"); closeAllModals(); showAddressModal(false); loadProfile(); }
+        else if(userSnap.val().password === pass) { saveLogin(phone); showToast("Login successful!"); closeAllModals(); if(!userSnap.val().address) showAddressModal(false); loadProfile(); }
+        else { document.getElementById("loginErrorMessage").innerText = "Wrong password!"; }
     }
     
-    // ==================== SELLER LOGIN ====================
-    async function sellerLogin(pass) {
-        const snap = await db.ref("passwords/master").once("value");
-        const data = snap.val();
-        if (!data || !data.sellerPassword) {
-            await db.ref("passwords/master").set({ sellerPassword: pass });
-            showToast("Seller password saved! Logged in.");
-            openSellerPanel();
-        } else if (data.sellerPassword === pass) {
-            showToast("Seller login successful!");
-            openSellerPanel();
-        } else {
-            document.getElementById("loginErrorMessage").innerText = "Wrong seller password!";
-        }
-    }
+    async function sellerLogin() { const pass = document.getElementById("sellerPasswordOnly").value; const snap = await db.ref("passwords/master").once("value"); const data = snap.val(); if(!data?.sellerPassword) { await db.ref("passwords/master").set({ sellerPassword: pass }); showToast("Seller password saved!"); openSellerPanel(); } else if(data.sellerPassword === pass) { openSellerPanel(); } else { document.getElementById("sellerLoginError").innerText = "Wrong password!"; } }
+    async function adminLogin() { const pass = document.getElementById("adminPasswordOnly").value; const snap = await db.ref("passwords/master").once("value"); const data = snap.val(); if(!data?.adminPassword) { await db.ref("passwords/master").update({ adminPassword: pass }); showToast("Admin password saved!"); openAdminPanel(); } else if(data.adminPassword === pass) { openAdminPanel(); } else { document.getElementById("adminLoginError").innerText = "Wrong password!"; } }
     
-    // ==================== ADMIN LOGIN ====================
-    async function adminLogin(pass) {
-        const snap = await db.ref("passwords/master").once("value");
-        const data = snap.val();
-        if (!data || !data.adminPassword) {
-            await db.ref("passwords/master").update({ adminPassword: pass });
-            showToast("Admin password saved! Logged in.");
-            openAdminPanel();
-        } else if (data.adminPassword === pass) {
-            showToast("Admin login successful!");
-            openAdminPanel();
-        } else {
-            document.getElementById("loginErrorMessage").innerText = "Wrong admin password!";
-        }
-    }
+    async function openSellerPanel() { closeAllModals(); await loadCategoriesToSelect(); document.getElementById("sellerPanelModal").classList.add("modal-active"); document.getElementById("modalBackground").style.display = "block"; }
+    async function loadCategoriesToSelect() { const cats = [...new Set(allProducts.map(p => p.category).filter(Boolean))]; const select = document.getElementById("sellerExistingCategorySelect"); select.innerHTML = '<option value="">-- Select category --</option>'; cats.forEach(c => { select.innerHTML += `<option value="${c}">${c}</option>`; }); }
     
-    // ==================== SELLER PANEL ====================
-    async function openSellerPanel() {
-        closeAllModals();
-        await loadCategoriesToSelect();
-        document.getElementById("sellerPanelModal").classList.add("modal-active");
-        document.getElementById("modalBackground").style.display = "block";
-    }
-    
-    async function loadCategoriesToSelect() {
-        const cats = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
-        const select = document.getElementById("sellerExistingCategorySelect");
-        select.innerHTML = '<option value="">-- OR Select existing category --</option>';
-        cats.forEach(c => { select.innerHTML += `<option value="${c}">${c}</option>`; });
-    }
-    
-    // ==================== PUBLISH PRODUCT ====================
-    async function publishProduct() {
+    document.getElementById("sellerPublishProductBtn")?.addEventListener("click", async () => {
         const name = document.getElementById("sellerProductName").value.trim();
         const price = parseFloat(document.getElementById("sellerSellingPrice").value);
         const mrp = parseFloat(document.getElementById("sellerMrpPrice").value);
         const desc = document.getElementById("sellerDescription").value;
+        const deliveryDays = document.getElementById("sellerDeliveryDays").value.trim() || "3-5 business days";
         const newCat = document.getElementById("sellerNewCategoryInput").value.trim();
         const existingCat = document.getElementById("sellerExistingCategorySelect").value;
         const category = newCat || existingCat;
         const whatsapp = document.getElementById("sellerWhatsappNumber").value.trim();
         const files = document.getElementById("sellerImagesUpload").files;
-        
-        if (!name || !price || !mrp || !category || !whatsapp || files.length === 0) {
-            showToast("Please fill all fields and upload images!");
-            return;
-        }
-        
+        if(!name || !price || !mrp || !category || !whatsapp || files.length === 0) { showToast("Fill all fields and upload images!"); return; }
         let images = [];
-        for (let i = 0; i < Math.min(files.length, 3); i++) {
-            const reader = new FileReader();
-            const base64 = await new Promise(resolve => {
-                reader.onload = e => resolve(e.target.result);
-                reader.readAsDataURL(files[i]);
-            });
-            images.push(base64);
-        }
-        
-        await db.ref("products").push().set({
-            name, price, originalPrice: mrp, description: desc, category, whatsapp, images,
-            createdAt: Date.now()
-        });
-        showToast("✅ Product published successfully!");
-        closeAllModals();
-        loadProducts();
-        
-        // Reset form
-        document.getElementById("sellerProductName").value = "";
-        document.getElementById("sellerSellingPrice").value = "";
-        document.getElementById("sellerMrpPrice").value = "";
-        document.getElementById("sellerDescription").value = "";
-        document.getElementById("sellerNewCategoryInput").value = "";
-        document.getElementById("sellerWhatsappNumber").value = "";
-        document.getElementById("sellerImagesUpload").value = "";
-        document.getElementById("sellerImagesPreview").innerHTML = "";
-    }
+        for(let i = 0; i < Math.min(files.length, 3); i++) { const reader = new FileReader(); const base64 = await new Promise(resolve => { reader.onload = e => resolve(e.target.result); reader.readAsDataURL(files[i]); }); images.push(base64); }
+        await db.ref("products").push().set({ name, price, originalPrice: mrp, description: desc, deliveryDays, category, whatsapp, images, createdAt: Date.now() });
+        showToast("Product published!"); closeAllModals(); loadProducts();
+        ["sellerProductName","sellerSellingPrice","sellerMrpPrice","sellerDescription","sellerDeliveryDays","sellerNewCategoryInput","sellerWhatsappNumber"].forEach(id => document.getElementById(id).value = "");
+        document.getElementById("sellerImagesUpload").value = ""; document.getElementById("sellerImagesPreview").innerHTML = "";
+    });
     
-    // ==================== ADMIN PANEL ====================
+    document.getElementById("sellerImagesUpload")?.addEventListener("change", (e) => { const preview = document.getElementById("sellerImagesPreview"); preview.innerHTML = ""; Array.from(e.target.files).slice(0,3).forEach(f => { const reader = new FileReader(); reader.onload = ev => { const img = document.createElement("img"); img.src = ev.target.result; preview.appendChild(img); }; reader.readAsDataURL(f); }); });
+    
     async function openAdminPanel() {
         closeAllModals();
-        const snapshot = await db.ref("products").once("value");
+        const snap = await db.ref("products").once("value");
         const container = document.getElementById("adminProductsListContainer");
         container.innerHTML = "";
-        
-        const products = [];
-        snapshot.forEach(child => { products.push({ id: child.key, ...child.val() }); });
-        products.reverse();
-        
-        products.forEach(prod => {
-            const div = document.createElement("div");
-            div.className = "admin-product-row";
-            div.innerHTML = `
-                <div><strong>${escapeHtml(prod.name)}</strong><br>₹${prod.price} | ${prod.category}</div>
-                <div>
-                    <button class="adminEditBtn" data-id="${prod.id}" style="background:#3b82f6; border:none; padding:6px 14px; border-radius:40px; color:white;">✏️ Edit</button>
-                    <button class="adminDeleteBtn" data-id="${prod.id}" style="background:#ef4444; border:none; padding:6px 14px; border-radius:40px; margin-left:8px;">🗑️ Delete</button>
-                </div>
-            `;
+        const products = []; snap.forEach(child => { products.push({ id: child.key, ...child.val() }); });
+        products.reverse().forEach(prod => {
+            const div = document.createElement("div"); div.className = "admin-product-row";
+            div.innerHTML = `<div><strong>${escapeHtml(prod.name)}</strong><br>₹${prod.price} | ${prod.category}</div><div><button class="adminEditBtn" data-id="${prod.id}" style="background:#3b82f6; border:none; padding:6px 14px; border-radius:40px; color:white;">✏️ Edit</button><button class="adminDeleteBtn" data-id="${prod.id}" style="background:#ef4444; border:none; padding:6px 14px; border-radius:40px; margin-left:8px;">🗑️ Delete</button></div>`;
             container.appendChild(div);
         });
-        
-        document.querySelectorAll(".adminEditBtn").forEach(btn => {
-            btn.addEventListener("click", async () => {
-                const id = btn.getAttribute("data-id");
-                const prodSnap = await db.ref(`products/${id}`).once("value");
-                const prod = prodSnap.val();
-                document.getElementById("editProductName").value = prod.name;
-                document.getElementById("editProductPrice").value = prod.price;
-                document.getElementById("editProductMrp").value = prod.originalPrice || "";
-                document.getElementById("editProductDesc").value = prod.description || "";
-                document.getElementById("editProductCategory").value = prod.category || "";
-                document.getElementById("editProductWhatsapp").value = prod.whatsapp || "";
-                document.getElementById("editProductModal").classList.add("modal-active");
-                document.getElementById("modalBackground").style.display = "block";
-                window.editId = id;
-            });
-        });
-        
-        document.querySelectorAll(".adminDeleteBtn").forEach(btn => {
-            btn.addEventListener("click", async () => {
-                if (confirm("Delete product permanently?")) {
-                    await db.ref(`products/${btn.getAttribute("data-id")}`).remove();
-                    showToast("Product deleted!");
-                    openAdminPanel();
-                    loadProducts();
-                }
-            });
-        });
-        
-        document.getElementById("adminPanelModal").classList.add("modal-active");
-        document.getElementById("modalBackground").style.display = "block";
+        document.querySelectorAll(".adminEditBtn").forEach(btn => { btn.addEventListener("click", async () => { const id = btn.getAttribute("data-id"); const prodSnap = await db.ref(`products/${id}`).once("value"); const prod = prodSnap.val(); document.getElementById("editProductName").value = prod.name; document.getElementById("editProductPrice").value = prod.price; document.getElementById("editProductMrp").value = prod.originalPrice || ""; document.getElementById("editProductDesc").value = prod.description || ""; document.getElementById("editDeliveryDays").value = prod.deliveryDays || ""; document.getElementById("editProductCategory").value = prod.category || ""; document.getElementById("editProductWhatsapp").value = prod.whatsapp || ""; document.getElementById("editProductModal").classList.add("modal-active"); document.getElementById("modalBackground").style.display = "block"; window.editId = id; }); });
+        document.querySelectorAll(".adminDeleteBtn").forEach(btn => { btn.addEventListener("click", async () => { if(confirm("Delete product?")) { await db.ref(`products/${btn.getAttribute("data-id")}`).remove(); openAdminPanel(); loadProducts(); showToast("Deleted!"); } }); });
+        document.getElementById("adminPanelModal").classList.add("modal-active"); document.getElementById("modalBackground").style.display = "block";
     }
     
-    // ==================== EDIT PRODUCT ====================
-    document.getElementById("editSaveBtn")?.addEventListener("click", async () => {
-        if (!window.editId) return;
-        await db.ref(`products/${window.editId}`).update({
-            name: document.getElementById("editProductName").value,
-            price: parseFloat(document.getElementById("editProductPrice").value),
-            originalPrice: parseFloat(document.getElementById("editProductMrp").value) || null,
-            description: document.getElementById("editProductDesc").value,
-            category: document.getElementById("editProductCategory").value,
-            whatsapp: document.getElementById("editProductWhatsapp").value
-        });
-        showToast("Product updated successfully!");
-        closeAllModals();
-        openAdminPanel();
-        loadProducts();
-    });
+    document.getElementById("editSaveBtn")?.addEventListener("click", async () => { await db.ref(`products/${window.editId}`).update({ name: document.getElementById("editProductName").value, price: parseFloat(document.getElementById("editProductPrice").value), originalPrice: parseFloat(document.getElementById("editProductMrp").value) || null, description: document.getElementById("editProductDesc").value, deliveryDays: document.getElementById("editDeliveryDays").value, category: document.getElementById("editProductCategory").value, whatsapp: document.getElementById("editProductWhatsapp").value }); showToast("Updated!"); closeAllModals(); openAdminPanel(); loadProducts(); });
     
-    // ==================== IMAGE PREVIEW ====================
-    document.getElementById("sellerImagesUpload")?.addEventListener("change", (e) => {
-        const preview = document.getElementById("sellerImagesPreview");
-        preview.innerHTML = "";
-        Array.from(e.target.files).slice(0, 3).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = ev => {
-                const img = document.createElement("img");
-                img.src = ev.target.result;
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
+    function closeAllModals() { document.querySelectorAll(".modal-card").forEach(m => m.classList.remove("modal-active")); document.getElementById("modalBackground").style.display = "none"; document.getElementById("loginErrorMessage").innerText = ""; document.getElementById("sellerLoginError").innerText = ""; document.getElementById("adminLoginError").innerText = ""; }
+    function openDrawer() { document.getElementById("drawerMenu").classList.add("drawer-open"); document.getElementById("drawerOverlay").classList.add("overlay-visible"); }
+    function closeDrawer() { document.getElementById("drawerMenu").classList.remove("drawer-open"); document.getElementById("drawerOverlay").classList.remove("overlay-visible"); }
     
-    // ==================== MODAL CONTROLS ====================
-    function closeAllModals() {
-        document.querySelectorAll(".modal-card").forEach(m => m.classList.remove("modal-active"));
-        document.getElementById("modalBackground").style.display = "none";
-        document.getElementById("loginErrorMessage").innerText = "";
-    }
-    
-    function openDrawer() {
-        document.getElementById("drawerMenu").classList.add("drawer-open");
-        document.getElementById("drawerOverlay").classList.add("overlay-visible");
-    }
-    
-    function closeDrawer() {
-        document.getElementById("drawerMenu").classList.remove("drawer-open");
-        document.getElementById("drawerOverlay").classList.remove("overlay-visible");
-    }
-    
-    // ==================== EVENT LISTENERS ====================
+    // Event Listeners
     document.getElementById("homeMenuBtn")?.addEventListener("click", openDrawer);
     document.getElementById("drawerCloseBtn")?.addEventListener("click", closeDrawer);
     document.getElementById("drawerOverlay")?.addEventListener("click", closeDrawer);
     document.getElementById("detailBackBtn")?.addEventListener("click", () => { document.getElementById("detailPage").classList.remove("active"); });
     document.getElementById("homeSearchInput")?.addEventListener("input", (e) => { currentSearch = e.target.value; renderProducts(); });
-    
-    // Navigation
-    document.getElementById("navHomeBtn")?.addEventListener("click", () => {
-        document.getElementById("homePageView").style.display = "block";
-        document.getElementById("profilePage").style.display = "none";
-        document.getElementById("navHomeBtn").classList.add("active");
-        document.getElementById("navProfileBtn").classList.remove("active");
-    });
-    
-    document.getElementById("navProfileBtn")?.addEventListener("click", () => {
-        if (!currentCustomer) {
-            document.getElementById("loginModal").classList.add("modal-active");
-            document.getElementById("modalBackground").style.display = "block";
-            document.getElementById("loginModalTitle").innerText = "Customer Login";
-            document.getElementById("loginModal").setAttribute("data-type", "customer");
-            return;
-        }
-        loadProfile();
-        document.getElementById("homePageView").style.display = "none";
-        document.getElementById("profilePage").style.display = "block";
-        document.getElementById("navProfileBtn").classList.add("active");
-        document.getElementById("navHomeBtn").classList.remove("active");
-    });
-    
-    document.getElementById("profileBackBtn")?.addEventListener("click", () => {
-        document.getElementById("homePageView").style.display = "block";
-        document.getElementById("profilePage").style.display = "none";
-        document.getElementById("navHomeBtn").classList.add("active");
-        document.getElementById("navProfileBtn").classList.remove("active");
-    });
-    
-    // Drawer actions
-    document.getElementById("drawerCategoriesBtn")?.addEventListener("click", () => { closeDrawer(); });
-    document.getElementById("drawerSellerLoginBtn")?.addEventListener("click", () => {
-        closeDrawer();
-        document.getElementById("loginModalTitle").innerText = "Seller Login";
-        document.getElementById("loginModal").setAttribute("data-type", "seller");
-        document.getElementById("loginModal").classList.add("modal-active");
-        document.getElementById("modalBackground").style.display = "block";
-    });
-    
-    document.getElementById("drawerAdminLoginBtn")?.addEventListener("click", () => {
-        closeDrawer();
-        document.getElementById("loginModalTitle").innerText = "Admin Login";
-        document.getElementById("loginModal").setAttribute("data-type", "admin");
-        document.getElementById("loginModal").classList.add("modal-active");
-        document.getElementById("modalBackground").style.display = "block";
-    });
-    
-    document.getElementById("drawerAboutBtn")?.addEventListener("click", () => {
-        closeDrawer();
-        document.getElementById("aboutModal").classList.add("modal-active");
-        document.getElementById("modalBackground").style.display = "block";
-    });
-    
-    // Login submit
-    document.getElementById("loginSubmitBtn")?.addEventListener("click", async () => {
-        const type = document.getElementById("loginModal").getAttribute("data-type");
-        const pass = document.getElementById("loginPassword").value;
-        if (type === "seller") await sellerLogin(pass);
-        else if (type === "admin") await adminLogin(pass);
-        else await handleCustomerLogin();
-    });
-    
-    // Close buttons
+    document.getElementById("navHomeBtn")?.addEventListener("click", () => { document.getElementById("homePageView").style.display = "block"; document.getElementById("profilePage").style.display = "none"; document.getElementById("navHomeBtn").classList.add("active"); document.getElementById("navProfileBtn").classList.remove("active"); });
+    document.getElementById("navProfileBtn")?.addEventListener("click", () => { if(!currentCustomer) { document.getElementById("loginModal").classList.add("modal-active"); document.getElementById("modalBackground").style.display = "block"; document.getElementById("loginModalTitle").innerText = "Customer Login"; document.getElementById("loginModal").setAttribute("data-type", "customer"); return; } loadProfile(); document.getElementById("homePageView").style.display = "none"; document.getElementById("profilePage").style.display = "block"; document.getElementById("navProfileBtn").classList.add("active"); document.getElementById("navHomeBtn").classList.remove("active"); });
+    document.getElementById("profileBackBtn")?.addEventListener("click", () => { document.getElementById("homePageView").style.display = "block"; document.getElementById("profilePage").style.display = "none"; document.getElementById("navHomeBtn").classList.add("active"); document.getElementById("navProfileBtn").classList.remove("active"); });
+    document.getElementById("drawerSellerLoginBtn")?.addEventListener("click", () => { closeDrawer(); document.getElementById("sellerLoginModal").classList.add("modal-active"); document.getElementById("modalBackground").style.display = "block"; });
+    document.getElementById("drawerAdminLoginBtn")?.addEventListener("click", () => { closeDrawer(); document.getElementById("adminLoginModal").classList.add("modal-active"); document.getElementById("modalBackground").style.display = "block"; });
+    document.getElementById("drawerAboutBtn")?.addEventListener("click", () => { closeDrawer(); document.getElementById("aboutModal").classList.add("modal-active"); document.getElementById("modalBackground").style.display = "block"; });
+    document.getElementById("loginSubmitBtn")?.addEventListener("click", handleCustomerLogin);
     document.getElementById("loginCancelBtn")?.addEventListener("click", closeAllModals);
+    document.getElementById("sellerLoginSubmitBtn")?.addEventListener("click", sellerLogin);
+    document.getElementById("sellerLoginCancelBtn")?.addEventListener("click", closeAllModals);
+    document.getElementById("adminLoginSubmitBtn")?.addEventListener("click", adminLogin);
+    document.getElementById("adminLoginCancelBtn")?.addEventListener("click", closeAllModals);
     document.getElementById("sellerPanelCloseBtn")?.addEventListener("click", closeAllModals);
     document.getElementById("adminPanelCloseBtn")?.addEventListener("click", closeAllModals);
     document.getElementById("editCancelBtn")?.addEventListener("click", closeAllModals);
     document.getElementById("aboutCloseBtn")?.addEventListener("click", closeAllModals);
     document.getElementById("modalBackground")?.addEventListener("click", closeAllModals);
-    document.getElementById("addressSkipBtn")?.addEventListener("click", () => {
-        document.getElementById("addressModal").classList.remove("modal-active");
-        document.getElementById("modalBackground").style.display = "none";
-    });
-    document.getElementById("aboutConnectEmailBtn")?.addEventListener("click", () => {
-        window.location.href = "mailto:gotmprajapat00@gmail.com?subject=Hello Drozioo&body=I'm interested in Drozioo platform";
-    });
-    document.getElementById("contactAdminBtn")?.addEventListener("click", () => {
-        window.location.href = "mailto:gotmprajapat00@gmail.com?subject=Seller Request - Drozioo&body=Hello, I want to become a seller on Drozioo. Please guide me.";
-    });
-    document.getElementById("sellerPublishProductBtn")?.addEventListener("click", publishProduct);
+    document.getElementById("addressSkipBtn")?.addEventListener("click", () => { document.getElementById("addressModal").classList.remove("modal-active"); document.getElementById("modalBackground").style.display = "none"; });
+    document.getElementById("aboutConnectEmailBtn")?.addEventListener("click", () => { window.location.href = "mailto:gotmprajapat00@gmail.com?subject=Hello Drozioo"; });
+    document.getElementById("contactAdminFromSellerBtn")?.addEventListener("click", () => { window.location.href = "mailto:gotmprajapat00@gmail.com?subject=Seller Request - Drozioo"; });
     
-    // Initialize
-    loadProducts();
+    loadSavedLogin(); loadProducts();
 </script>
 </body>
 </html>
